@@ -1,0 +1,63 @@
+kind: pipeline
+
+steps:
+  # Install and cache deps
+  - name: install
+    image: node:10.14.1-stretch
+    commands:
+      - yarn install
+  # Verify the build in parallel
+  - name: test
+    group: pr
+    image: node:10.14.1-stretch
+    commands:
+      - yarn test
+  - name: build
+    group: pr
+    image: node:10.14.1-stretch
+    commands:
+      - yarn build
+  - name: lint
+    group: pr
+    image: node:10.14.1-stretch
+    commands:
+      - yarn lint
+
+  - name: audit
+    group: pr
+    image: node:10.14.1-stretch
+    commands:
+      - yarn audit
+
+  - name: licenses
+    group: pr
+    image: node:10.14.1-stretch
+    commands:
+      - yarn check-licenses
+
+  # Surface info in the PR
+  - name: status
+    image: node:10.14.1-stretch
+    commands:
+      - yarn danger ci
+    environment:
+      DANGER_GITHUB_API_TOKEN:
+        from_secret: danger_github_api_token
+    when:
+      event:
+        - pull_request
+  # Publish the package when merged to master
+  - name: publish
+    image: node:10.14.1-stretch
+    commands:
+      - yarn semantic-release
+    when:
+      branch:
+        include: master
+      event:
+        - push
+    environment:
+      NPM_TOKEN:
+        from_secret: npm_token
+      GITHUB_TOKEN:
+        from_secret: publish_github_token
