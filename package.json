@@ -1,10 +1,10 @@
 {
-  "name": "nyc-frontend-library-template",
+  "name": "colib-js",
   "version": "0.0.0-development",
-  "description": "A template for open source projects.",
+  "description": "Tweening and logic sequencing for typescript",
   "repository": {
     "type": "git",
-    "url": "https://github.com/twobulls/nyc-frontend-library-template.git"
+    "url": "https://github.com/twobulls/colib-js.git"
   },
   "license": "Apache-2.0",
   "main": "dist/index.min.js",
