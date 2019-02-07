@@ -6167,6 +6167,11 @@ rimraf@2, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@~2.
   dependencies:
     glob "^7.0.5"
 
+rollup-plugin-generate-html-template@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-generate-html-template/-/rollup-plugin-generate-html-template-1.1.0.tgz#8f2b55196d1d0364f582e54042037d0a711d8400"
+  integrity sha512-WZhu4UXhUfdrtOyKAQCOBQIbo6NaJb1jfO3o+4BikLS3zFAtjcpj3NxaPWKh/FA0WmoguqoIb7djo4zVPF5LfQ==
+
 rollup-plugin-typescript2@^0.18.1:
   version "0.18.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.18.1.tgz#921865828080a254c088c6bc181ca654e5ef73c6"
