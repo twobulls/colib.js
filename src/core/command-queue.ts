@@ -68,7 +68,7 @@ export class CommandQueue {
   }
 
   /**
-   * Updates the <c>CommandQueue</c>. This causes CommandDelegates to be executed
+   * Updates the `CommandQueue`. This causes CommandDelegates to be executed
    * in the order than are enqueued. Update will return after a `Command` elects to pause. This method can't be called
    * recursively.
    * @param deltaTime The time, in seconds, since the last update. Must be >= 0.
@@ -97,12 +97,13 @@ export class CommandQueue {
           }
 
           const result = this.currentCommand(this.deltaTimeAccumulation, operation);
+          this._deltaTimeAccumulation = result.deltaTime;
           if (result.complete) {
             this.currentCommand = undefined;
           }
 
           // Only run again if an action just finished,
-          // (indicated by currentCommand == null), and we have more actions.
+          // (indicated by currentCommand === undefined), and we have more actions.
           shouldRun = result.complete && this.commands.length !== 0 && !this.paused;
         }
       }
