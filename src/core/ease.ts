@@ -198,7 +198,12 @@ export function inOutQuint(): Ease {
  * Eases using a trigonometric functions.
  **/
 export function inSin(): Ease {
-  return t => 1.0 - Math.cos((t * Math.PI) / 2.0);
+  return t => {
+    if (t === 1) {
+      return 1;
+    }
+    return 1.0 - Math.cos((t * Math.PI) / 2.0);
+  };
 }
 export function outSin(): Ease {
   return flip(inSin());
@@ -245,7 +250,15 @@ export function intOutElastic(): Ease {
 }
 
 export function inExpo(): Ease {
-  return t => (t === 1.0 ? 1.0 : Math.pow(2.0, 10.0 * (t - 1.0)));
+  return t => {
+    if (t === 1) {
+      return 1;
+    }
+    if (t === 0) {
+      return 0;
+    }
+    return Math.pow(2.0, 10.0 * (t - 1.0));
+  };
 }
 export function outExpo(): Ease {
   return flip(inExpo());
