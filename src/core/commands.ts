@@ -42,7 +42,7 @@ export type CommandDuration = (t: number) => void;
  */
 export type CommandFactory = () => Command;
 
-export type CommandIterator = IterableIterator<Command>;
+export type CommandIterator = IterableIterator<Command | undefined>;
 /**
  * A coroutine command uses generators to produce a sequence of commands over time.
  * @example
@@ -91,7 +91,7 @@ export function none(): Command {
 }
 
 /**
- * CommandDuration runs a command over a duration of time.
+ * Runs a command over a duration of time.
  * @param command The command to execute.
  * @param commandDuration The duration of time, in seconds, to apply the command over. Must be greater than or equal to 0.
  * @param ease An easing function to apply to the t parameter of a CommandDuration. If undefined, linear easing is used.
@@ -102,11 +102,7 @@ export function duration(command: CommandDuration, commandDuration: number, ease
     // Sometimes it is convenient to create duration commands with
     // a time of zero, so we have a special case.
     return (deltaTime, operation) => {
-      let t = 1.0;
-      if (ease !== undefined) {
-        t = ease(t);
-      }
-      command(t);
+      command(1);
       return { deltaTime, complete: true };
     };
   }
@@ -117,13 +113,13 @@ export function duration(command: CommandDuration, commandDuration: number, ease
     elapsedTime += deltaTime;
 
     let t = elapsedTime / commandDuration;
-    t = t < 0.0 ? 0.0 : t > 1.0 ? 1.0 : t;
+    t = Math.max(0, Math.min(t, 1));
 
     if (operation === CommandOperation.FastForward) {
       t = 1;
     }
 
-    if (ease != null) {
+    if (ease !== undefined && t !== 1) {
       t = ease(t);
     }
     command(t);
@@ -142,11 +138,14 @@ export function duration(command: CommandDuration, commandDuration: number, ease
 }
 
 /**
- * A Wait command does nothing until duration has elapsed
- * @property commandDuration The duration of time, in seconds, to wait. Must be greater than 0.
+ * Waits until a given number of seconds has elapsed.
+ * @property commandDuration The duration of time, in seconds, to wait. Must be greater than or equal to0.
  */
 export function waitForSeconds(commandDuration: number): Command {
-  checkDurationGreaterThanZero(commandDuration);
+  checkDurationGreaterThanOrEqualToZero(commandDuration);
+  if (commandDuration === 0) {
+    return none();
+  }
   let elapsedTime = 0.0;
   return (deltaTime, operation) => {
     if (operation === CommandOperation.FastForward) {
@@ -213,7 +212,7 @@ export function parallel(...commands: Command[]): Command {
       }
       const result = callCommand(commands[i], deltaTime, operation);
       finishedCommands[i] = result.complete;
-      complete = commands && result.complete;
+      complete = complete && result.complete;
       smallestDeltaTime = Math.min(result.deltaTime, smallestDeltaTime);
     }
 
@@ -263,10 +262,17 @@ export function sequence(...commands: Command[]): Command {
  * @param commands The commands to repeat. All of the basic commands are repeatable without side-effects.
  */
 export function repeat(repeatCount: number, ...commands: Command[]): Command {
-  if (repeatCount <= 0) {
-    throw new RangeError('repeatCount must be > 0.');
+  if (repeatCount < 0) {
+    throw new RangeError('repeatCount must be >= 0.');
+  }
+  if (repeatCount === 0) {
+    return none();
   }
   const seq = sequence(...commands);
+  if (repeatCount === 1) {
+    return seq;
+  }
+
   let count = 0;
   return (deltaTime, operation) => {
     let complete = true;
@@ -285,17 +291,21 @@ export function repeat(repeatCount: number, ...commands: Command[]): Command {
 
 /**
  * Repeats a command forever. Make sure that the commands you are repeating will consume some time, otherwise this will
- * create an infinite loop.
+ * create an infinite loop. RepeatForever can be escaped by calling `runToEnd` on the `CommandQueue`, or using
+ * `CommandOperation.FastForward`.
  * @param commands The commands to execute.
  */
 export function repeatForever(...commands: Command[]): Command {
   const seq = sequence(...commands);
   return (deltaTime, operation) => {
     let complete = true;
-    while (complete) {
+    do {
       const result = callCommand(seq, deltaTime, operation);
       complete = result.complete;
       deltaTime = result.deltaTime;
+    } while (complete && operation !== CommandOperation.FastForward);
+    if (complete && operation === CommandOperation.FastForward) {
+      complete = true;
     }
     return { complete, deltaTime };
   };
@@ -335,10 +345,6 @@ export function coroutine(command: CommandCoroutine): Command {
     // Create our coroutine, if we don't have one.
     if (iterator === undefined) {
       iterator = command();
-      // Finish if we couldn't create a coroutine.
-      if (iterator === undefined) {
-        return { complete: true, deltaTime };
-      }
     }
 
     let complete = true;
@@ -376,7 +382,7 @@ export function coroutine(command: CommandCoroutine): Command {
  */
 export function chooseRandom(...commands: (Command | undefined)[]): Command {
   if (commands.length === 0) {
-    throw RangeError('Must have at least one command parameter.');
+    return none();
   }
   return defer(() => {
     const index = Math.floor(Math.random() * commands.length) % commands.length;
@@ -385,24 +391,20 @@ export function chooseRandom(...commands: (Command | undefined)[]): Command {
   });
 }
 
-/// <summary>
-/// Defers the creation of the Command until just before the point of execution.
-/// </summary>
-/// <param name="deferredCommand">
-/// The action which will create the CommandDelegate.
-/// This must not be null, but it can return a null CommandDelegate.
-/// </param>
+/**
+ * Defers the creation of the Command until just before the point of execution.
+ * @param commandDeferred
+ * The action which will create the CommandDelegate.
+ * This must not be null, but it can return a null CommandDelegate.
+ */
 export function defer(commandDeferred: CommandFactory): Command {
-  let command: Command | undefined;
+  let command: Command = none();
   return sequence(
     () => {
       command = commandDeferred();
     },
     (deltaTime, operation) => {
-      if (command !== undefined) {
-        return command(deltaTime, operation);
-      }
-      return { complete: true, deltaTime };
+      return command(deltaTime, operation);
     }
   );
 }
@@ -413,16 +415,12 @@ export function defer(commandDeferred: CommandFactory): Command {
  */
 export function consumeTime(): Command {
   return (deltaTime, operation) => {
-    if (operation === CommandOperation.FastForward) {
-      return { complete: true, deltaTime };
-    }
-    deltaTime = Number.EPSILON < deltaTime ? Number.EPSILON : deltaTime;
-    return { complete: true, deltaTime };
+    return { complete: true, deltaTime: 0 };
   };
 }
 
 /**
- *  Slows down, or increases the rate at which time flows through the given subcommands.
+ * Slows down, or increases the rate at which time flows through the given subcommands.
  * @param dilationAmount
  * The scale of the dilation to perform. For instance, a dilationAmount
  * of 2 will make time flow twice as quickly. This number must be greater than 0.
@@ -439,12 +437,6 @@ export function dilateTime(dilationAmount: number, ...commands: Command[]): Comm
     deltaTime = result.deltaTime / dilationAmount;
     return { ...result, deltaTime };
   };
-}
-
-function checkDurationGreaterThanZero(durationAmount: number) {
-  if (durationAmount <= 0.0) {
-    throw RangeError('duration must be > 0');
-  }
 }
 
 function checkDurationGreaterThanOrEqualToZero(durationAmount: number) {

@@ -344,6 +344,6 @@ export function inOutHermite(): Ease {
   return hermite();
 }
 
-export function Smooth(): Ease {
+export function smooth(): Ease {
   return hermite();
 }
