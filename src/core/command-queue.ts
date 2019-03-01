@@ -96,7 +96,10 @@ export class CommandQueue {
             this.commands = remainder;
           }
 
-          const result = this.currentCommand(this.deltaTimeAccumulation, operation);
+          let result = this.currentCommand(this.deltaTimeAccumulation, operation);
+          if (result === undefined) {
+            result = { deltaTime: this.deltaTimeAccumulation, complete: true };
+          }
           this._deltaTimeAccumulation = result.deltaTime;
           if (result.complete) {
             this.currentCommand = undefined;

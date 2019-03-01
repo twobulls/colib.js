@@ -20,7 +20,7 @@ export interface CommandState {
  * delegate has completed, the next call should restart it. If the operation is set to fast forward, the command should
  * try to immediately complete.
  */
-export type Command = (deltaTime: number, operation: CommandOperation) => CommandState;
+export type Command = (deltaTime: number, operation: CommandOperation) => CommandState | void;
 
 /**
  * A one shot command. It doesn't take up any time, and completes immediately.
@@ -56,17 +56,6 @@ export type CommandIterator = IterableIterator<Command>;
 export type CommandCoroutine = () => CommandIterator;
 
 /**
- * Runs a `CommandAct`, which takes up no time and immediately finishes.
- * @param command The command to execute.
- */
-export function act(command: CommandAct): Command {
-  return deltaTime => {
-    command();
-    return { deltaTime, complete: true };
-  };
-}
-
-/**
  * Interruptable commands are useful for situations where a command is waiting for an external action to finish,
  * but a queue running the command wants to fast foward. For example, consider a command to play an audio source.
  * The command starts the Audio, then polls waiting for it to finish. Suddenly a queue  running the command
@@ -86,7 +75,7 @@ export function interruptable(command: Command, onInterrupt: () => void): Comman
       return { deltaTime, complete: true };
     }
     started = true;
-    const result = command(deltaTime, operation);
+    const result = callCommand(command, deltaTime, operation);
     if (result.complete) {
       started = false;
     }
@@ -222,7 +211,7 @@ export function parallel(...commands: Command[]): Command {
       if (finishedCommands[i]) {
         continue;
       }
-      const result = commands[i](deltaTime, operation);
+      const result = callCommand(commands[i], deltaTime, operation);
       finishedCommands[i] = result.complete;
       complete = commands && result.complete;
       smallestDeltaTime = Math.min(result.deltaTime, smallestDeltaTime);
@@ -253,7 +242,7 @@ export function sequence(...commands: Command[]): Command {
   return (deltaTime, operation) => {
     let complete = true;
     while (complete) {
-      const result = commands[index](deltaTime, operation);
+      const result = callCommand(commands[index], deltaTime, operation);
       deltaTime = result.deltaTime;
       complete = result.complete;
       if (complete) {
@@ -282,7 +271,7 @@ export function repeat(repeatCount: number, ...commands: Command[]): Command {
   return (deltaTime, operation) => {
     let complete = true;
     while (complete && count < repeatCount) {
-      const result = seq(deltaTime, operation);
+      const result = callCommand(seq, deltaTime, operation);
       deltaTime = result.deltaTime;
       complete = result.complete;
       if (complete) {
@@ -304,7 +293,7 @@ export function repeatForever(...commands: Command[]): Command {
   return (deltaTime, operation) => {
     let complete = true;
     while (complete) {
-      const result = seq(deltaTime, operation);
+      const result = callCommand(seq, deltaTime, operation);
       complete = result.complete;
       deltaTime = result.deltaTime;
     }
@@ -368,7 +357,7 @@ export function coroutine(command: CommandCoroutine): Command {
           currentCommand = waitForFrames(1);
         }
       }
-      const result = currentCommand(deltaTime, operation);
+      const result = callCommand(currentCommand, deltaTime, operation);
       complete = result.complete;
       deltaTime = result.deltaTime;
       if (complete) {
@@ -406,9 +395,9 @@ export function chooseRandom(...commands: (Command | undefined)[]): Command {
 export function defer(commandDeferred: CommandFactory): Command {
   let command: Command | undefined;
   return sequence(
-    act(() => {
+    () => {
       command = commandDeferred();
-    }),
+    },
     (deltaTime, operation) => {
       if (command !== undefined) {
         return command(deltaTime, operation);
@@ -446,7 +435,7 @@ export function dilateTime(dilationAmount: number, ...commands: Command[]): Comm
   const command = sequence(...commands);
   return (deltaTime, operation) => {
     const newDelta = deltaTime * dilationAmount;
-    const result = command(newDelta, operation);
+    const result = callCommand(command, newDelta, operation);
     deltaTime = result.deltaTime / dilationAmount;
     return { ...result, deltaTime };
   };
@@ -462,4 +451,15 @@ function checkDurationGreaterThanOrEqualToZero(durationAmount: number) {
   if (durationAmount < 0.0) {
     throw RangeError('duration must be >= 0');
   }
+}
+
+function callCommand(command: Command, deltaTime: number, operation: CommandOperation): CommandState {
+  const state = command(deltaTime, operation);
+  if (state !== undefined) {
+    return state;
+  }
+  return {
+    deltaTime,
+    complete: true
+  };
 }
