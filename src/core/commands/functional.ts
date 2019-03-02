@@ -1,9 +1,19 @@
-import { CommandFactory, Command, parallel, sequence } from '../commands';
+import { Command, parallel, sequence } from './common';
 
+/**
+ * Maps a collection of values to a series of commands run in parallel.
+ * @param items The collection of items
+ * @param factory A factory function which converts each item to a command
+ */
 export function mapParallel<T>(items: Iterable<T>, factory: (item: T, index: number) => Command | undefined): Command {
   return parallel(...mapToCommands(items, factory));
 }
 
+/**
+ * Maps a collection of values to a series of commands run sequentially.
+ * @param items The collection of items
+ * @param factory A factory function which converts each item to a command
+ */
 export function mapSequential<T>(
   items: Iterable<T>,
   factory: (item: T, index: number) => Command | undefined

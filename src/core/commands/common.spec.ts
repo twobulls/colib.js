@@ -1,4 +1,4 @@
-import { CommandQueue } from './command-queue';
+import { CommandQueue } from '../command-queue';
 import {
   interruptable,
   waitForSeconds,
@@ -14,8 +14,8 @@ import {
   defer,
   consumeTime,
   dilateTime
-} from './commands';
-import { smooth } from './ease';
+} from './common';
+import { smooth } from '../ease';
 
 describe('interruptable', () => {
   it('will call the interrupt handler on fast foward of in progress command', () => {

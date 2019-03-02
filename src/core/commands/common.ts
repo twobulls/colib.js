@@ -1,4 +1,4 @@
-import { Ease } from './ease';
+import { Ease } from '../ease';
 
 export enum CommandOperation {
   Normal,

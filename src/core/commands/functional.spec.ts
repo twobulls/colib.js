@@ -1,6 +1,6 @@
 import { CommandQueue } from '../command-queue';
 import { mapParallel, mapSequential } from './functional';
-import { sequence, waitForSeconds } from '../commands';
+import { sequence, waitForSeconds } from './common';
 
 describe('mapParallel', () => {
   it('executes all generated commands in parallel', () => {
