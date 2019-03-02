@@ -37,4 +37,25 @@ describe('changeTo', () => {
     queue.update(1.5);
     expect(point).toEqual({ x: 15, y: 25, z: 30 });
   });
+
+  it('tweens values on subobjects', () => {
+    const point = { x: 10, subObj: { y: 20, z: 30 } };
+    const target = { x: 20, subObj: { y: 30, z: 40 } };
+
+    const queue = new CommandQueue();
+    queue.enqueue(changeTo(point, target, 3.0));
+    queue.update(1.5);
+    expect(point).toEqual({ x: 15, subObj: { y: 25, z: 35 } });
+  });
+
+  it('tweens throws an error when target has a reference loop', () => {
+    interface Node {
+      node?: Node;
+    }
+    const point: Node = { node: {} };
+    const target: Node = { node: {} };
+    target.node = target; // Create a reference loop
+
+    expect(() => changeTo(point, target, 3.0)).toThrowError();
+  });
 });

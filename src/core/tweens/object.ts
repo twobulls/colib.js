@@ -11,6 +11,13 @@ interface RefPair<T> {
 
 type CommonRefPairs = RefPair<number>;
 
+/**
+ * Tweens the properties on an object to a set of target values, using regular linear interpolation.
+ * @param object The object to tween the properties of.
+ * @param target The target to tween to.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
+ */
 export function changeTo<T>(object: T, target: T, commandDuration: number, ease?: Ease) {
   const refs = generateReferenceTargetPairs(object, target);
   const tweens = refs.map(pair => {
@@ -23,17 +30,31 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
 function generateReferenceTargetPairs<T extends Object>(obj: T, target: T) {
   const refs: CommonRefPairs[] = [];
 
-  for (const key of Object.keys(target)) {
-    const typesKey = key as keyof T;
-    const targetVal = target[typesKey];
-    const ref = Ref.from(obj, typesKey);
+  const objs: { obj: any; target: any }[] = [{ obj, target }];
+  const visited = new Set();
 
-    if (ref.value === undefined) {
-      continue;
+  while (objs.length > 0) {
+    const pair = objs.pop() as { obj: any; target: any };
+    if (visited.has(pair.obj) || visited.has(pair.target)) {
+      throw new Error("Can't tween a value that refences itself recursively");
     }
-    if (typeof ref.value === 'number' && typeof targetVal === 'number') {
-      const newRef = (ref as unknown) as Ref<number>;
-      refs.push({ ref: newRef, value: targetVal });
+    visited.add(pair.obj);
+    visited.add(pair.target);
+
+    for (const key of Object.keys(pair.target)) {
+      const targetVal = pair.target[key];
+      const objVal = pair.obj[key];
+
+      if (objVal === undefined) {
+        continue;
+      }
+      if (typeof objVal === 'number' && typeof targetVal === 'number') {
+        const ref = Ref.from(pair.obj, key) as Ref<number>;
+        refs.push({ ref, value: targetVal });
+      }
+      if (typeof objVal === 'object' && typeof targetVal === 'object') {
+        objs.push({ obj: objVal, target: targetVal });
+      }
     }
   }
   return refs;
