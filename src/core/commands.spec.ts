@@ -613,6 +613,16 @@ describe('defer', () => {
     expect(calledDeferCount).toBe(3);
     expect(calledInnerCount).toBe(3);
   });
+
+  it('will take no time if undefined is picked', () => {
+    const queue = new CommandQueue();
+    let called = false;
+    queue.enqueue(chooseRandom(undefined, undefined, undefined), () => {
+      called = true;
+    });
+    queue.process();
+    expect(called).toBeTruthy();
+  });
 });
 
 describe('consumeTime', () => {

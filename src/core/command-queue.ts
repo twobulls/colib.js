@@ -1,4 +1,4 @@
-import { Command, CommandOperation, CommandState } from './commands';
+import { Command, CommandOperation } from './commands';
 
 /**
  * The CommandQueue class is one of core primitives for running commands.

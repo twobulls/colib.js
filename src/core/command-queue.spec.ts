@@ -1,5 +1,5 @@
 import { CommandQueue } from './command-queue';
-import { repeat, waitForSeconds, CommandOperation, duration } from './commands';
+import { repeat, waitForSeconds, CommandOperation, duration, repeatForever } from './commands';
 
 describe('CommandQueue', () => {
   it('calls commands in sequence', () => {
@@ -111,5 +111,20 @@ describe('CommandQueue', () => {
       }, 3)
     );
     expect(() => queue.update(1)).not.toThrowError();
+  });
+
+  it('time is stable over long durations', () => {
+    const queue = new CommandQueue();
+    let count = 0;
+    queue.enqueue(
+      repeatForever(waitForSeconds(20), () => {
+        count++;
+      })
+    );
+
+    for (let i = 0; i < 100000; ++i) {
+      queue.update(0.1);
+    }
+    expect(count).toEqual(500);
   });
 });

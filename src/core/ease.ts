@@ -60,6 +60,9 @@ function checkNumStepsGreaterThanZero(numSteps: number) {
  * @param eases The list of eases to average together.
  */
 export function averageComposite(...eases: Ease[]): Ease {
+  if (eases.length === 0) {
+    throw new Error('Must provide at least one ease to compose');
+  }
   return t => {
     const average = eases.reduce((total, ease) => total + ease(t), 0);
     return average / eases.length;
@@ -73,6 +76,9 @@ export function averageComposite(...eases: Ease[]): Ease {
  * @param eases The list of eases to chain together.
  */
 export function sequentialComposite(...eases: Ease[]): Ease {
+  if (eases.length === 0) {
+    throw new Error('Must provide at least one ease to compose');
+  }
   return t => {
     const index = Math.floor(t * eases.length);
     if (index >= eases.length) {
@@ -97,10 +103,13 @@ export interface WeightedEaseConfig {
  * @param eases The list of eases to average together.
  */
 export function weightedComposite(...eases: WeightedEaseConfig[]): Ease {
-  const totalWeight = eases.reduce((total, ease) => total + ease.weight, 0);
+  const totalWeight = eases.reduce((total, ease) => total + Math.max(0, ease.weight), 0);
+  if (totalWeight === 0) {
+    throw RangeError('Total of weights must be greater than 0');
+  }
 
   return t => {
-    const weightedTotal = eases.reduce((total, ease) => total + ease.ease(t) * ease.weight, 0);
+    const weightedTotal = eases.reduce((total, ease) => total + ease.ease(t) * Math.max(0, ease.weight), 0);
     return weightedTotal / totalWeight;
   };
 }
@@ -110,6 +119,9 @@ export function weightedComposite(...eases: WeightedEaseConfig[]): Ease {
  * The output of the first ease is used as input for the next.
  */
 export function chainComposite(...eases: Ease[]): Ease {
+  if (eases.length === 0) {
+    throw new Error('Must provide at least one ease to compose');
+  }
   return t => eases.reduce((lastT, ease) => ease(lastT), t);
 }
 
