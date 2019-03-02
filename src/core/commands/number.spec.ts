@@ -1,6 +1,6 @@
 import { CommandQueue } from '../command-queue';
 import { Ref } from '../ref';
-import { changeToNum, changeFromNum, changeToOffsetNum, changeFromOffsetNum, scaleBy, scaleFrom } from './number';
+import { changeToNum, changeFromNum, changeToOffsetNum, changeFromOffsetNum, scaleByNum, scaleFromNum } from './number';
 
 describe('changeToNum', () => {
   it('starts at the refs current value', () => {
@@ -82,12 +82,12 @@ describe('changeFromOffsetNum', () => {
   });
 });
 
-describe('scaleBy', () => {
+describe('scaleByNum', () => {
   it("starts at the ref's start value", () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleBy(ref, 2, 3));
+    queue.enqueue(scaleByNum(ref, 2, 3));
     queue.process();
     expect(ref.value).toBe(3);
   });
@@ -95,18 +95,18 @@ describe('scaleBy', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleBy(ref, 2, 3));
+    queue.enqueue(scaleByNum(ref, 2, 3));
     queue.update(3);
     expect(ref.value).toBe(6);
   });
 });
 
-describe('scaleFrom', () => {
+describe('scaleFromNum', () => {
   it("starts at the ref's start value times scale factor", () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleFrom(ref, 2, 3));
+    queue.enqueue(scaleFromNum(ref, 2, 3));
     queue.process();
     expect(ref.value).toBe(6);
   });
@@ -114,7 +114,7 @@ describe('scaleFrom', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleFrom(ref, 2, 3));
+    queue.enqueue(scaleFromNum(ref, 2, 3));
     queue.update(3);
     expect(ref.value).toBe(3);
   });

@@ -71,7 +71,7 @@ export class CommandQueue {
    * Updates the `CommandQueue`. This causes CommandDelegates to be executed
    * in the order than are enqueued. Update will return after a `Command` elects to pause. This method can't be called
    * recursively.
-   * @param deltaTime The time, in seconds, since the last update. Must be >= 0.
+   * @param deltaTime The time since the last update. Must be >= 0.
    * @param operation The update operation to use. Fastforward will try to force commands to reach the end of the queue.
    * @returns If the queue is finished as no `Command`s remain, returns `true`, `false` otherwise.
    */
