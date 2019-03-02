@@ -22,6 +22,15 @@ export class Ref<T> {
     return new Ref(getter, setter);
   }
 
+  static create<T>(val: T): Ref<T> {
+    return new Ref(
+      () => val,
+      v => {
+        val = v;
+      }
+    );
+  }
+
   /**
    * Create a new `Ref`.
    * @param getter The getter to use for variable access

@@ -43,4 +43,10 @@ describe('Ref', () => {
     obj.b = 'world';
     expect(ref.value).toBe('world');
   });
+
+  it('creates shorthand refs quickly', () => {
+    const ref = Ref.create(10);
+    ref.value = 10;
+    expect(ref.value).toBe(10);
+  });
 });
