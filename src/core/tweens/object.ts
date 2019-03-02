@@ -1,8 +1,7 @@
 import { Ease } from '../ease';
 import { Ref } from '../ref';
-import { changeToNum } from './number';
-import { parallel, none } from '../commands';
-import { type } from 'os';
+import { changeToNum, changeFromNum, changeFromOffsetNum, changeToOffsetNum } from './number';
+import { parallel } from '../commands';
 
 interface RefPair<T> {
   ref: Ref<T>;
@@ -23,6 +22,54 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
     return changeToNum(ref, value, commandDuration, ease);
+  });
+  return parallel(...tweens);
+}
+
+/**
+ * Tweens the properties on an object from a set of target values, using regular linear interpolation.
+ * @param object The object to tween the properties of.
+ * @param from The target to tween from.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
+ */
+export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?: Ease) {
+  const refs = generateReferenceTargetPairs(object, from);
+  const tweens = refs.map(pair => {
+    const { ref, value } = pair;
+    return changeFromNum(ref, value, commandDuration, ease);
+  });
+  return parallel(...tweens);
+}
+
+/**
+ * Tweens the properties on an object to an offset from it's start position, using regular linear interpolation.
+ * @param object The object to tween the properties of.
+ * @param offset The offset to add to the start position.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
+ */
+export function changeToOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease) {
+  const refs = generateReferenceTargetPairs(object, offset);
+  const tweens = refs.map(pair => {
+    const { ref, value } = pair;
+    return changeToOffsetNum(ref, value, commandDuration, ease);
+  });
+  return parallel(...tweens);
+}
+
+/**
+ * Tweens the properties on an object from an offset back to it's start position, using regular linear interpolation.
+ * @param object The object to tween the properties of.
+ * @param offset The offset to tween from.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
+ */
+export function changeFromOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease) {
+  const refs = generateReferenceTargetPairs(object, offset);
+  const tweens = refs.map(pair => {
+    const { ref, value } = pair;
+    return changeFromOffsetNum(ref, value, commandDuration, ease);
   });
   return parallel(...tweens);
 }
