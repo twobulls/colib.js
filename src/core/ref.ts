@@ -31,6 +31,10 @@ export class Ref<T> {
     );
   }
 
+  static isRef(val: any): val is Ref<any> {
+    return val instanceof Ref;
+  }
+
   /**
    * Create a new `Ref`.
    * @param getter The getter to use for variable access
