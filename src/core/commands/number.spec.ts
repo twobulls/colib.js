@@ -91,7 +91,7 @@ describe('scaleByNum', () => {
     queue.process();
     expect(ref.value).toBe(3);
   });
-  it("starts at the ref's start value times scale factor", () => {
+  it("ends at the ref's start value times scale factor", () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
