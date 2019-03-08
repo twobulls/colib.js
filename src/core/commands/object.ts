@@ -1,6 +1,6 @@
 import { Ease } from '../ease';
 import { Ref } from '../ref';
-import { changeToNum, changeFromNum, changeFromOffsetNum, changeToOffsetNum, scaleByNum } from './number';
+import { changeToNum, changeFromNum, changeFromOffsetNum, changeToOffsetNum, scaleByNum, scaleFromNum } from './number';
 import { parallel } from '../commands';
 
 interface RefPair<T> {
@@ -22,22 +22,6 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
     return changeToNum(ref, value, commandDuration, ease);
-  });
-  return parallel(...tweens);
-}
-
-/**
- * Scales up the properties on an object by `scaleFactor`
- * @param object The object to tween the properties of.
- * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
- */
-export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease) {
-  const refs = generateReferenceTargetPairs(object, scaleFactor);
-  const tweens = refs.map(pair => {
-    const { ref, value } = pair;
-    return scaleByNum(ref, value, commandDuration, ease);
   });
   return parallel(...tweens);
 }
@@ -86,6 +70,38 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
     return changeFromOffsetNum(ref, value, commandDuration, ease);
+  });
+  return parallel(...tweens);
+}
+
+/**
+ * Scales up the properties on an object by `scaleFactor`
+ * @param object The object to tween the properties of.
+ * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
+ */
+export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease) {
+  const refs = generateReferenceTargetPairs(object, scaleFactor);
+  const tweens = refs.map(pair => {
+    const { ref, value } = pair;
+    return scaleByNum(ref, value, commandDuration, ease);
+  });
+  return parallel(...tweens);
+}
+
+/**
+ * Immediately scales up the properties on an object by `scaleFactor`, then tweens back to the original scale.
+ * @param object The object to tween the properties of.
+ * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
+ */
+export function scaleFrom<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease) {
+  const refs = generateReferenceTargetPairs(object, scaleFactor);
+  const tweens = refs.map(pair => {
+    const { ref, value } = pair;
+    return scaleFromNum(ref, value, commandDuration, ease);
   });
   return parallel(...tweens);
 }

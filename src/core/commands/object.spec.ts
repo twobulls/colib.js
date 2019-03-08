@@ -1,5 +1,5 @@
 import { CommandQueue } from '../command-queue';
-import { changeTo, changeFrom, changeToOffset, changeFromOffset, scaleBy } from './object';
+import { changeTo, changeFrom, changeToOffset, changeFromOffset, scaleBy, scaleFrom } from './object';
 
 describe('changeTo', () => {
   it('tweens several properties simultaneously', () => {
@@ -112,5 +112,16 @@ describe('scaleBy', () => {
     queue.enqueue(scaleBy(point, amount, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 12.5, y: 30, z: 52.5 });
+  });
+});
+
+describe('scaleFrom', () => {
+  it('tweens several properties simultaneously', () => {
+    const point = { x: 10, y: 20, z: 30 };
+    const amount = { x: 2, y: 3, z: 4 };
+    const queue = new CommandQueue();
+    queue.enqueue(scaleFrom(point, amount, 4.0));
+    queue.update(1);
+    expect(point).toEqual({ x: 17.5, y: 50, z: 97.5 });
   });
 });
