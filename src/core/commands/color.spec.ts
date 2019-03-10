@@ -1,4 +1,4 @@
-import { changeToColor, changeFromColor } from './color';
+import { changeToColor, changeFromColor, ColorLerpMode } from './color';
 import { ColorRGB, ColorHSL, ColorHSV } from '../color-types';
 
 import { Ref } from '../ref';
@@ -43,9 +43,9 @@ describe('changeToColor', () => {
     const ref = Ref.create<ColorHSL>({ h: 100, s: 1, l: 0.25 });
     const target = { h: 0, s: 0.5, l: 0.5 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSL));
     queue.update(0.25);
-    expect(ref.value).toEqual({ h: 80, s: 0.75, l: 0.25 });
+    expect(ref.value).toEqual({ h: 75, s: 0.875, l: 0.3125 });
 
     queue.update(1);
     expect(ref.value).toEqual({ h: 0, s: 0.5, l: 0.5 });
@@ -54,9 +54,9 @@ describe('changeToColor', () => {
     const ref = Ref.create<ColorHSL>({ h: 100, s: 1, l: 0.25, a: 0.2 });
     const target = { h: 0, s: 0.5, l: 0.5, a: 0.8 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSL));
     queue.update(0.25);
-    expect(ref.value).toEqual({ h: 80, s: 0.75, l: 0.25, a: 0.35 });
+    expect(ref.value).toEqual({ h: 75, s: 0.875, l: 0.3125, a: 0.35 });
     queue.update(1);
     expect(ref.value).toEqual({ h: 0, s: 0.5, l: 0.5, a: 0.8 });
   });
@@ -65,9 +65,9 @@ describe('changeToColor', () => {
     const ref = { h: 100, s: 1, l: 0.25 };
     const target = { h: 0, s: 0.5, l: 0.5 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSL));
     queue.update(0.25);
-    expect(ref).toEqual({ h: 80, s: 0.75, l: 0.25 });
+    expect(ref).toEqual({ h: 75, s: 0.875, l: 0.3125 });
 
     queue.update(1);
     expect(ref).toEqual({ h: 0, s: 0.5, l: 0.5 });
@@ -76,9 +76,9 @@ describe('changeToColor', () => {
     const ref = { h: 100, s: 1, l: 0.25, a: 0.2 };
     const target = { h: 0, s: 0.5, l: 0.5, a: 0.8 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSL));
     queue.update(0.25);
-    expect(ref).toEqual({ h: 80, s: 0.75, l: 0.25, a: 0.35 });
+    expect(ref).toEqual({ h: 75, s: 0.875, l: 0.3125, a: 0.35 });
     queue.update(1);
     expect(ref).toEqual({ h: 0, s: 0.5, l: 0.5, a: 0.8 });
   });
@@ -87,9 +87,9 @@ describe('changeToColor', () => {
     const ref = Ref.create<ColorHSV>({ h: 100, s: 1, v: 0.25 });
     const target = { h: 0, s: 0.5, v: 0.5 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
-    expect(ref.value).toEqual({ h: 80, s: 0.75, v: 0.25 });
+    expect(ref.value).toEqual({ h: 75, s: 0.875, v: 0.3125 });
 
     queue.update(1);
     expect(ref.value).toEqual({ h: 0, s: 0.5, v: 0.5 });
@@ -98,9 +98,9 @@ describe('changeToColor', () => {
     const ref = Ref.create<ColorHSV>({ h: 100, s: 1, v: 0.25, a: 0.2 });
     const target = { h: 0, s: 0.5, v: 0.5, a: 0.8 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
-    expect(ref.value).toEqual({ h: 80, s: 0.75, v: 0.25, a: 0.35 });
+    expect(ref.value).toEqual({ h: 75, s: 0.875, v: 0.3125, a: 0.35 });
     queue.update(1);
     expect(ref.value).toEqual({ h: 0, s: 0.5, v: 0.5, a: 0.8 });
   });
@@ -109,9 +109,9 @@ describe('changeToColor', () => {
     const ref = { h: 100, s: 1, v: 0.25 };
     const target = { h: 0, s: 0.5, v: 0.5 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
-    expect(ref).toEqual({ h: 80, s: 0.75, v: 0.25 });
+    expect(ref).toEqual({ h: 75, s: 0.875, v: 0.3125 });
 
     queue.update(1);
     expect(ref).toEqual({ h: 0, s: 0.5, v: 0.5 });
@@ -120,9 +120,9 @@ describe('changeToColor', () => {
     const ref = { h: 100, s: 1, v: 0.25, a: 0.2 };
     const target = { h: 0, s: 0.5, v: 0.5, a: 0.8 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToColor(ref, target, 1));
+    queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
-    expect(ref).toEqual({ h: 80, s: 0.75, v: 0.25, a: 0.35 });
+    expect(ref).toEqual({ h: 75, s: 0.875, v: 0.3125, a: 0.35 });
     queue.update(1);
     expect(ref).toEqual({ h: 0, s: 0.5, v: 0.5, a: 0.8 });
   });
@@ -180,5 +180,13 @@ describe('changeFromColor', () => {
     queue.enqueue(changeFromColor(ref, target, 1));
     queue.update(0.25);
     expect(ref).toEqual({ r: 0.25, g: 0.875, b: 0.75 });
+  });
+  it('can tween a ColorHSV value', () => {
+    const ref = { h: 100, s: 1, v: 0.25, a: 0.2 };
+    const target = { h: 0, s: 0.5, v: 0.5, a: 0.8 };
+    const queue = new CommandQueue();
+    queue.enqueue(changeFromColor(ref, target, 1, ColorLerpMode.HSV));
+    queue.update(0.25);
+    expect(ref).toEqual({ h: 25, s: 0.625, v: 0.4375, a: 0.65 });
   });
 });
