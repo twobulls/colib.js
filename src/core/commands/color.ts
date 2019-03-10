@@ -3,7 +3,15 @@ import { Ease } from '../ease';
 import { Command, sequence, duration } from './common';
 import * as Color from 'color';
 import { ColorRGB, ColorHSL, ColorHSV, ColorType } from '../color-types';
-import { getColorRef, getMode, getColor, lerpRGB, convertToColorType, lerpHSV, lerpHSL } from '../utils/color-utils';
+import {
+  getColorRef,
+  getColorFormat,
+  getColor,
+  lerpRGB,
+  convertToColorFormat,
+  lerpHSV,
+  lerpHSL
+} from '../utils/color-utils';
 
 export enum ColorLerpMode {
   RGB,
@@ -29,7 +37,7 @@ export function changeToColor<U extends ColorType>(
   const newRef = getColorRef(ref);
   const lerpFunc = getLerpFunc(lerpMode);
 
-  const mode = getMode(newRef.value);
+  const mode = getColorFormat(newRef.value);
   const end = getColor(target);
 
   return sequence(
@@ -39,7 +47,7 @@ export function changeToColor<U extends ColorType>(
     duration(
       t => {
         const mixed = lerpFunc(start, end, t);
-        const value = convertToColorType(mixed, mode) as U;
+        const value = convertToColorFormat(mixed, mode) as U;
         newRef.value = value;
       },
       commandDuration,
@@ -66,7 +74,7 @@ export function changeFromColor<U extends ColorType>(
   const newRef = getColorRef(ref);
   const lerpFunc = getLerpFunc(lerpMode);
 
-  const mode = getMode(newRef.value);
+  const mode = getColorFormat(newRef.value);
   const start = getColor(target);
 
   return sequence(
@@ -76,7 +84,7 @@ export function changeFromColor<U extends ColorType>(
     duration(
       t => {
         const mixed = lerpFunc(start, end, t);
-        const value = convertToColorType(mixed, mode) as U;
+        const value = convertToColorFormat(mixed, mode) as U;
         newRef.value = value;
       },
       commandDuration,

@@ -2,33 +2,38 @@ import * as Color from 'color';
 import { ColorType, isColorHSL, isColorHSV, isColorRGB, ColorHSL, ColorHSV, ColorRGB } from '../color-types';
 import { Ref } from '../ref';
 
-export enum ColorMode {
+export enum ColorFormat {
   STRING,
+  HEX_STRING,
   NUMBER,
   RGBA_OBJECT,
   HSLA_OBJECT,
   HSVA_OBJECT
 }
 
-export function getMode(value: ColorType): ColorMode {
+export function getColorFormat(value: ColorType): ColorFormat {
   if (typeof value === 'string') {
-    return ColorMode.STRING;
+    if (value.trimLeft().startsWith('#')) {
+      return ColorFormat.HEX_STRING;
+    }
+
+    return ColorFormat.STRING;
   }
   if (typeof value === 'number') {
-    return ColorMode.NUMBER;
+    return ColorFormat.NUMBER;
   }
   if (isColorHSL(value)) {
-    return ColorMode.HSLA_OBJECT;
+    return ColorFormat.HSLA_OBJECT;
   }
   if (isColorHSV(value)) {
-    return ColorMode.HSVA_OBJECT;
+    return ColorFormat.HSVA_OBJECT;
   }
-  return ColorMode.RGBA_OBJECT;
+  return ColorFormat.RGBA_OBJECT;
 }
 
-export function convertToColorType(col: Color, mode: ColorMode): ColorType {
-  switch (mode) {
-    case ColorMode.RGBA_OBJECT: {
+export function convertToColorFormat(col: Color, format: ColorFormat): ColorType {
+  switch (format) {
+    case ColorFormat.RGBA_OBJECT: {
       const { alpha, ...rgb } = col.rgb().object();
       const colRGB = { r: rgb.r / 255, g: rgb.g / 255, b: rgb.b / 255 };
       if (alpha !== undefined) {
@@ -36,7 +41,7 @@ export function convertToColorType(col: Color, mode: ColorMode): ColorType {
       }
       return colRGB;
     }
-    case ColorMode.HSLA_OBJECT: {
+    case ColorFormat.HSLA_OBJECT: {
       const { alpha, ...hsl } = col.hsl().object();
       const colHSL = { h: hsl.h, s: hsl.s / 100, l: hsl.l / 100 };
       if (alpha !== undefined) {
@@ -44,7 +49,7 @@ export function convertToColorType(col: Color, mode: ColorMode): ColorType {
       }
       return colHSL;
     }
-    case ColorMode.HSVA_OBJECT: {
+    case ColorFormat.HSVA_OBJECT: {
       const { alpha, ...hsv } = col.hsv().object();
       const colHSV = { h: hsv.h, s: hsv.s / 100, v: hsv.v / 100 };
       if (alpha !== undefined) {
@@ -52,10 +57,12 @@ export function convertToColorType(col: Color, mode: ColorMode): ColorType {
       }
       return colHSV;
     }
-    case ColorMode.NUMBER:
+    case ColorFormat.NUMBER:
       return col.rgbNumber();
-    case ColorMode.STRING:
+    case ColorFormat.STRING:
       return col.string();
+    case ColorFormat.HEX_STRING:
+      return col.hex();
   }
 }
 

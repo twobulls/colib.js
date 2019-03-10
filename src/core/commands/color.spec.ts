@@ -170,6 +170,14 @@ describe('changeToColor', () => {
     queue.update(0.25);
     expect(ref).toEqual({ r: 0.75, g: 0.25, b: 0.75, a: 0.875 });
   });
+  it('can lerp between hex strings', () => {
+    const ref = Ref.create('#FF00FF');
+    const target = '#00FF00';
+    const queue = new CommandQueue();
+    queue.enqueue(changeToColor(ref, target, 1));
+    queue.update(0.25);
+    expect(ref.value).toEqual('#BF40BF');
+  });
 });
 
 describe('changeFromColor', () => {
