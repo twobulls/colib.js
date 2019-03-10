@@ -1,19 +1,30 @@
-# Two Bulls Frontend Library Template
+# Colibjs
 
-[![build status](https://cloud.drone.io/api/badges/twobulls/your-lib/status.svg)](https://cloud.drone.io/twobulls/your-lib)
-[![npm version](https://badge.fury.io/js/your-lib.svg)](https://badge.fury.io/js/your-lib)
+[![build status](https://cloud.drone.io/api/badges/twobulls/colib/status.svg)](https://cloud.drone.io/twobulls/colib)
+[![npm version](https://badge.fury.io/js/colib.svg)](https://badge.fury.io/js/colib)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![MIT license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
 
-This is a starter project for Two Bulls open source projects. Replace this with a 1 liner describing the project.
-
-Read the [customization instructions](CUSTOMIZATION.md).
+> Next generation tweening and timed logic sequencing for typescript as javascript.
 
 ## Usage
 
 ### At a Glance
 
-Give the simplest vesion of usage instructions here.
+Colib is a highly modular system for building complex animations/timed event sequences.
+
+```typescript
+const queue = new CommandQueue();
+queue.enqueue(
+  waitForSeconds(3),
+  changeByOffset(balloon, {y: 100 }, 0.5, smooth()),
+  parallel(
+    changeTo(balloon, {alpha: 0}, 0.3, smooth()),
+    changeTo(balloon, {scale, 0}, 0.5, inBack())
+  )
+);
+queue.update(1); // Let the queue process some time.
+```
 
 ### In Depth
 
