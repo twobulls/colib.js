@@ -1,5 +1,5 @@
 import { Ref } from '../ref';
-import { sequence, duration } from '../commands';
+import { sequence, duration } from './common';
 import { Ease } from '../ease';
 
 /**

@@ -1,7 +1,7 @@
 import { Ease } from '../ease';
 import { Ref } from '../ref';
 import { changeToNum, changeFromNum, changeFromOffsetNum, changeToOffsetNum, scaleByNum, scaleFromNum } from './number';
-import { parallel } from '../commands';
+import { parallel } from './common';
 
 interface RefPair<T> {
   ref: Ref<T>;
