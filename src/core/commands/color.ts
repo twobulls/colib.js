@@ -1,40 +1,8 @@
-import { Ref } from 'core/ref';
-import { Ease } from 'core/ease';
+import { Ref } from '../ref';
+import { Ease } from '../ease';
 import { Command, sequence, duration } from './common';
 import * as Color from 'color';
-
-/**
- * Represents a RGB color with optional alpha. Values range from [0 -> 1]
- */
-export interface ColorRGB {
-  r: number;
-  b: number;
-  g: number;
-  a?: number;
-}
-
-/**
- * Represents a HSL color with optional alpha.
- */
-export interface ColorHSL {
-  h: number /** Ranges from  0->360 degrees*/;
-  s: number /** Ranges from 0->1 */;
-  l: number /** Ranges from 0->1 */;
-  a?: number /** Ranges from 0->1 */;
-}
-
-/**
- * Represents an HSV color with optional alpha.
- * @property h ranger
- */
-export interface ColorHSV {
-  h: number /** Ranges from  0->360 degrees*/;
-  s: number /** Ranges from 0->1 */;
-  v: number /** Ranges from 0->1 */;
-  a?: number /** Ranges from 0->1 */;
-}
-
-export type ColorType = string | number | ColorRGB | ColorHSL | ColorHSV;
+import { ColorRGB, ColorHSL, ColorHSV, ColorType, isColorHSV, isColorHSL, isColorRGB } from '../color-types';
 
 enum ColorMode {
   STRING,
@@ -45,39 +13,6 @@ enum ColorMode {
 }
 
 /**
- * Type guard for determining whether a color is a ColorRGB object.
- * @param value The value to test.
- */
-export function isColorRGB(value: ColorType): value is ColorRGB {
-  if (typeof value !== 'object') {
-    return false;
-  }
-  return (<ColorRGB>value).r !== undefined;
-}
-
-/**
- * Type guard for determining whether a color is a ColorHSV object.
- * @param value The value to test.
- */
-export function isColorHSV(value: ColorType): value is ColorHSV {
-  if (typeof value !== 'object') {
-    return false;
-  }
-  return (<ColorHSV>value).v !== undefined && (<ColorHSL>value).h !== undefined;
-}
-
-/**
- * Type guard for determining whether a color is a ColorHSL object.
- * @param value The value to test.
- */
-export function isColorHSL(value: ColorType): value is ColorHSL {
-  if (typeof value !== 'object') {
-    return false;
-  }
-  return (<ColorHSL>value).l !== undefined && (<ColorHSL>value).h !== undefined;
-}
-
-/**
  * Changes a color to a target color over time.
  * @param ref A reference to the color to change.
  * @param target The target color
@@ -85,23 +20,61 @@ export function isColorHSL(value: ColorType): value is ColorHSL {
  * @param ease The ease to apply.
  */
 export function changeToColor<U extends ColorType>(
-  ref: Ref<U>,
+  ref: Ref<U> | ColorRGB | ColorHSL | ColorHSV,
   target: ColorType,
   commandDuration: number,
   ease?: Ease
 ): Command {
   let start: Color = Color.rgb(0, 0, 0);
-  const mode = getMode(ref.value);
+  const newRef = getColorRef(ref);
+
+  const mode = getMode(newRef.value);
   const end = getColor(target);
+
   return sequence(
     () => {
-      start = getColor(ref.value);
+      start = getColor(newRef.value);
     },
     duration(
       t => {
         const mixed = lerpRGB(start, end, t);
         const value = convertToColorType(mixed, mode) as U;
-        ref.value = value;
+        newRef.value = value;
+      },
+      commandDuration,
+      ease
+    )
+  );
+}
+
+/**
+ * Changes a color, from an offset, to a current value, over time.
+ * @param ref A reference to the color to change.
+ * @param target The color to start from.
+ * @param commandDuration The duration of the command
+ * @param ease The ease to apply.
+ */
+export function changeFromColor<U extends ColorType>(
+  ref: Ref<U> | ColorRGB | ColorHSL | ColorHSV,
+  target: ColorType,
+  commandDuration: number,
+  ease?: Ease
+): Command {
+  let end: Color = Color.rgb(0, 0, 0);
+  const newRef = getColorRef(ref);
+
+  const mode = getMode(newRef.value);
+  const start = getColor(target);
+
+  return sequence(
+    () => {
+      end = getColor(newRef.value);
+    },
+    duration(
+      t => {
+        const mixed = lerpRGB(start, end, t);
+        const value = convertToColorType(mixed, mode) as U;
+        newRef.value = value;
       },
       commandDuration,
       ease
@@ -198,4 +171,48 @@ function lerpRGB(from: Color, to: Color, t: number) {
 
   const alpha = (newToAlpha - newFromAlpha) * t + newFromAlpha;
   return color.fade(1 - alpha);
+}
+
+function getColorRef<U extends ColorType>(ref: Ref<U> | ColorRGB | ColorHSV | ColorHSL) {
+  if (isColorRGB(ref)) {
+    return new Ref<ColorRGB>(
+      () => ({ ...ref }),
+      val => {
+        ref.r = val.r;
+        ref.b = val.b;
+        ref.g = val.g;
+        if (val.a !== undefined) {
+          ref.a = val.a;
+        }
+      }
+    );
+  }
+  if (isColorHSV(ref)) {
+    return new Ref<ColorHSV>(
+      () => ({ ...ref }),
+      val => {
+        ref.h = val.h;
+        ref.s = val.s;
+        ref.v = val.v;
+        if (val.a !== undefined) {
+          ref.a = val.a;
+        }
+      }
+    );
+  }
+  if (isColorHSL(ref)) {
+    return new Ref<ColorHSL>(
+      () => ({ ...ref }),
+      val => {
+        ref.h = val.h;
+        ref.s = val.s;
+        ref.l = val.l;
+        if (val.a !== undefined) {
+          ref.a = val.a;
+        }
+      }
+    );
+  }
+
+  return ref;
 }
