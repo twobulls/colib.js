@@ -33,7 +33,7 @@ export function changeToColor<U extends ColorType>(
   lerpMode: ColorLerpMode = ColorLerpMode.RGB,
   ease?: Ease
 ): Command {
-  let start: Color = Color.rgb(0, 0, 0);
+  let start: Color = new Color(0x000000);
   const newRef = getColorRef(ref);
   const lerpFunc = getLerpFunc(lerpMode);
 
@@ -70,7 +70,7 @@ export function changeFromColor<U extends ColorType>(
   lerpMode: ColorLerpMode = ColorLerpMode.RGB,
   ease?: Ease
 ): Command {
-  let end: Color = Color.rgb(0, 0, 0);
+  let end: Color = new Color(0x000000);
   const newRef = getColorRef(ref);
   const lerpFunc = getLerpFunc(lerpMode);
 

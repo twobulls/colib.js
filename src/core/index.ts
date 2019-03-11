@@ -5,3 +5,4 @@ export * from './command-scheduler';
 export * from './command-queue-group';
 export * from './ref';
 export * from './color-types';
+export * from './global';
