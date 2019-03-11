@@ -7,8 +7,9 @@
     "url": "https://github.com/twobulls/colib-js.git"
   },
   "license": "Apache-2.0",
-  "main": "dist/index.min.js",
-  "module": "dist/index.min.es.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "minified": "dist/colib.min.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build-watch": "$(yarn bin)/supervisor -n success -w src,package.json,rollup.config.js,tsconfig.json -e ts -x bash ./scripts/build-watch.sh",
@@ -38,7 +39,11 @@
     "prettier": "^1.15.3",
     "pretty-quick": "^1.8.0",
     "rollup": "^0.67.4",
+    "rollup-plugin-commonjs": "^9.2.1",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-terser": "^4.0.4",
     "rollup-plugin-typescript2": "^0.18.1",
+    "rollup-plugin-uglify": "^6.0.2",
     "semantic-release": "^15.12.4",
     "supervisor": "^0.12.0",
     "ts-jest": "^23.10.5",
@@ -64,7 +69,8 @@
     "testRegex": "(src\\/).*(\\.spec\\.ts)$",
     "testPathIgnorePatterns": [
       "\\.snap$",
-      "<rootDir>/node_modules/"
+      "<rootDir>/node_modules/",
+      "demo"
     ],
     "collectCoverageFrom": [
       "src/**.ts",
