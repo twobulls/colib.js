@@ -1,39 +1,46 @@
 import { parseColor } from './parse';
+import { ColorFormat } from './color-utils';
 
 describe('parseColor', () => {
   it('unpacks rgb numbers into the range 0->1', () => {
     const result = parseColor(0xf1acbd);
-    expect(result).toEqual({ r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 1 });
+    expect(result).toEqual({ format: ColorFormat.NUMBER, color: { r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 1 } });
   });
 
   it('parses a predefined color name', () => {
     const color = parseColor('cadetblue');
-    expect(color).toEqual({ r: 95 / 255, g: 158 / 255, b: 160 / 255, a: 1 });
+    expect(color).toEqual({ format: ColorFormat.STRING, color: { r: 95 / 255, g: 158 / 255, b: 160 / 255, a: 1 } });
   });
   it('parses a predefined color name with bad casing', () => {
     const color = parseColor('caDetBluE');
-    expect(color).toEqual({ r: 95 / 255, g: 158 / 255, b: 160 / 255, a: 1 });
+    expect(color).toEqual({ format: ColorFormat.STRING, color: { r: 95 / 255, g: 158 / 255, b: 160 / 255, a: 1 } });
   });
 
   it('parses a 6 digit hex color', () => {
     const result = parseColor('#f1acbd');
-    expect(result).toEqual({ r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 1 });
+    expect(result).toEqual({
+      format: ColorFormat.HEX_STRING,
+      color: { r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 1 }
+    });
   });
   it('parses a 8 digit hex color with alpha', () => {
     const result = parseColor('#f1acbdAA');
-    expect(result).toEqual({ r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 170 / 255 });
+    expect(result).toEqual({
+      format: ColorFormat.HEX_STRING,
+      color: { r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 170 / 255 }
+    });
   });
   it('parses a 3 digit hex color', () => {
     const result = parseColor('#fab');
-    expect(result).toEqual({ r: 1, g: 10 / 15, b: 11 / 15, a: 1 });
+    expect(result).toEqual({ format: ColorFormat.HEX_STRING, color: { r: 1, g: 10 / 15, b: 11 / 15, a: 1 } });
   });
   it('parses a 3 digit hex color', () => {
     const result = parseColor('#fab');
-    expect(result).toEqual({ r: 1, g: 10 / 15, b: 11 / 15, a: 1 });
+    expect(result).toEqual({ format: ColorFormat.HEX_STRING, color: { r: 1, g: 10 / 15, b: 11 / 15, a: 1 } });
   });
   it('parses a 4 digit hex color', () => {
     const result = parseColor('#fabB');
-    expect(result).toEqual({ r: 1, g: 10 / 15, b: 11 / 15, a: 11 / 15 });
+    expect(result).toEqual({ format: ColorFormat.HEX_STRING, color: { r: 1, g: 10 / 15, b: 11 / 15, a: 11 / 15 } });
   });
 
   it('parses a hex string which is too long as undefined', () => {
@@ -55,7 +62,7 @@ describe('parseColor', () => {
     ];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ r: 1, g: 0, b: 153 / 255, a: 1 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { r: 1, g: 0, b: 153 / 255, a: 1 } });
     }
   });
 
@@ -73,7 +80,7 @@ describe('parseColor', () => {
     const colors = ['rgb(255 0 153)', 'rgb(100% 0% 60%)'];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ r: 1, g: 0, b: 153 / 255, a: 1 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { r: 1, g: 0, b: 153 / 255, a: 1 } });
     }
   });
 
@@ -88,7 +95,7 @@ describe('parseColor', () => {
     ];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ r: 1, g: 0, b: 153 / 255, a: 0.5 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { r: 1, g: 0, b: 153 / 255, a: 0.5 } });
     }
   });
 
@@ -110,7 +117,7 @@ describe('parseColor', () => {
 
   it('parses rgb with decimal values while rounding', () => {
     const result = parseColor('rgb(1e2, .5e1, .5e0, +.25e2%)');
-    expect(result).toEqual({ r: 100 / 255, g: 5 / 255, b: 0.5 / 255, a: 0.25 });
+    expect(result).toEqual({ format: ColorFormat.STRING, color: { r: 100 / 255, g: 5 / 255, b: 0.5 / 255, a: 0.25 } });
   });
   it('parses rgba strings', () => {
     const colors = [
@@ -123,7 +130,7 @@ describe('parseColor', () => {
     ];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ r: 1, g: 0, b: 153 / 255, a: 0.5 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { r: 1, g: 0, b: 153 / 255, a: 0.5 } });
     }
   });
 
@@ -131,7 +138,7 @@ describe('parseColor', () => {
     const colors = ['hsl(270,60%,70%)', 'hsl(270, 60%, 70%)', 'hsl(270 60% 70%)'];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 1 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { h: 270, s: 0.6, l: 0.7, a: 1 } });
     }
   });
   it('parses hsl strings alternate degree forms', () => {
@@ -143,7 +150,7 @@ describe('parseColor', () => {
     ];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 1 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { h: 270, s: 0.6, l: 0.7, a: 1 } });
     }
   });
   it('parses hsl strings with alpha values', () => {
@@ -155,7 +162,7 @@ describe('parseColor', () => {
     ];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 0.5 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { h: 270, s: 0.6, l: 0.7, a: 0.5 } });
     }
   });
   it('parses invalid hsl strings as undefined', () => {
@@ -184,7 +191,7 @@ describe('parseColor', () => {
     ];
     for (const color of colors) {
       const result = parseColor(color);
-      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 0.5 });
+      expect(result).toEqual({ format: ColorFormat.STRING, color: { h: 270, s: 0.6, l: 0.7, a: 0.5 } });
     }
   });
 

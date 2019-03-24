@@ -1,5 +1,11 @@
 import { colors } from './color-list';
-import { ColorRGB, ColorType, ColorHSL } from 'core/color-types';
+import { ColorRGB, ColorType, ColorHSL } from 'core/color/color-types';
+import { ColorFormat } from './color-utils';
+
+export interface ColorParseResult {
+  color: ColorRGB | ColorHSL;
+  format: ColorFormat;
+}
 
 /**
  * Parse a color, either a css color string, or a hex number;
@@ -8,7 +14,7 @@ import { ColorRGB, ColorType, ColorHSL } from 'core/color-types';
  */
 export function parseColor(color: string | number) {
   if (typeof color === 'number') {
-    return parseColorNumber(color);
+    return { color: parseColorNumber(color), format: ColorFormat.NUMBER };
   }
   return parseColorString(color);
 }
@@ -27,32 +33,28 @@ export function parseColorNumber(color: number): ColorRGB {
   return { r, g, b, a: 1 };
 }
 
-export function parseColorString(color: string): ColorType | undefined {
+export function parseColorString(color: string): ColorParseResult | undefined {
   color = color.trim().toLowerCase();
   const colorName = colors[color] as number | undefined;
   if (colorName !== undefined) {
-    return parseColorNumber(colorName);
+    return { color: parseColorNumber(colorName), format: ColorFormat.STRING };
   }
 
   if (color.startsWith('#')) {
-    return parseHexNumberString(color.slice(1));
+    const r = parseHexNumberString(color.slice(1));
+    if (r === undefined) {
+      return undefined;
+    }
+    return { color: r, format: ColorFormat.HEX_STRING };
   }
   if (!color.endsWith(')')) {
     return undefined;
   }
-  if (color.startsWith('rgb(')) {
-    return parseRGBString(color.slice(4, -1));
+  const result = parseColorFunction(color);
+  if (result === undefined) {
+    return undefined;
   }
-  if (color.startsWith('rgba(')) {
-    return parseRGBString(color.slice(5, -1));
-  }
-  if (color.startsWith('hsl(')) {
-    return parseHSVString(color.slice(4, -1));
-  }
-  if (color.startsWith('hsla(')) {
-    return parseHSVString(color.slice(5, -1));
-  }
-  return undefined;
+  return { color: result, format: ColorFormat.STRING };
 }
 
 function parseHexNumberString(color: string): ColorRGB | undefined {
@@ -102,6 +104,21 @@ function parseHexNumberString(color: string): ColorRGB | undefined {
     return { r, g, b, a };
   }
   return undefined;
+}
+
+function parseColorFunction(color: string): ColorRGB | ColorHSL | undefined {
+  if (color.startsWith('rgb(')) {
+    return parseRGBString(color.slice(4, -1));
+  }
+  if (color.startsWith('rgba(')) {
+    return parseRGBString(color.slice(5, -1));
+  }
+  if (color.startsWith('hsl(')) {
+    return parseHSVString(color.slice(4, -1));
+  }
+  if (color.startsWith('hsla(')) {
+    return parseHSVString(color.slice(5, -1));
+  }
 }
 
 function parseRGBString(content: string): ColorRGB | undefined {

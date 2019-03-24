@@ -2,7 +2,7 @@ import { Ref } from '../ref';
 import { Ease } from '../ease';
 import { Command, sequence, duration } from './common';
 import * as Color from 'color';
-import { ColorRGB, ColorHSL, ColorHSV, ColorType } from '../color-types';
+import { ColorRGB, ColorHSL, ColorHSV, ColorType } from '../color/color-types';
 import {
   getColorRef,
   getColorFormat,
@@ -11,7 +11,7 @@ import {
   convertToColorFormat,
   lerpHSV,
   lerpHSL
-} from '../utils/color-utils';
+} from '../color/color-utils';
 
 export enum ColorLerpMode {
   RGB,

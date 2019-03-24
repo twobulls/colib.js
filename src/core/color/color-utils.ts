@@ -1,5 +1,5 @@
 import * as Color from 'color';
-import { ColorType, isColorHSL, isColorHSV, isColorRGB, ColorHSL, ColorHSV, ColorRGB } from '../color-types';
+import { ColorType, isColorHSL, isColorHSV, isColorRGB, ColorHSL, ColorHSV, ColorRGB } from './color-types';
 import { Ref } from '../ref';
 
 export enum ColorFormat {
