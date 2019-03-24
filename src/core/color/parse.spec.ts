@@ -1,13 +1,11 @@
 import { parseColor } from './parse';
 
-describe('parseColorNumber', () => {
+describe('parseColor', () => {
   it('unpacks rgb numbers into the range 0->1', () => {
     const result = parseColor(0xf1acbd);
     expect(result).toEqual({ r: 241 / 255, g: 172 / 255, b: 189 / 255, a: 1 });
   });
-});
 
-describe('parseColorString', () => {
   it('parses a predefined color name', () => {
     const color = parseColor('cadetblue');
     expect(color).toEqual({ r: 95 / 255, g: 158 / 255, b: 160 / 255, a: 1 });
@@ -127,5 +125,71 @@ describe('parseColorString', () => {
       const result = parseColor(color);
       expect(result).toEqual({ r: 1, g: 0, b: 153 / 255, a: 0.5 });
     }
+  });
+
+  it('parses hsl strings with commas or whitepaces', () => {
+    const colors = ['hsl(270,60%,70%)', 'hsl(270, 60%, 70%)', 'hsl(270 60% 70%)'];
+    for (const color of colors) {
+      const result = parseColor(color);
+      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 1 });
+    }
+  });
+  it('parses hsl strings alternate degree forms', () => {
+    const colors = [
+      'hsl(270deg, 60%, 70%)',
+      'hsl(.75turn, 60%, 70%)',
+      'hsl(4.71238898038469rad, 60%, 70%)',
+      'hsl(300grad,60%,70%)'
+    ];
+    for (const color of colors) {
+      const result = parseColor(color);
+      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 1 });
+    }
+  });
+  it('parses hsl strings with alpha values', () => {
+    const colors = [
+      'hsl(270,60%,70%, 0.5)',
+      'hsl(270, 60%, 70%, 50%)',
+      'hsl(270 60% 70% / 0.5)',
+      'hsl(270 60% 70% / 50%)'
+    ];
+    for (const color of colors) {
+      const result = parseColor(color);
+      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 0.5 });
+    }
+  });
+  it('parses invalid hsl strings as undefined', () => {
+    const colors = [
+      'hsl(0, 0, 0%)',
+      'hsl(0, 0%, 0)',
+      'hsl(a, 0%, 0%)',
+      'hsl(0, a%, 0%)',
+      'hsl(10 1%, 1% 1)',
+      'hsl(1,2%,2%,1,2)',
+      'hsl(1,2%,2%,a)',
+      'hsl(1 2% 2% a 0)'
+    ];
+    for (const color of colors) {
+      const result = parseColor(color);
+      expect(result).toBeUndefined();
+    }
+  });
+
+  it('parses hsla strings', () => {
+    const colors = [
+      'hsla(270,60%,70%, 0.5)',
+      'hsla(270, 60%, 70%, 50%)',
+      'hsla(270 60% 70% / 0.5)',
+      'hsla(270 60% 70% / 50%)'
+    ];
+    for (const color of colors) {
+      const result = parseColor(color);
+      expect(result).toEqual({ h: 270, s: 0.6, l: 0.7, a: 0.5 });
+    }
+  });
+
+  it('returns undefined for unknown strings', () => {
+    const result = parseColor('cmyk(0,0,0,0)');
+    expect(result).toBeUndefined();
   });
 });

@@ -1,5 +1,5 @@
 import { colors } from './color-list';
-import { ColorRGB, ColorType } from 'core/color-types';
+import { ColorRGB, ColorType, ColorHSL } from 'core/color-types';
 
 /**
  * Parse a color, either a css color string, or a hex number;
@@ -46,8 +46,13 @@ export function parseColorString(color: string): ColorType | undefined {
   if (color.startsWith('rgba(')) {
     return parseRGBString(color.slice(5, -1));
   }
-
-  throw Error('Unimplemented');
+  if (color.startsWith('hsl(')) {
+    return parseHSVString(color.slice(4, -1));
+  }
+  if (color.startsWith('hsla(')) {
+    return parseHSVString(color.slice(5, -1));
+  }
+  return undefined;
 }
 
 function parseHexNumberString(color: string): ColorRGB | undefined {
@@ -163,4 +168,77 @@ function parseRGBString(content: string): ColorRGB | undefined {
   }
 
   return { r, g, b, a };
+}
+
+function parseHSVString(content: string): ColorHSL | undefined {
+  // Functional mode eg. hsl(180deg, 100%, 50%)
+  let values = content.split(',').map(v => v.trim());
+  let alpha: string | undefined;
+
+  if (values.length !== 3 && values.length !== 4) {
+    // Could be using whitespace format eg, hsl(180deg 100% 100%)
+    values = content.replace(/\s+/g, ' ').split(' ');
+    if (values.length !== 3 && values.length !== 5) {
+      return undefined;
+    }
+    if (values.length === 5) {
+      if (values[3] !== '/') {
+        return undefined;
+      }
+      alpha = values[4];
+    }
+  } else if (values.length === 4) {
+    alpha = values[3];
+  }
+
+  if (!values[1].endsWith('%') || !values[2].endsWith('%')) {
+    return undefined;
+  }
+  const h = parseAngle(values[0]);
+  if (h === undefined) {
+    return undefined;
+  }
+
+  const s = parseFloat(values[1]) / 100;
+  const l = parseFloat(values[2]) / 100;
+  if (isNaN(s) || isNaN(l)) {
+    return undefined;
+  }
+  let a = 1;
+  if (alpha !== undefined) {
+    a = parseFloat(alpha);
+    if (isNaN(a)) {
+      return undefined;
+    }
+    if (alpha.endsWith('%')) {
+      a /= 100;
+    }
+  }
+  return { h, s, l, a };
+}
+
+/**
+ * @param angle The angle string. Can be in format 270, 270deg, 1rad, 100grad, 2turn
+ * @returns The angle in degrees as a numbers
+ */
+function parseAngle(angle: string): number | undefined {
+  const value = parseFloat(angle);
+  if (isNaN(value)) {
+    return undefined;
+  }
+
+  if (angle.endsWith('deg')) {
+    return value;
+  }
+  if (angle.endsWith('grad')) {
+    return 360 * (value / 400);
+  }
+  if (angle.endsWith('rad')) {
+    return (180 * value) / Math.PI;
+  }
+  if (angle.endsWith('turn')) {
+    return value * 360;
+  }
+
+  return value;
 }
