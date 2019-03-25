@@ -1,6 +1,5 @@
 import { colors } from './color-list';
-import { ColorRGB, ColorType, ColorHSL } from 'core/color/color-types';
-import { ColorFormat } from './color-utils';
+import { ColorRGB, ColorHSL, ColorFormat } from './color-types';
 
 export interface ColorParseResult {
   color: ColorRGB | ColorHSL;
@@ -38,6 +37,10 @@ export function parseColorString(color: string): ColorParseResult | undefined {
   const colorName = colors[color] as number | undefined;
   if (colorName !== undefined) {
     return { color: parseColorNumber(colorName), format: ColorFormat.STRING };
+  }
+  if (color === 'transparent') {
+    // Special case color
+    return { color: { r: 0, g: 0, b: 0, a: 0 }, format: ColorFormat.STRING };
   }
 
   if (color.startsWith('#')) {

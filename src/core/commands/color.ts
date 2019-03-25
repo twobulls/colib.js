@@ -1,17 +1,9 @@
 import { Ref } from '../ref';
 import { Ease } from '../ease';
 import { Command, sequence, duration } from './common';
-import * as Color from 'color';
-import { ColorRGB, ColorHSL, ColorHSV, ColorType } from '../color/color-types';
-import {
-  getColorRef,
-  getColorFormat,
-  getColor,
-  lerpRGB,
-  convertToColorFormat,
-  lerpHSV,
-  lerpHSL
-} from '../color/color-utils';
+import { ColorRGB, ColorHSL, ColorHSV, ColorType, ColorFormat } from '../color/color-types';
+import { getColorRef, lerpRGB, lerpHSV, lerpHSL } from '../color/color-utils';
+import { convertColor, getColorFormat } from '../color/convert';
 
 export enum ColorLerpMode {
   RGB,
@@ -33,21 +25,32 @@ export function changeToColor<U extends ColorType>(
   lerpMode: ColorLerpMode = ColorLerpMode.RGB,
   ease?: Ease
 ): Command {
-  let start: Color = new Color(0x000000);
+  let start: ColorType = { r: 0, g: 0, b: 0, a: 1 };
   const newRef = getColorRef(ref);
   const lerpFunc = getLerpFunc(lerpMode);
 
-  const mode = getColorFormat(newRef.value);
-  const end = getColor(target);
+  const outputFormat = getColorFormat(newRef.value);
+  const conversionFormat = getConversionFormat(lerpMode);
+  const end = convertColor(target, conversionFormat);
+
+  if (end === undefined) {
+    throw Error(`Invalid color ${end}`);
+  }
 
   return sequence(
     () => {
-      start = getColor(newRef.value);
+      const result = convertColor(newRef.value, conversionFormat);
+      if (result === undefined) {
+        start = { r: 1, g: 1, b: 1, a: 1 };
+      } else {
+        start = result;
+      }
     },
     duration(
       t => {
         const mixed = lerpFunc(start, end, t);
-        const value = convertToColorFormat(mixed, mode) as U;
+        const value = convertColor(mixed, outputFormat) as U;
+
         newRef.value = value;
       },
       commandDuration,
@@ -70,21 +73,31 @@ export function changeFromColor<U extends ColorType>(
   lerpMode: ColorLerpMode = ColorLerpMode.RGB,
   ease?: Ease
 ): Command {
-  let end: Color = new Color(0x000000);
+  let end: ColorType = { r: 0, g: 0, b: 0, a: 1 };
+
   const newRef = getColorRef(ref);
   const lerpFunc = getLerpFunc(lerpMode);
 
-  const mode = getColorFormat(newRef.value);
-  const start = getColor(target);
+  const outputFormat = getColorFormat(newRef.value);
+  const conversionFormat = getConversionFormat(lerpMode);
+  const start = convertColor(target, conversionFormat);
+  if (start === undefined) {
+    throw Error(`Invalid color ${end}`);
+  }
 
   return sequence(
     () => {
-      end = getColor(newRef.value);
+      const result = convertColor(newRef.value, conversionFormat);
+      if (result === undefined) {
+        end = { r: 1, g: 1, b: 1, a: 1 };
+      } else {
+        end = result;
+      }
     },
     duration(
       t => {
         const mixed = lerpFunc(start, end, t);
-        const value = convertToColorFormat(mixed, mode) as U;
+        const value = convertColor(mixed, outputFormat) as U;
         newRef.value = value;
       },
       commandDuration,
@@ -101,5 +114,16 @@ function getLerpFunc(lerpMode: ColorLerpMode) {
       return lerpHSV;
     case ColorLerpMode.HSL:
       return lerpHSL;
+  }
+}
+
+function getConversionFormat(lerpMode: ColorLerpMode) {
+  switch (lerpMode) {
+    case ColorLerpMode.HSL:
+      return ColorFormat.HSLA_OBJECT;
+    case ColorLerpMode.HSV:
+      return ColorFormat.HSVA_OBJECT;
+    case ColorLerpMode.RGB:
+      return ColorFormat.RGBA_OBJECT;
   }
 }

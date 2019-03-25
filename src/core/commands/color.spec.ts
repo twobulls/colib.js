@@ -1,5 +1,5 @@
 import { changeToColor, changeFromColor, ColorLerpMode } from './color';
-import { ColorRGB, ColorHSL, ColorHSV } from '../color-types';
+import { ColorRGB, ColorHSL, ColorHSV } from '../color/color-types';
 
 import { Ref } from '../ref';
 import { CommandQueue } from '../command-queue';
@@ -14,12 +14,12 @@ describe('changeToColor', () => {
     expect(ref.value).toEqual({ r: 0.75, g: 0.625, b: 0.25 });
   });
   it('can tween Ref<ColorRGB> to a target color with alpha', () => {
-    const ref = Ref.create<ColorRGB>({ r: 1, g: 0.5, b: 0, a: 0.2 });
+    const ref = Ref.create<ColorRGB>({ r: 1, g: 0.5, b: 0, a: 0.3 });
     const target = { r: 0, g: 1, b: 1, a: 0.8 };
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref.value).toEqual({ r: 0.75, g: 0.625, b: 0.25, a: 0.35 });
+    expect(ref.value).toEqual({ r: 0.75, g: 0.625, b: 0.25, a: 0.425 });
   });
 
   it('can tween ColorRGB to a target color', () => {
@@ -31,12 +31,12 @@ describe('changeToColor', () => {
     expect(ref).toEqual({ r: 0.75, g: 0.625, b: 0.25 });
   });
   it('can tween ColorRGB to a target color with alpha', () => {
-    const ref = { r: 1, g: 0.5, b: 0, a: 0.2 };
+    const ref = { r: 1, g: 0.5, b: 0, a: 0.3 };
     const target = { r: 0, g: 1, b: 1, a: 0.8 };
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref).toEqual({ r: 0.75, g: 0.625, b: 0.25, a: 0.35 });
+    expect(ref).toEqual({ r: 0.75, g: 0.625, b: 0.25, a: 0.425 });
   });
 
   it('can tween Ref<ColorHSL> to a target color', () => {
@@ -51,12 +51,12 @@ describe('changeToColor', () => {
     expect(ref.value).toEqual({ h: 0, s: 0.5, l: 0.5 });
   });
   it('can tween Ref<ColorHSL> to a target color with alpha', () => {
-    const ref = Ref.create<ColorHSL>({ h: 100, s: 1, l: 0.25, a: 0.2 });
+    const ref = Ref.create<ColorHSL>({ h: 100, s: 1, l: 0.25, a: 0.3 });
     const target = { h: 0, s: 0.5, l: 0.5, a: 0.8 };
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSL));
     queue.update(0.25);
-    expect(ref.value).toEqual({ h: 75, s: 0.875, l: 0.3125, a: 0.35 });
+    expect(ref.value).toEqual({ h: 75, s: 0.875, l: 0.3125, a: 0.425 });
     queue.update(1);
     expect(ref.value).toEqual({ h: 0, s: 0.5, l: 0.5, a: 0.8 });
   });
@@ -73,12 +73,12 @@ describe('changeToColor', () => {
     expect(ref).toEqual({ h: 0, s: 0.5, l: 0.5 });
   });
   it('can tween ColorHSL to a target color with alpha', () => {
-    const ref = { h: 100, s: 1, l: 0.25, a: 0.2 };
+    const ref = { h: 100, s: 1, l: 0.25, a: 0.3 };
     const target = { h: 0, s: 0.5, l: 0.5, a: 0.8 };
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSL));
     queue.update(0.25);
-    expect(ref).toEqual({ h: 75, s: 0.875, l: 0.3125, a: 0.35 });
+    expect(ref).toEqual({ h: 75, s: 0.875, l: 0.3125, a: 0.425 });
     queue.update(1);
     expect(ref).toEqual({ h: 0, s: 0.5, l: 0.5, a: 0.8 });
   });
@@ -95,12 +95,12 @@ describe('changeToColor', () => {
     expect(ref.value).toEqual({ h: 0, s: 0.5, v: 0.5 });
   });
   it('can tween Ref<ColorHSV> to a target color with alpha', () => {
-    const ref = Ref.create<ColorHSV>({ h: 100, s: 1, v: 0.25, a: 0.2 });
+    const ref = Ref.create<ColorHSV>({ h: 100, s: 1, v: 0.25, a: 0.3 });
     const target = { h: 0, s: 0.5, v: 0.5, a: 0.8 };
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
-    expect(ref.value).toEqual({ h: 75, s: 0.875, v: 0.3125, a: 0.35 });
+    expect(ref.value).toEqual({ h: 75, s: 0.875, v: 0.3125, a: 0.425 });
     queue.update(1);
     expect(ref.value).toEqual({ h: 0, s: 0.5, v: 0.5, a: 0.8 });
   });
@@ -117,12 +117,12 @@ describe('changeToColor', () => {
     expect(ref).toEqual({ h: 0, s: 0.5, v: 0.5 });
   });
   it('can tween ColorHSV to a target color with alpha', () => {
-    const ref = { h: 100, s: 1, v: 0.25, a: 0.2 };
+    const ref = { h: 100, s: 1, v: 0.25, a: 0.3 };
     const target = { h: 0, s: 0.5, v: 0.5, a: 0.8 };
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
-    expect(ref).toEqual({ h: 75, s: 0.875, v: 0.3125, a: 0.35 });
+    expect(ref).toEqual({ h: 75, s: 0.875, v: 0.3125, a: 0.425 });
     queue.update(1);
     expect(ref).toEqual({ h: 0, s: 0.5, v: 0.5, a: 0.8 });
   });
@@ -133,7 +133,7 @@ describe('changeToColor', () => {
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref.value).toEqual(0xbf3fbf);
+    expect(ref.value).toEqual(0xbf40bf);
   });
 
   it('can tween Ref<string> to target string over rgb', () => {
@@ -142,16 +142,16 @@ describe('changeToColor', () => {
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref.value).toEqual('rgb(191, 64, 191)');
+    expect(ref.value).toEqual('rgb(191.25,63.75,191.25)');
   });
 
-  it('can tween Ref<string> to target string over hsv', () => {
+  it('can tween Ref<string> to target string over hsl', () => {
     const ref = Ref.create<string>('hsl(100,100%,25%)');
     const target = 'hsl(0,50%,50%)';
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref.value).toEqual('rgb(80, 112, 16)');
+    expect(ref.value).toEqual('rgb(79.687,111.563,15.938)');
   });
 
   it('can lerp between string colors of mismatched types', () => {
@@ -160,7 +160,7 @@ describe('changeToColor', () => {
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref.value).toEqual('rgba(96, 96, 64, 0.625)');
+    expect(ref.value).toEqual('rgba(95.625,95.625,63.75,0.625)');
   });
   it('can lerp between a ColorRGB and string', () => {
     const ref = { r: 1, g: 0, b: 1 };
@@ -176,7 +176,7 @@ describe('changeToColor', () => {
     const queue = new CommandQueue();
     queue.enqueue(changeToColor(ref, target, 1));
     queue.update(0.25);
-    expect(ref.value).toEqual('#BF40BF');
+    expect(ref.value).toEqual('#bf40bf');
   });
 });
 

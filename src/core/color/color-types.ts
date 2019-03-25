@@ -78,3 +78,12 @@ export function isColorHSL(value: any): value is ColorHSL {
     (value.a === undefined || typeof value.a === 'number')
   );
 }
+
+export enum ColorFormat {
+  STRING,
+  HEX_STRING,
+  NUMBER,
+  RGBA_OBJECT,
+  HSLA_OBJECT,
+  HSVA_OBJECT
+}

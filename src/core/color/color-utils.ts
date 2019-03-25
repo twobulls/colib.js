@@ -1,128 +1,81 @@
-import * as Color from 'color';
-import { ColorType, isColorHSL, isColorHSV, isColorRGB, ColorHSL, ColorHSV, ColorRGB } from './color-types';
+import {
+  ColorType,
+  isColorHSL,
+  isColorHSV,
+  isColorRGB,
+  ColorHSL,
+  ColorHSV,
+  ColorRGB,
+  ColorFormat
+} from './color-types';
 import { Ref } from '../ref';
+import { convertColor } from './convert';
 
-export enum ColorFormat {
-  STRING,
-  HEX_STRING,
-  NUMBER,
-  RGBA_OBJECT,
-  HSLA_OBJECT,
-  HSVA_OBJECT
+export function lerpRGB(from: ColorType, to: ColorType, t: number) {
+  let newFrom: ColorRGB;
+  if (!isColorRGB(from)) {
+    newFrom = convertColor(from, ColorFormat.RGBA_OBJECT) as ColorRGB;
+  } else {
+    newFrom = from;
+  }
+  let newTo: ColorRGB;
+  if (!isColorRGB(to)) {
+    newTo = convertColor(to, ColorFormat.RGBA_OBJECT) as ColorRGB;
+  } else {
+    newTo = to;
+  }
+
+  const color = {
+    r: (newTo.r - newFrom.r) * t + newFrom.r,
+    g: (newTo.g - newFrom.g) * t + newFrom.g,
+    b: (newTo.b - newFrom.b) * t + newFrom.b
+  };
+
+  return colorWithLerpedAlpha(color, newFrom.a, newTo.a, t);
 }
 
-export function getColorFormat(value: ColorType): ColorFormat {
-  if (typeof value === 'string') {
-    if (value.trimLeft().startsWith('#')) {
-      return ColorFormat.HEX_STRING;
-    }
+export function lerpHSV(from: ColorType, to: ColorType, t: number): ColorHSV {
+  let newFrom: ColorHSV;
+  if (!isColorHSV(from)) {
+    newFrom = convertColor(from, ColorFormat.HSVA_OBJECT) as ColorHSV;
+  } else {
+    newFrom = from;
+  }
+  let newTo: ColorHSV;
+  if (!isColorHSV(to)) {
+    newTo = convertColor(to, ColorFormat.HSVA_OBJECT) as ColorHSV;
+  } else {
+    newTo = to;
+  }
 
-    return ColorFormat.STRING;
-  }
-  if (typeof value === 'number') {
-    return ColorFormat.NUMBER;
-  }
-  if (isColorHSL(value)) {
-    return ColorFormat.HSLA_OBJECT;
-  }
-  if (isColorHSV(value)) {
-    return ColorFormat.HSVA_OBJECT;
-  }
-  return ColorFormat.RGBA_OBJECT;
+  const color = {
+    h: lerpHue(newFrom.h, newTo.h, t),
+    s: (newTo.s - newFrom.s) * t + newFrom.s,
+    v: (newTo.v - newFrom.v) * t + newFrom.v
+  };
+  return colorWithLerpedAlpha(color, newFrom.a, newTo.a, t);
 }
 
-export function convertToColorFormat(col: Color, format: ColorFormat): ColorType {
-  switch (format) {
-    case ColorFormat.RGBA_OBJECT: {
-      const { alpha, ...rgb } = col.rgb().object();
-      const colRGB = { r: rgb.r / 255, g: rgb.g / 255, b: rgb.b / 255 };
-      if (alpha !== undefined) {
-        return { ...colRGB, a: alpha };
-      }
-      return colRGB;
-    }
-    case ColorFormat.HSLA_OBJECT: {
-      const { alpha, ...hsl } = col.hsl().object();
-      const colHSL = { h: hsl.h, s: hsl.s / 100, l: hsl.l / 100 };
-      if (alpha !== undefined) {
-        return { ...colHSL, a: alpha };
-      }
-      return colHSL;
-    }
-    case ColorFormat.HSVA_OBJECT: {
-      const { alpha, ...hsv } = col.hsv().object();
-      const colHSV = { h: hsv.h, s: hsv.s / 100, v: hsv.v / 100 };
-      if (alpha !== undefined) {
-        return { ...colHSV, a: alpha };
-      }
-      return colHSV;
-    }
-    case ColorFormat.NUMBER:
-      return col.rgbNumber();
-    case ColorFormat.STRING:
-      return col.string();
-    case ColorFormat.HEX_STRING:
-      return col.hex();
+export function lerpHSL(from: ColorType, to: ColorType, t: number): ColorHSL {
+  let newFrom: ColorHSL;
+  if (!isColorHSL(from)) {
+    newFrom = convertColor(from, ColorFormat.HSLA_OBJECT) as ColorHSL;
+  } else {
+    newFrom = from;
   }
-}
-
-export function getColor(col: ColorType): Color {
-  if (typeof col === 'string' || typeof col === 'number') {
-    return new Color(col).rgb();
-  }
-  const { a } = col;
-
-  if (isColorRGB(col)) {
-    col = { r: col.r * 255, g: col.g * 255, b: col.b * 255 };
-  }
-  if (isColorHSL(col)) {
-    col = { h: col.h, s: col.s * 100, l: col.l * 100 };
-  }
-  if (isColorHSV(col)) {
-    col = { h: col.h, s: col.s * 100, v: col.v * 100 };
+  let newTo: ColorHSL;
+  if (!isColorHSL(to)) {
+    newTo = convertColor(to, ColorFormat.HSLA_OBJECT) as ColorHSL;
+  } else {
+    newTo = to;
   }
 
-  const color = new Color(col).rgb();
-  if (a === undefined) {
-    return color;
-  }
-  return color.fade(1 - a);
-}
-
-export function lerpRGB(from: Color, to: Color, t: number) {
-  const { r: fromR, g: fromG, b: fromB, alpha: fromAlpha } = from.rgb().object();
-  const { r: toR, g: toG, b: toB, alpha: toAlpha } = to.rgb().object();
-
-  const color = new Color({
-    r: (toR - fromR) * t + fromR,
-    g: (toG - fromG) * t + fromG,
-    b: (toB - fromB) * t + fromB
-  });
-  return colorWithLerpedAlpha(color, fromAlpha, toAlpha, t);
-}
-
-export function lerpHSV(from: Color, to: Color, t: number) {
-  const { h: fromH, s: fromS, v: fromV, alpha: fromAlpha } = from.hsv().object();
-  const { h: toH, s: toS, v: toV, alpha: toAlpha } = to.hsv().object();
-
-  const color = new Color({
-    h: lerpHue(fromH, toH, t),
-    s: (toS - fromS) * t + fromS,
-    v: (toV - fromV) * t + fromV
-  });
-  return colorWithLerpedAlpha(color, fromAlpha, toAlpha, t);
-}
-
-export function lerpHSL(from: Color, to: Color, t: number) {
-  const { h: fromH, s: fromS, l: fromL, alpha: fromAlpha } = from.hsl().object();
-  const { h: toH, s: toS, l: toL, alpha: toAlpha } = to.hsl().object();
-
-  const color = new Color({
-    h: lerpHue(fromH, toH, t),
-    s: (toS - fromS) * t + fromS,
-    l: (toL - fromL) * t + fromL
-  });
-  return colorWithLerpedAlpha(color, fromAlpha, toAlpha, t);
+  const color = {
+    h: lerpHue(newFrom.h, newTo.h, t),
+    s: (newTo.s - newFrom.s) * t + newFrom.s,
+    l: (newTo.l - newFrom.l) * t + newFrom.l
+  };
+  return colorWithLerpedAlpha(color, newFrom.a, newTo.a, t);
 }
 
 export function getColorRef<U extends ColorType>(ref: Ref<U> | ColorRGB | ColorHSV | ColorHSL) {
@@ -182,13 +135,13 @@ function lerpHue(fromH: number, toH: number, t: number) {
   return newH;
 }
 
-function colorWithLerpedAlpha(color: Color, fromAlpha: number | undefined, toAlpha: number | undefined, t: number) {
+function colorWithLerpedAlpha<T>(color: T, fromAlpha: number | undefined, toAlpha: number | undefined, t: number) {
   if (fromAlpha === undefined && toAlpha === undefined) {
     return color;
   }
   const newFromAlpha = fromAlpha === undefined ? 1 : fromAlpha;
   const newToAlpha = toAlpha === undefined ? 1 : toAlpha;
 
-  const alpha = (newToAlpha - newFromAlpha) * t + newFromAlpha;
-  return color.fade(1 - alpha);
+  const a = (newToAlpha - newFromAlpha) * t + newFromAlpha;
+  return { ...color, a };
 }

@@ -1,5 +1,5 @@
 import { parseColor } from './parse';
-import { ColorFormat } from './color-utils';
+import { ColorFormat } from './color-types';
 
 describe('parseColor', () => {
   it('unpacks rgb numbers into the range 0->1', () => {
@@ -10,6 +10,10 @@ describe('parseColor', () => {
   it('parses a predefined color name', () => {
     const color = parseColor('cadetblue');
     expect(color).toEqual({ format: ColorFormat.STRING, color: { r: 95 / 255, g: 158 / 255, b: 160 / 255, a: 1 } });
+  });
+  it('parses transparent color name', () => {
+    const color = parseColor('transparent');
+    expect(color).toEqual({ format: ColorFormat.STRING, color: { r: 0, g: 0, b: 0, a: 0 } });
   });
   it('parses a predefined color name with bad casing', () => {
     const color = parseColor('caDetBluE');
