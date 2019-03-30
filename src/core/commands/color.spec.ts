@@ -178,6 +178,19 @@ describe('changeToColor', () => {
     queue.update(0.25);
     expect(ref.value).toEqual('#bf40bf');
   });
+
+  it('will throw an exception when given an invalidly formatted string', () => {
+    const ref = Ref.create('#FF00FF');
+    expect(() => changeToColor(ref, 'invalid', 0.3)).toThrowErrorMatchingInlineSnapshot(`"Invalid color undefined"`);
+  });
+  it('will assume the color is white, when lerping from an invalid color', () => {
+    const ref = Ref.create('#invalid');
+    const target = '#00FF00';
+    const queue = new CommandQueue();
+    queue.enqueue(changeToColor(ref, target, 1));
+    queue.update(0.25);
+    expect(ref.value).toEqual('#bfffbf');
+  });
 });
 
 describe('changeFromColor', () => {
@@ -196,5 +209,17 @@ describe('changeFromColor', () => {
     queue.enqueue(changeFromColor(ref, target, 1, ColorLerpMode.HSV));
     queue.update(0.25);
     expect(ref).toEqual({ h: 25, s: 0.625, v: 0.4375, a: 0.65 });
+  });
+  it('will throw an exception when given an invalidly formatted string', () => {
+    const ref = Ref.create('#FF00FF');
+    expect(() => changeFromColor(ref, 'invalid', 0.3)).toThrowErrorMatchingInlineSnapshot(`"Invalid color undefined"`);
+  });
+  it('will assume the color is white, when lerping to an invalid color', () => {
+    const ref = Ref.create('#invalid');
+    const target = '#00FF00';
+    const queue = new CommandQueue();
+    queue.enqueue(changeFromColor(ref, target, 1));
+    queue.update(0.25);
+    expect(ref.value).toEqual('#40ff40');
   });
 });

@@ -48,9 +48,9 @@ export function convertColor(col: ColorType, format: ColorFormat): ColorType | u
     case ColorFormat.STRING:
       if (isColorHSL(col)) {
         if (col.a === undefined || col.a === 1) {
-          return `hsl(${round3DecimalPlaces(col.h)}, ${round3DecimalPlaces(col.s * 100)}%,${col.l * 100}%)`;
+          return `hsl(${round3DecimalPlaces(col.h)},${round3DecimalPlaces(col.s * 100)}%,${col.l * 100}%)`;
         }
-        return `hsla(${round3DecimalPlaces(col.h)}, ${round3DecimalPlaces(col.s * 100)}%,${col.l * 100}%, ${col.a})`;
+        return `hsla(${round3DecimalPlaces(col.h)},${round3DecimalPlaces(col.s * 100)}%,${col.l * 100}%,${col.a})`;
       }
       if (rgb.a === undefined || rgb.a === 1) {
         return `rgb(${round3DecimalPlaces(rgb.r * 255)},${round3DecimalPlaces(rgb.g * 255)},${round3DecimalPlaces(
@@ -87,7 +87,7 @@ function convertToRGB(color: ColorType): ColorRGB | undefined {
 }
 
 function convertHSLToRGB(color: ColorHSL): ColorRGB {
-  const h = color.h / 360;
+  const h = remapZeroToOne(color.h / 360);
 
   if (color.s === 0) {
     // The color is grey
@@ -95,9 +95,9 @@ function convertHSLToRGB(color: ColorHSL): ColorRGB {
   }
   const q = color.l < 0.5 ? color.l * (1 + color.s) : color.l + color.s - color.l * color.s;
   const p = 2 * color.l - q;
-  const r = convertHueToRGB(p, q, h + 1 / 3);
+  const r = convertHueToRGB(p, q, remapZeroToOne(h + 1 / 3));
   const g = convertHueToRGB(p, q, h);
-  const b = convertHueToRGB(p, q, h - 1 / 3);
+  const b = convertHueToRGB(p, q, remapZeroToOne(h - 1 / 3));
   return { r, g, b, a: color.a };
 }
 
@@ -106,8 +106,8 @@ function convertHSVToRGB(color: ColorHSV): ColorRGB {
     g = 0,
     b = 0;
 
-  const i = Math.floor(color.h * 6);
-  const f = color.h * 6 - i;
+  const i = Math.floor((color.h / 360) * 6);
+  const f = (color.h / 360) * 6 - i;
   const p = color.v * (1 - color.s);
   const q = color.v * (1 - f * color.s);
   const t = color.v * (1 - (1 - f) * color.s);
@@ -160,6 +160,7 @@ function convertRGBToHSV(color: ColorRGB): ColorHSV {
 
     h /= 6;
   }
+  h *= 360;
 
   return { h, s, v, a: color.a };
 }
@@ -208,12 +209,6 @@ function round3DecimalPlaces(num: number) {
 }
 
 function convertHueToRGB(p: number, q: number, t: number) {
-  if (t < 0) {
-    t += 1;
-  }
-  if (t > 1) {
-    t -= 1;
-  }
   if (t < 1 / 6) {
     return p + (q - p) * 6 * t;
   }
@@ -224,4 +219,14 @@ function convertHueToRGB(p: number, q: number, t: number) {
     return p + (q - p) * (2 / 3 - t) * 6;
   }
   return p;
+}
+
+function remapZeroToOne(value: number) {
+  if (value > 1) {
+    return value % 1;
+  }
+  if (value < 0) {
+    return 1 - (-value % 1);
+  }
+  return value;
 }

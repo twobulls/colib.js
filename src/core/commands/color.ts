@@ -1,9 +1,19 @@
 import { Ref } from '../ref';
 import { Ease } from '../ease';
 import { Command, sequence, duration } from './common';
-import { ColorRGB, ColorHSL, ColorHSV, ColorType, ColorFormat } from '../color/color-types';
-import { getColorRef, lerpRGB, lerpHSV, lerpHSL } from '../color/color-utils';
-import { convertColor, getColorFormat } from '../color/convert';
+import {
+  ColorRGB,
+  ColorHSL,
+  ColorHSV,
+  ColorType,
+  ColorFormat,
+  getColorRef,
+  lerpRGB,
+  lerpHSV,
+  lerpHSL,
+  convertColor,
+  getColorFormat
+} from '../color';
 
 export enum ColorLerpMode {
   RGB,
@@ -82,7 +92,7 @@ export function changeFromColor<U extends ColorType>(
   const conversionFormat = getConversionFormat(lerpMode);
   const start = convertColor(target, conversionFormat);
   if (start === undefined) {
-    throw Error(`Invalid color ${end}`);
+    throw Error(`Invalid color ${start}`);
   }
 
   return sequence(

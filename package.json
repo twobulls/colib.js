@@ -21,9 +21,7 @@
     "semantic-release": "$(yarn bin)/semantic-release",
     "commit": "$(yarn bin)/git-cz"
   },
-  "dependencies": {
-    "color": "^3.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
     "@commitlint/config-conventional": "^7.1.2",
