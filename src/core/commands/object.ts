@@ -1,7 +1,7 @@
 import { Ease } from '../ease';
 import { Ref } from '../ref';
 import { changeToNum, changeFromNum, changeFromOffsetNum, changeToOffsetNum, scaleByNum, scaleFromNum } from './number';
-import { parallel } from './common';
+import { parallel, Command } from './common';
 
 interface RefPair<T> {
   ref: Ref<T>;
@@ -17,7 +17,7 @@ type CommonRefPairs = RefPair<number>;
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
  */
-export function changeTo<T>(object: T, target: T, commandDuration: number, ease?: Ease) {
+export function changeTo<T>(object: T, target: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, target);
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
@@ -33,7 +33,7 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
  */
-export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?: Ease) {
+export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, from);
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
@@ -49,7 +49,7 @@ export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
  */
-export function changeToOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease) {
+export function changeToOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, offset);
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
@@ -65,7 +65,7 @@ export function changeToOffset<T>(object: T, offset: T, commandDuration: number,
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
  */
-export function changeFromOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease) {
+export function changeFromOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, offset);
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
@@ -81,7 +81,7 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
  */
-export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease) {
+export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, scaleFactor);
   const tweens = refs.map(pair => {
     const { ref, value } = pair;
@@ -97,7 +97,7 @@ export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, e
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
  */
-export function scaleFrom<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease) {
+export function scaleFrom<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, scaleFactor);
   const tweens = refs.map(pair => {
     const { ref, value } = pair;

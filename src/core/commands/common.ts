@@ -139,7 +139,7 @@ export function duration(command: CommandDuration, commandDuration: number, ease
 
 /**
  * Waits until a given number of seconds has elapsed.
- * @property commandDuration The duration of time, in seconds, to wait. Must be greater than or equal to0.
+ * @param commandDuration The duration of time, in seconds, to wait. Must be greater than or equal to0.
  */
 export function waitForSeconds(commandDuration: number): Command {
   checkDurationGreaterThanOrEqualToZero(commandDuration);

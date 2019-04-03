@@ -1,5 +1,5 @@
+import { Command, sequence, duration } from './common';
 import { Ref } from '../ref';
-import { sequence, duration } from './common';
 import { Ease } from '../ease';
 
 /**
@@ -9,7 +9,7 @@ import { Ease } from '../ease';
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
  */
-export function changeToNum(ref: Ref<number>, target: number, commandDuration: number, ease?: Ease) {
+export function changeToNum(ref: Ref<number>, target: number, commandDuration: number, ease?: Ease): Command {
   let start = 0;
   return sequence(
     () => {
@@ -32,7 +32,7 @@ export function changeToNum(ref: Ref<number>, target: number, commandDuration: n
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
  */
-export function changeFromNum(ref: Ref<number>, startTarget: number, commandDuration: number, ease?: Ease) {
+export function changeFromNum(ref: Ref<number>, startTarget: number, commandDuration: number, ease?: Ease): Command {
   let end = 0;
   return sequence(
     () => {
@@ -55,7 +55,7 @@ export function changeFromNum(ref: Ref<number>, startTarget: number, commandDura
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
  */
-export function changeToOffsetNum(ref: Ref<number>, offset: number, commandDuration: number, ease?: Ease) {
+export function changeToOffsetNum(ref: Ref<number>, offset: number, commandDuration: number, ease?: Ease): Command {
   let start = 0;
   let end = 0;
 
@@ -81,7 +81,7 @@ export function changeToOffsetNum(ref: Ref<number>, offset: number, commandDurat
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
  */
-export function changeFromOffsetNum(ref: Ref<number>, offset: number, commandDuration: number, ease?: Ease) {
+export function changeFromOffsetNum(ref: Ref<number>, offset: number, commandDuration: number, ease?: Ease): Command {
   let start = 0;
   let end = 0;
   return sequence(
@@ -106,7 +106,7 @@ export function changeFromOffsetNum(ref: Ref<number>, offset: number, commandDur
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
  */
-export function scaleByNum(ref: Ref<number>, scaleFactor: number, commandDuration: number, ease?: Ease) {
+export function scaleByNum(ref: Ref<number>, scaleFactor: number, commandDuration: number, ease?: Ease): Command {
   let start = 0;
   let end = 0;
   return sequence(
@@ -130,7 +130,7 @@ export function scaleByNum(ref: Ref<number>, scaleFactor: number, commandDuratio
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
  */
-export function scaleFromNum(ref: Ref<number>, scaleFactor: number, commandDuration: number, ease?: Ease) {
+export function scaleFromNum(ref: Ref<number>, scaleFactor: number, commandDuration: number, ease?: Ease): Command {
   let start = 0;
   let end = 0;
   return sequence(

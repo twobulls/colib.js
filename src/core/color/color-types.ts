@@ -20,7 +20,6 @@ export interface ColorHSL {
 
 /**
  * Represents an HSV color with optional alpha.
- * @property h ranger
  */
 export interface ColorHSV {
   h: number /** Ranges from  0->360 degrees*/;
@@ -29,6 +28,9 @@ export interface ColorHSV {
   a?: number /** Ranges from 0->1 */;
 }
 
+/**
+ * Composite type of all supported color formats.
+ */
 export type ColorType = string | number | ColorRGB | ColorHSL | ColorHSV;
 
 /**
