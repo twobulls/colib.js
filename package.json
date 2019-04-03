@@ -19,7 +19,8 @@
     "test": "$(yarn bin)/jest",
     "lint": "$(yarn bin)/tslint --project tslint.json",
     "semantic-release": "$(yarn bin)/semantic-release",
-    "commit": "$(yarn bin)/git-cz"
+    "commit": "$(yarn bin)/git-cz",
+    "docs": "$(yarn bin)/typedoc --exclude '**/*.spec.ts' --out docs/api src/core --theme  markdown   --excludeExternals --excludePrivate --excludeProtected --excludeNotExported"
   },
   "dependencies": {},
   "devDependencies": {
@@ -47,6 +48,9 @@
     "supervisor": "^0.12.0",
     "ts-jest": "^23.10.5",
     "tslint": "^5.11.0",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-internal-external": "^2.0.1",
+    "typedoc-plugin-markdown": "^1.1.27",
     "typescript": "^3.2.2"
   },
   "jest": {
