@@ -7,6 +7,7 @@ export interface ColorParseResult {
 }
 
 /**
+ * @ignore
  * Parse a color, either a css color string, or a hex number;
  * @param color The color to parse. Can be any valid css color string, or a number.
  * If a number, a 24bit RGB number is expected, (eg 0xFFAABB).
@@ -19,6 +20,7 @@ export function parseColor(color: string | number) {
 }
 
 /**
+ * @ignore
  * Parse a color from a number.
  * @param color A 24bit RGB number is expected, (eg 0xFFAABB). Only the last 24 bits are used.
  */
@@ -32,6 +34,7 @@ export function parseColorNumber(color: number): ColorRGB {
   return { r, g, b, a: 1 };
 }
 
+/** @ignore */
 export function parseColorString(color: string): ColorParseResult | undefined {
   color = color.trim().toLowerCase();
   const colorName = colors[color] as number | undefined;

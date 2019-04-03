@@ -45,13 +45,14 @@ export type CommandFactory = () => Command;
 export type CommandIterator = IterableIterator<Command | undefined>;
 /**
  * A coroutine command uses generators to produce a sequence of commands over time.
- * @example
+ * ```typescript
  * function *aCoroutine(): CommandIterator {
  *    yield wait(5); // Log t for 5 seconds
  *    console.log("Now this is called");
  *    yield duration(t => console.log(t), 10); // Log t for 10 seconds
  *    console.log("This is also called");
  * }
+ * ```
  */
 export type CommandCoroutine = () => CommandIterator;
 
@@ -316,7 +317,7 @@ export function repeatForever(...commands: Command[]): Command {
  * @param command The command to generate the coroutine.
  * @description
  * Coroutines, (also known as generators in ES6), are methods which can be paused/resumed using the `yield` operator.
- * @example
+ * ```typescript
  *
  * const queue = new CommandQueue();
  *
@@ -336,6 +337,7 @@ export function repeatForever(...commands: Command[]): Command {
  *   coroutine(coroutineWithNoArguments),
  *   coroutine(() => coroutineWithArguments(1, 2, 3))
  * );
+ * ```
  */
 export function coroutine(command: CommandCoroutine): Command {
   let iterator: CommandIterator | undefined;

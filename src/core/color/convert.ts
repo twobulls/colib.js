@@ -10,6 +10,7 @@ import {
   ColorFormat
 } from './color-types';
 
+/** @ignore */
 export function getColorFormat(value: ColorType): ColorFormat {
   if (typeof value === 'string') {
     if (value.trimLeft().startsWith('#')) {
@@ -30,6 +31,7 @@ export function getColorFormat(value: ColorType): ColorFormat {
   return ColorFormat.RGBA_OBJECT;
 }
 
+/** @ignore */
 export function convertColor(col: ColorType, format: ColorFormat): ColorType | undefined {
   if (getColorFormat(col) === format) {
     return col;

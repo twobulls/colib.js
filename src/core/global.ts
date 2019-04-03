@@ -1,4 +1,3 @@
-import { CommandQueue } from './command-queue';
 import { CommandScheduler } from './command-scheduler';
 import { BrowserRunner } from './browser/browser-runner';
 import { NodeRunner } from './node';

@@ -11,6 +11,7 @@ import {
 import { Ref } from '../ref';
 import { convertColor } from './convert';
 
+/** @ignore */
 export function lerpRGB(from: ColorType, to: ColorType, t: number) {
   let newFrom: ColorRGB;
   if (!isColorRGB(from)) {
@@ -34,6 +35,7 @@ export function lerpRGB(from: ColorType, to: ColorType, t: number) {
   return colorWithLerpedAlpha(color, newFrom.a, newTo.a, t);
 }
 
+/** @ignore */
 export function lerpHSV(from: ColorType, to: ColorType, t: number): ColorHSV {
   let newFrom: ColorHSV;
   if (!isColorHSV(from)) {
@@ -56,6 +58,7 @@ export function lerpHSV(from: ColorType, to: ColorType, t: number): ColorHSV {
   return colorWithLerpedAlpha(color, newFrom.a, newTo.a, t);
 }
 
+/** @ignore */
 export function lerpHSL(from: ColorType, to: ColorType, t: number): ColorHSL {
   let newFrom: ColorHSL;
   if (!isColorHSL(from)) {
@@ -78,6 +81,7 @@ export function lerpHSL(from: ColorType, to: ColorType, t: number): ColorHSL {
   return colorWithLerpedAlpha(color, newFrom.a, newTo.a, t);
 }
 
+/** @ignore */
 export function getColorRef<U extends ColorType>(ref: Ref<U> | ColorRGB | ColorHSV | ColorHSL) {
   if (isColorRGB(ref)) {
     return new Ref<ColorRGB>(

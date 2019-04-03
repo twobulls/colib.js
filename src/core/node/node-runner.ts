@@ -1,6 +1,7 @@
 import { CommandScheduler } from '../command-scheduler';
 import { CommandQueueGroup } from '../command-queue-group';
 
+/** @ignore */
 export class NodeRunner {
   readonly scheduler = new CommandScheduler();
   readonly queueGroup = new CommandQueueGroup();

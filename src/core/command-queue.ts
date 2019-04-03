@@ -9,6 +9,15 @@ import { Command, CommandOperation } from './commands';
 export class CommandQueue {
   /**
    * Gets or sets a value indicating whether this `CommandQueue` is paused.
+   * ```typescript
+   * queue.enqueue(
+   *   () => { console.log('called');}
+   * );
+   * queue.paused = true;
+   * queue.update(1.0); // Nothing
+   * queue.paused = false;
+   * queue.update(1.0); // 'called'
+   * ```
    */
   paused = false;
 
@@ -35,12 +44,13 @@ export class CommandQueue {
   /**
    * Enqueue the specified command. Commands are queued up in the order specified.
    * Multiple calls to `enqueue` result is the same sequential ordering ie.
-   * @example
-   * CommandQueue queue = new CommandQueue();
-   * queue.Enqueue(commandOne);
-   * queue.Enqueue(commandTwo);
+   * ```typescript
+   * const queue = new CommandQueue();
+   * queue.enqueue(commandOne);
+   * queue.enqueue(commandTwo);
    * // Is equivalent to
-   * queue.Enqueue(commandOne, commandTwo);
+   * queue.enqueue(commandOne, commandTwo);
+   * ```
    * @param commands The `Command`s to be enqueued. The `CommandQueue` will dequeue the commands over succesive calls to
    * update.
    */
@@ -50,7 +60,12 @@ export class CommandQueue {
   }
 
   /**
-   * Updates the queue with a zero time update. This will make sure the first available command is started.
+   * Updates the queue with a zero time update. This will make sure the first available command is started, but no time is consumed.
+   * ```typescript
+   * const queue = new CommandQueue();
+   * queue.enqueue( () => { console.log('called') });
+   * queue.process(); // 'called'
+   * ```
    */
   process() {
     // If we are already in an update loop, then just let the queue continue running.
@@ -62,6 +77,14 @@ export class CommandQueue {
   /**
    * Tries to update a queue until it has complete. Note, this can result in an infinite loop if
    * commands in the queue rely on external state changes.
+   * ```typescript
+   * const queue = new CommandQueue();
+   * queue.enqueue(
+   *  waitForSeconds(3),
+   *  () => { console.log('called')}
+   * );
+   * queue.runToEnd(); // 'called'
+   * ```
    */
   runToEnd() {
     this.update(Number.MAX_VALUE, CommandOperation.FastForward);
@@ -74,6 +97,17 @@ export class CommandQueue {
    * @param deltaTime The time since the last update. Must be >= 0.
    * @param operation The update operation to use. Fastforward will try to force commands to reach the end of the queue.
    * @returns If the queue is finished as no `Command`s remain, returns `true`, `false` otherwise.
+   * ```typescript
+   * const queue = new CommandQueue();
+   * queue.enqueue(
+   *  waitForSeconds(0.5),
+   *  () => { console.log('a'); },
+   *  waitForSeconds(0.5),
+   *  () => { console.log('b'); }
+   * );
+   * queue.update(0.6); // 'a'
+   * queue.update(0.4); // 'b'
+   * ```
    */
   update(deltaTime: number, operation = CommandOperation.Normal): boolean {
     if (deltaTime < 0.0) {

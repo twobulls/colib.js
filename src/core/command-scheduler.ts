@@ -14,8 +14,16 @@ export class CommandScheduler {
   private queues: CommandQueue[] = [];
 
   /**
-   * Add commands to be scheduled. The commands given here will be run in sequence as a group.
+   * Add commands to be scheduled. The commands given in this call will be scheduled in sequence as a group, but run at the
+   * same time as other scheduled sequences.
    * @param commands The commands to execute.
+   * ```typescript
+   * const scheduler = new CommandScheduler();
+   * scheduler.add(
+   *   () => { console.log('called'); }
+   * );
+   * scheduler.update(0.5); 'called'
+   * ```
    */
   add(...commands: Command[]) {
     if (commands.length === 0) {
@@ -30,6 +38,21 @@ export class CommandScheduler {
    * Updates the scheduler's deltaTime. This will in turn update the deltaTimes of any
    * commands running on this scheduler.
    * @param deltaTime The time since the last update. Must be >= 0.
+   * ```typescript
+   * const scheduler = new CommandScheduler();
+   * scheduler.add(
+   *   () => { console.log('a'); }
+   *   waitForSeconds(1),
+   *   () => { console.log('c'); }
+   * );
+   * scheduler.add(
+   *   () => { console.log('b'); }
+   *   waitForSeconds(1),
+   *   () => { console.log('d'); }
+   * );
+   * scheduler.update(0.5); 'a' 'b'
+   * scheduler.update(0.5); 'c' 'd'
+   * ```
    */
   update(deltaTime: number) {
     if (deltaTime < 0) {
