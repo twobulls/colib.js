@@ -173,9 +173,9 @@ describe('waitForFrames', () => {
     });
     queue.process();
     queue.process();
+    queue.process();
 
     expect(called).toBeFalsy();
-    queue.process();
     queue.process();
 
     expect(called).toBeTruthy();

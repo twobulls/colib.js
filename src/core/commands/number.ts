@@ -8,6 +8,8 @@ import { Ease } from '../ease';
  * @param target The value the number should be at the end of the tween.
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
+ *
  */
 export function changeToNum(ref: Ref<number>, target: number, commandDuration: number, ease?: Ease): Command {
   let start = 0;

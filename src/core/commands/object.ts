@@ -16,6 +16,17 @@ type CommonRefPairs = RefPair<number>;
  * @param target The target to tween to.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1;
+ * const obj = { a: 10, b: 20, c: 30};
+ * const target = {b: 40, c: 60};
+ * queue.enqueue(
+ *  changeTo(obj, target, DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(obj); // { a: 10, b: 25, c: 37.5 }
+ * ```
  */
 export function changeTo<T>(object: T, target: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, target);
@@ -32,6 +43,17 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
  * @param from The target to tween from.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1;
+ * const obj = { a: 10, b: 20, c: 30};
+ * const target = {b: 40, c: 60};
+ * queue.enqueue(
+ *  changeFrom(obj, target, DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(obj); // { a: 10, b: 35, c: 52.5 }
+ * ```
  */
 export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, from);
@@ -48,6 +70,17 @@ export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?
  * @param offset The offset to add to the start position.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1;
+ * const obj = { a: 10, b: 20, c: 30};
+ * const offset = { b: 40, c: 60};
+ * queue.enqueue(
+ *  changeToOffset(obj, offset, DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(obj); // { a: 10, b: 30, c: 45 }
+ * ```
  */
 export function changeToOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, offset);
@@ -64,6 +97,17 @@ export function changeToOffset<T>(object: T, offset: T, commandDuration: number,
  * @param offset The offset to tween from.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1;
+ * const obj = { a: 10, b: 20, c: 30};
+ * const offset = { b: 40, c: 60};
+ * queue.enqueue(
+ *  changeFromOffset(obj, offset, DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(obj); // { a: 10, b: 50, c: 75 }
+ * ```
  */
 export function changeFromOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, offset);
@@ -80,6 +124,17 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
  * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1;
+ * const obj = { x: 10, y: 20, z: 30};
+ * const scaleFactor = { x: 2, y: 3, z: 4};
+ * queue.enqueue(
+ *  scaleBy(obj, scaleFactor, DURATION)
+ * );
+ * queue.update(DURATION);
+ * console.log(obj); // { x: 20, y: 60, z: 120 }
+ * ```
  */
 export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, scaleFactor);
@@ -96,6 +151,17 @@ export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, e
  * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1;
+ * const obj = { x: 10, y: 20, z: 30};
+ * const scaleFactor = { x: 2, y: 3, z: 4};
+ * queue.enqueue(
+ *  scaleFrom(obj, scaleFactor, DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(obj); // { x: 17.5, y: 50, z: 97.5 }
+ * ```
  */
 export function scaleFrom<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, scaleFactor);

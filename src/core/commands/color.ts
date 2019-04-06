@@ -27,6 +27,16 @@ export enum ColorLerpMode {
  * @param target The target color
  * @param commandDuration The duration of the command
  * @param ease The ease to apply.
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1.0;
+ * const color = { r: 1, g: 1, b: 1, a: 1};
+ * queue.enqueue(
+ *  changeToColor(color, "rgb(50%,20%,10%,0.5)", DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(color); // { r: 0.625, g: 0.4, b: 0.325, 0.625 }
+ * ```
  */
 export function changeToColor<U extends ColorType>(
   ref: Ref<U> | ColorRGB | ColorHSL | ColorHSV,
@@ -75,6 +85,16 @@ export function changeToColor<U extends ColorType>(
  * @param target The color to start from.
  * @param commandDuration The duration of the command
  * @param ease The ease to apply.
+ * ```typescript
+ * const queue = new CommandQueue();
+ * const DURATION = 1.0;
+ * const color = { r: 1, g: 1, b: 1, a: 1};
+ * queue.enqueue(
+ *  changeFromColor(color, "rgb(50%,20%,10%,0.5)", DURATION)
+ * );
+ * queue.update(DURATION / 4);
+ * console.log(color); // { r: 0.875, g: 0.8, b: 0.775, 0.875 }
+ * ```
  */
 export function changeFromColor<U extends ColorType>(
   ref: Ref<U> | ColorRGB | ColorHSL | ColorHSV,
