@@ -33,9 +33,9 @@ export type CommandAct = () => void;
 export type CommandCondition = () => boolean;
 
 /**
- * A duration command is executed over a period of time. The value t is normalized from 0 to 1.
+ * A interval command is executed over a period of time. The value t is normalized from 0 to 1.
  */
-export type CommandDuration = (t: number) => void;
+export type CommandInterval = (t: number) => void;
 
 /**
  * A command factory creates a command.
@@ -49,7 +49,7 @@ export type CommandIterator = IterableIterator<Command | undefined>;
  * function *aCoroutine(): CommandIterator {
  *    yield wait(5); // Log t for 5 seconds
  *    console.log("Now this is called");
- *    yield duration(t => console.log(t), 10); // Log t for 10 seconds
+ *    yield interval(t => console.log(t), 10); // Log t for 10 seconds
  *    console.log("This is also called");
  * }
  * ```
@@ -117,24 +117,24 @@ export function none(): Command {
 }
 
 /**
- * Runs a command over a duration of time.
+ * Runs a command over an interval of time.
  * @param command The command to execute.
- * @param commandDuration The duration of time, in seconds, to apply the command over. Must be greater than or equal to 0.
+ * @param duration The duration of time, in seconds, to apply the command over. Must be greater than or equal to 0.
  * @param ease An easing function to apply to the t parameter of a CommandDuration. If undefined, linear easing is used.
  * ```typescript
  * const NUM_SECONDS = 5;
  * const queue = new CommandQueue();
  * queue.enqueue(
- *  duration(t => { console.log(t); }, NUM_SECONDS)
+ *  interval(t => { console.log(t); }, NUM_SECONDS)
  * );
  * queue.update(1); // 0.2
  * queue.update(2); // 0.6
  * queue.update(2); // 1
  * ```
  */
-export function duration(command: CommandDuration, commandDuration: number, ease?: Ease): Command {
-  checkDurationGreaterThanOrEqualToZero(commandDuration);
-  if (commandDuration === 0.0) {
+export function interval(command: CommandInterval, duration: number, ease?: Ease): Command {
+  checkDurationGreaterThanOrEqualToZero(duration);
+  if (duration === 0.0) {
     // Sometimes it is convenient to create duration commands with
     // a time of zero, so we have a special case.
     return (deltaTime, operation) => {
@@ -148,7 +148,7 @@ export function duration(command: CommandDuration, commandDuration: number, ease
   return (deltaTime, operation) => {
     elapsedTime += deltaTime;
 
-    let t = elapsedTime / commandDuration;
+    let t = elapsedTime / duration;
     t = Math.max(0, Math.min(t, 1));
 
     if (operation === CommandOperation.FastForward) {
@@ -160,11 +160,11 @@ export function duration(command: CommandDuration, commandDuration: number, ease
     }
     command(t);
 
-    const complete = elapsedTime >= commandDuration;
+    const complete = elapsedTime >= duration;
     if (operation === CommandOperation.FastForward) {
       elapsedTime = 0.0;
     } else if (complete) {
-      deltaTime = elapsedTime - commandDuration;
+      deltaTime = elapsedTime - duration;
       elapsedTime = 0.0;
     } else {
       deltaTime = 0.0;
@@ -175,7 +175,7 @@ export function duration(command: CommandDuration, commandDuration: number, ease
 
 /**
  * Waits until a given number of seconds has elapsed.
- * @param commandDuration The duration of time, in seconds, to wait. Must be greater than or equal to 0.
+ * @param duration The duration of time, in seconds, to wait. Must be greater than or equal to 0.
  * ```typescript
  * const queue = new CommandQueue();
  * queue.enqueue(
@@ -186,9 +186,9 @@ export function duration(command: CommandDuration, commandDuration: number, ease
  * queue.update(5); // called
  * ```
  */
-export function waitForSeconds(commandDuration: number): Command {
-  checkDurationGreaterThanOrEqualToZero(commandDuration);
-  if (commandDuration === 0) {
+export function waitForSeconds(duration: number): Command {
+  checkDurationGreaterThanOrEqualToZero(duration);
+  if (duration === 0) {
     return none();
   }
   let elapsedTime = 0.0;
@@ -199,9 +199,9 @@ export function waitForSeconds(commandDuration: number): Command {
     }
     elapsedTime += deltaTime;
     deltaTime = 0.0;
-    const complete = elapsedTime >= commandDuration;
+    const complete = elapsedTime >= duration;
     if (complete) {
-      deltaTime = elapsedTime - commandDuration;
+      deltaTime = elapsedTime - duration;
       elapsedTime = 0.0;
     }
     return { deltaTime, complete };

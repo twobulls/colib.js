@@ -1,6 +1,6 @@
 import { Ref } from '../ref';
 import { Ease } from '../ease';
-import { Command, sequence, duration } from './common';
+import { Command, sequence, interval } from './common';
 import {
   ColorRGB,
   ColorHSL,
@@ -66,7 +66,7 @@ export function changeToColor<U extends ColorType>(
         start = result;
       }
     },
-    duration(
+    interval(
       t => {
         const mixed = lerpFunc(start, end, t);
         const value = convertColor(mixed, outputFormat) as U;
@@ -124,7 +124,7 @@ export function changeFromColor<U extends ColorType>(
         end = result;
       }
     },
-    duration(
+    interval(
       t => {
         const mixed = lerpFunc(start, end, t);
         const value = convertColor(mixed, outputFormat) as U;

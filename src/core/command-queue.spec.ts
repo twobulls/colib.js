@@ -1,5 +1,5 @@
 import { CommandQueue } from './command-queue';
-import { repeat, waitForSeconds, CommandOperation, duration, repeatForever } from './commands';
+import { repeat, waitForSeconds, CommandOperation, interval, repeatForever } from './commands';
 
 describe('CommandQueue', () => {
   it('calls commands in sequence', () => {
@@ -94,7 +94,7 @@ describe('CommandQueue', () => {
     const queue = new CommandQueue();
     let lastT = -1;
     queue.enqueue(
-      duration(t => {
+      interval(t => {
         lastT = t;
       }, 3)
     );
@@ -106,7 +106,7 @@ describe('CommandQueue', () => {
   it('should be safe to call process while the queue is updating', () => {
     const queue = new CommandQueue();
     queue.enqueue(
-      duration(t => {
+      interval(t => {
         queue.process();
       }, 3)
     );

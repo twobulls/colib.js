@@ -3,7 +3,6 @@ import {
   interruptable,
   waitForSeconds,
   none,
-  duration,
   repeat,
   waitForFrames,
   parallel,
@@ -13,7 +12,8 @@ import {
   chooseRandom,
   defer,
   consumeTime,
-  dilateTime
+  dilateTime,
+  interval
 } from './common';
 import { smooth } from '../ease';
 
@@ -71,21 +71,21 @@ describe('none', () => {
   });
 });
 
-describe('duration', () => {
+describe('interval', () => {
   it('respects the fast forward operation', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(duration(t => {}, 10), () => {
+    queue.enqueue(interval(t => {}, 10), () => {
       called = true;
     });
     queue.runToEnd();
     expect(called).toBeTruthy();
   });
-  it('skips to the end of the duration, when the time is 0', () => {
+  it('skips to the end of the interval, when the time is 0', () => {
     const queue = new CommandQueue();
     let lastT = -1;
     queue.enqueue(
-      duration(t => {
+      interval(t => {
         lastT = t;
       }, 0)
     );
@@ -96,7 +96,7 @@ describe('duration', () => {
     const queue = new CommandQueue();
     const ts: number[] = [];
     queue.enqueue(
-      duration(t => {
+      interval(t => {
         ts.push(t);
       }, 4)
     );
@@ -110,7 +110,7 @@ describe('duration', () => {
     const ts: number[] = [];
     const smoothEase = smooth();
     queue.enqueue(
-      duration(
+      interval(
         t => {
           ts.push(t);
         },
@@ -124,7 +124,7 @@ describe('duration', () => {
     expect(ts).toEqual([smoothEase(0.25), smoothEase(0.5), smoothEase(1)]);
   });
   it('throws an error when duration is negative', () => {
-    expect(() => duration(() => {}, -1)).toThrowError();
+    expect(() => interval(() => {}, -1)).toThrowError();
   });
 });
 
@@ -631,7 +631,7 @@ describe('consumeTime', () => {
     let lastT = -1;
     queue.enqueue(
       consumeTime(),
-      duration(t => {
+      interval(t => {
         lastT = t;
       }, 3)
     );
