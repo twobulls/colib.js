@@ -1,6 +1,6 @@
 import { CommandQueue } from '../command-queue';
 import { mapParallel, mapSequential } from './functional';
-import { sequence, waitForSeconds } from './common';
+import { sequence, waitForTime } from './common';
 
 describe('mapParallel', () => {
   it('executes all generated commands in parallel', () => {
@@ -8,7 +8,7 @@ describe('mapParallel', () => {
     const queue = new CommandQueue();
     queue.enqueue(
       mapParallel(items, item =>
-        sequence(waitForSeconds(1), () => {
+        sequence(waitForTime(1), () => {
           item.x++;
         })
       )
@@ -27,7 +27,7 @@ describe('mapParallel', () => {
         if (index % 2 === 0) {
           return undefined;
         }
-        return sequence(waitForSeconds(1), () => {
+        return sequence(waitForTime(1), () => {
           item.x++;
         });
       })
@@ -45,7 +45,7 @@ describe('mapSequential', () => {
     const queue = new CommandQueue();
     queue.enqueue(
       mapSequential(items, item =>
-        sequence(waitForSeconds(1), () => {
+        sequence(waitForTime(1), () => {
           item.x++;
         })
       )

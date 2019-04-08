@@ -1,5 +1,5 @@
 import { CommandQueue } from './command-queue';
-import { repeat, waitForSeconds, CommandOperation, interval, repeatForever } from './commands';
+import { repeat, waitForTime, CommandOperation, interval, repeatForever } from './commands';
 
 describe('CommandQueue', () => {
   it('calls commands in sequence', () => {
@@ -27,7 +27,7 @@ describe('CommandQueue', () => {
 
   it('can acculumate time correctly', () => {
     const queue = new CommandQueue();
-    queue.enqueue(repeat(1000, waitForSeconds(3)));
+    queue.enqueue(repeat(1000, waitForTime(3)));
 
     let totalTime = 0.0;
     do {
@@ -60,7 +60,7 @@ describe('CommandQueue', () => {
   it('should skip when using fast forward mode', () => {
     const queue = new CommandQueue();
     let wasCalled = false;
-    queue.enqueue(waitForSeconds(100), () => {
+    queue.enqueue(waitForTime(100), () => {
       wasCalled = true;
     });
     queue.update(1, CommandOperation.FastForward);
@@ -70,7 +70,7 @@ describe('CommandQueue', () => {
   it('should skip when calling runToEnd', () => {
     const queue = new CommandQueue();
     let wasCalled = false;
-    queue.enqueue(waitForSeconds(100), () => {
+    queue.enqueue(waitForTime(100), () => {
       wasCalled = true;
     });
     queue.runToEnd();
@@ -117,7 +117,7 @@ describe('CommandQueue', () => {
     const queue = new CommandQueue();
     let count = 0;
     queue.enqueue(
-      repeatForever(waitForSeconds(20), () => {
+      repeatForever(waitForTime(20), () => {
         count++;
       })
     );

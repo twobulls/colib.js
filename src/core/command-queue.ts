@@ -80,7 +80,7 @@ export class CommandQueue {
    * ```typescript
    * const queue = new CommandQueue();
    * queue.enqueue(
-   *  waitForSeconds(3),
+   *  waitForTime(3),
    *  () => { console.log('called')}
    * );
    * queue.runToEnd(); // 'called'
@@ -100,9 +100,9 @@ export class CommandQueue {
    * ```typescript
    * const queue = new CommandQueue();
    * queue.enqueue(
-   *  waitForSeconds(0.5),
+   *  waitForTime(0.5),
    *  () => { console.log('a'); },
-   *  waitForSeconds(0.5),
+   *  waitForTime(0.5),
    *  () => { console.log('b'); }
    * );
    * queue.update(0.6); // 'a'

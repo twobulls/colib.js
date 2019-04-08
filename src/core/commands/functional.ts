@@ -10,7 +10,7 @@ import { Command, parallel, sequence } from './common';
  * queue.enqueue(
  *  mapParallel( items, (item) => {
  *    return sequence(
- *      waitForSeconds(1),
+ *      waitForTime(1),
  *      () => { console.log(item); }
  *    )
  *  })
@@ -32,7 +32,7 @@ export function mapParallel<T>(items: Iterable<T>, factory: (item: T, index: num
  * queue.enqueue(
  *  mapSequential( items, (item) => {
  *    return sequence(
- *      waitForSeconds(1),
+ *      waitForTime(1),
  *      () => { console.log(item); }
  *    )
  *  })

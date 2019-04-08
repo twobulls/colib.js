@@ -47,9 +47,9 @@ export type CommandIterator = IterableIterator<Command | undefined>;
  * A coroutine command uses generators to produce a sequence of commands over time.
  * ```typescript
  * function *aCoroutine(): CommandIterator {
- *    yield wait(5); // Log t for 5 seconds
+ *    yield wait(5);
  *    console.log("Now this is called");
- *    yield interval(t => console.log(t), 10); // Log t for 10 seconds
+ *    yield interval(t => console.log(t), 10);
  *    console.log("This is also called");
  * }
  * ```
@@ -72,7 +72,7 @@ export type CommandCoroutine = () => CommandIterator;
  *    defer(() => {
  *      console.log('Playing');
  *      audioPlayer.play();
- *      return waitForSeconds(audioClip.length);
+ *      return waitForTime(audioClip.length);
  *    }, () => {
  *      console.log('Stopped');
  *      audioPlayer.stop();
@@ -119,13 +119,13 @@ export function none(): Command {
 /**
  * Runs a command over an interval of time.
  * @param command The command to execute.
- * @param duration The duration of time, in seconds, to apply the command over. Must be greater than or equal to 0.
+ * @param duration The duration of time to apply the command over. Must be greater than or equal to 0.
  * @param ease An easing function to apply to the t parameter of a CommandDuration. If undefined, linear easing is used.
  * ```typescript
- * const NUM_SECONDS = 5;
+ * const DURATION = 5;
  * const queue = new CommandQueue();
  * queue.enqueue(
- *  interval(t => { console.log(t); }, NUM_SECONDS)
+ *  interval(t => { console.log(t); }, DURATION)
  * );
  * queue.update(1); // 0.2
  * queue.update(2); // 0.6
@@ -174,19 +174,19 @@ export function interval(command: CommandInterval, duration: number, ease?: Ease
 }
 
 /**
- * Waits until a given number of seconds has elapsed.
- * @param duration The duration of time, in seconds, to wait. Must be greater than or equal to 0.
+ * Waits until a given amount of time has elapsed.
+ * @param duration The duration of time to wait. Must be greater than or equal to 0.
  * ```typescript
  * const queue = new CommandQueue();
  * queue.enqueue(
- *    waitForSeconds(10),
+ *    waitForTime(10),
  *    () => { console.log('called'); }
  * );
  * queue.update(5);
  * queue.update(5); // called
  * ```
  */
-export function waitForSeconds(duration: number): Command {
+export function waitForTime(duration: number): Command {
   checkDurationGreaterThanOrEqualToZero(duration);
   if (duration === 0) {
     return none();
@@ -251,7 +251,7 @@ export function waitForFrames(frameCount: number): Command {
  * queue.enqueue(
  *    parallel(
  *     () => { console.log('called 1'); }
- *     waitForSeconds(1),
+ *     waitForTime(1),
  *     () => { console.log('called 2'); }
  *   )
  * );
@@ -297,7 +297,7 @@ export function parallel(...commands: Command[]): Command {
  * const queue = new CommandQueue();
  * queue.enqueue(
  *   sequence(
- *     waitForSeconds(1),
+ *     waitForTime(1),
  *     () => { console.log('called'); }
  *   )
  * );
@@ -383,7 +383,7 @@ export function repeat(repeatCount: number, ...commands: Command[]): Command {
  * const queue = new CommandQueue();
  * queue.enqueue(
  *   repeatForever(
- *     waitForSeconds(1),
+ *     waitForTime(1),
  *     () => { console.log('called'); }
  *   )
  * );
@@ -417,12 +417,12 @@ export function repeatForever(...commands: Command[]): Command {
  * const queue = new CommandQueue();
  *
  * function *coroutineWithNoArguments() {
- *   yield return waitForSeconds(2.0);
+ *   yield return waitForTime(2.0);
  * }
  *
  * function *coroutineWithArguments(firstVal: number, secondVal: number, thirdVal: number) {
  *   console.log(firstVal);
- *   yield waitForSeconds(1.0); // You can return any Command here.
+ *   yield waitForTime(1.0); // You can return any Command here.
  *   console.log(secondValue);
  *   yield; // Wait a single frame.
  *   console.log(thirdVal);
@@ -510,7 +510,7 @@ export function chooseRandom(...commands: (Command | undefined)[]): Command {
  *    defer( () => {
  *      console.log(`Loop ${loopCount}`);
  *      loopCount += 1;
- *      return waitForSeconds(loopCount);
+ *      return waitForTime(loopCount);
  *    })
  *  )
  * );
@@ -538,7 +538,7 @@ export function defer(commandDeferred: CommandFactory): Command {
  * const queue = new CommandQueue();
  * queue.enqueue(
  *  consumeTime(),
- *  waitForSeconds(0.1),
+ *  waitForTime(0.1),
  *  () => { console.log('called'); }
  * );
  * queue.update(1000); // Nothing
@@ -561,7 +561,7 @@ export function consumeTime(): Command {
  * const queue = new CommandQueue();
  * queue.enqueue(
  *  dilateTime(2,
- *    waitForSeconds(1),
+ *    waitForTime(1),
  *    () => { console.log('called'); }
  *  )
  * );

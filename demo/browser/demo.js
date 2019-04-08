@@ -1,4 +1,4 @@
-import { globalScheduler, repeatForever, waitForSeconds, changeToColor, Ref, ColorLerpMode } from './colib.min.js';
+import { globalScheduler, repeatForever, waitForTime, changeToColor, Ref, ColorLerpMode } from './colib.min.js';
 
 const box = document.getElementById('box');
 //box.style.color = '#FF0000';
@@ -14,11 +14,11 @@ const ref = new Ref(
 globalScheduler().add(
   repeatForever(
     () => console.log('Howdy'),
-    waitForSeconds(3),
+    waitForTime(3),
     changeToColor(ref, '#00FF00', 1, ColorLerpMode.HSV),
-    waitForSeconds(0.5),
+    waitForTime(0.5),
     changeToColor(ref, '#0000FF', 1, ColorLerpMode.HSV),
-    waitForSeconds(0.5),
+    waitForTime(0.5),
     changeToColor(ref, '#FF0000', 1, ColorLerpMode.HSV)
   )
 );

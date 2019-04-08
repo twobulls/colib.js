@@ -42,12 +42,12 @@ export class CommandScheduler {
    * const scheduler = new CommandScheduler();
    * scheduler.add(
    *   () => { console.log('a'); }
-   *   waitForSeconds(1),
+   *   waitForTime(1),
    *   () => { console.log('c'); }
    * );
    * scheduler.add(
    *   () => { console.log('b'); }
-   *   waitForSeconds(1),
+   *   waitForTime(1),
    *   () => { console.log('d'); }
    * );
    * scheduler.update(0.5); 'a' 'b'

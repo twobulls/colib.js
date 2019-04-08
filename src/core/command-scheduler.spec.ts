@@ -1,5 +1,5 @@
 import { CommandScheduler } from './command-scheduler';
-import { waitForSeconds } from './commands';
+import { waitForTime } from './commands';
 
 describe('CommandScheduler', () => {
   it('executes parallel commands in order they were added', () => {
@@ -23,13 +23,13 @@ describe('CommandScheduler', () => {
     const scheduler = new CommandScheduler();
     const vals: string[] = [];
 
-    scheduler.add(waitForSeconds(1), () => {
+    scheduler.add(waitForTime(1), () => {
       vals.push('a');
     });
-    scheduler.add(waitForSeconds(2), () => {
+    scheduler.add(waitForTime(2), () => {
       vals.push('b');
     });
-    scheduler.add(waitForSeconds(3), () => {
+    scheduler.add(waitForTime(3), () => {
       vals.push('c');
     });
 
@@ -55,7 +55,7 @@ describe('CommandScheduler', () => {
     const scheduler = new CommandScheduler();
     const vals: string[] = [];
 
-    scheduler.add(waitForSeconds(1), () => {
+    scheduler.add(waitForTime(1), () => {
       vals.push('a');
     });
 
