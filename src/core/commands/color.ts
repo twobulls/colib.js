@@ -31,7 +31,7 @@ export enum ColorLerpMode {
  * const queue = new CommandQueue();
  * const DURATION = 1.0;
  * const color = { r: 1, g: 1, b: 1, a: 1};
- * queue.enqueue(
+ * queue.push(
  *  changeToColor(color, "rgb(50%,20%,10%,0.5)", DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -89,7 +89,7 @@ export function changeToColor<U extends ColorType>(
  * const queue = new CommandQueue();
  * const DURATION = 1.0;
  * const color = { r: 1, g: 1, b: 1, a: 1};
- * queue.enqueue(
+ * queue.push(
  *  changeFromColor(color, "rgb(50%,20%,10%,0.5)", DURATION)
  * );
  * queue.update(DURATION / 4);

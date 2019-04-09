@@ -6,7 +6,7 @@ describe('mapParallel', () => {
   it('executes all generated commands in parallel', () => {
     const items = [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }];
     const queue = new CommandQueue();
-    queue.enqueue(
+    queue.push(
       mapParallel(items, item =>
         sequence(waitForTime(1), () => {
           item.x++;
@@ -22,7 +22,7 @@ describe('mapParallel', () => {
   it('skips undefined return values', () => {
     const items = [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }];
     const queue = new CommandQueue();
-    queue.enqueue(
+    queue.push(
       mapParallel(items, (item, index) => {
         if (index % 2 === 0) {
           return undefined;
@@ -43,7 +43,7 @@ describe('mapSequential', () => {
   it('executes all generated commands in sequence', () => {
     const items = [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }];
     const queue = new CommandQueue();
-    queue.enqueue(
+    queue.push(
       mapSequential(items, item =>
         sequence(waitForTime(1), () => {
           item.x++;

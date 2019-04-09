@@ -21,7 +21,7 @@ describe('interruptable', () => {
   it('will call the interrupt handler on fast foward of in progress command', () => {
     const queue = new CommandQueue();
     let interrupted = false;
-    queue.enqueue(
+    queue.push(
       interruptable(waitForTime(1), () => {
         interrupted = true;
       })
@@ -34,7 +34,7 @@ describe('interruptable', () => {
   it("won't call the interrupt handler on fast foward of unstarted command", () => {
     const queue = new CommandQueue();
     let interrupted = false;
-    queue.enqueue(
+    queue.push(
       interruptable(waitForTime(1), () => {
         interrupted = true;
       })
@@ -46,7 +46,7 @@ describe('interruptable', () => {
   it('can be re-run after interruption', () => {
     const queue = new CommandQueue();
     let callCount = 0;
-    queue.enqueue(
+    queue.push(
       repeat(2, interruptable(waitForTime(1), () => {}), () => {
         callCount++;
       })
@@ -63,7 +63,7 @@ describe('none', () => {
   it('will complete immediately, without using any time', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(none(), () => {
+    queue.push(none(), () => {
       called = true;
     });
     queue.process();
@@ -75,7 +75,7 @@ describe('interval', () => {
   it('respects the fast forward operation', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(interval(t => {}, 10), () => {
+    queue.push(interval(t => {}, 10), () => {
       called = true;
     });
     queue.runToEnd();
@@ -84,7 +84,7 @@ describe('interval', () => {
   it('skips to the end of the interval, when the time is 0', () => {
     const queue = new CommandQueue();
     let lastT = -1;
-    queue.enqueue(
+    queue.push(
       interval(t => {
         lastT = t;
       }, 0)
@@ -95,7 +95,7 @@ describe('interval', () => {
   it('normalises t', () => {
     const queue = new CommandQueue();
     const ts: number[] = [];
-    queue.enqueue(
+    queue.push(
       interval(t => {
         ts.push(t);
       }, 4)
@@ -109,7 +109,7 @@ describe('interval', () => {
     const queue = new CommandQueue();
     const ts: number[] = [];
     const smoothEase = smooth();
-    queue.enqueue(
+    queue.push(
       interval(
         t => {
           ts.push(t);
@@ -132,7 +132,7 @@ describe('waitForTime', () => {
   it('can be interrupted', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(waitForTime(1.0), () => {
+    queue.push(waitForTime(1.0), () => {
       called = true;
     });
     queue.runToEnd();
@@ -141,7 +141,7 @@ describe('waitForTime', () => {
   it('takes up the correct duration', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(waitForTime(1.0), () => {
+    queue.push(waitForTime(1.0), () => {
       called = true;
     });
     queue.update(0.5);
@@ -153,7 +153,7 @@ describe('waitForTime', () => {
   it('can take 0 duration', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(waitForTime(0), () => {
+    queue.push(waitForTime(0), () => {
       called = true;
     });
     queue.process();
@@ -168,7 +168,7 @@ describe('waitForFrames', () => {
   it('takes multiple updates to complete', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(waitForFrames(3), () => {
+    queue.push(waitForFrames(3), () => {
       called = true;
     });
     queue.process();
@@ -183,7 +183,7 @@ describe('waitForFrames', () => {
   it('can be interrupted', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(waitForFrames(3), () => {
+    queue.push(waitForFrames(3), () => {
       called = true;
     });
     queue.runToEnd();
@@ -192,7 +192,7 @@ describe('waitForFrames', () => {
   it('can be restarted', () => {
     const queue = new CommandQueue();
     let callCount = 0;
-    queue.enqueue(
+    queue.push(
       repeat(2, waitForFrames(2), () => {
         callCount++;
       })
@@ -211,7 +211,7 @@ describe('parallel', () => {
   it('handles an empty command list', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(parallel(), () => {
+    queue.push(parallel(), () => {
       called = true;
     });
     queue.process();
@@ -232,7 +232,7 @@ describe('parallel', () => {
     let calledC = false;
     let calledD = false;
 
-    queue.enqueue(
+    queue.push(
       parallel(
         sequence(
           waitForTime(0.5),
@@ -266,7 +266,7 @@ describe('parallel', () => {
   it('can be restarted', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
-    queue.enqueue(
+    queue.push(
       repeat(
         2,
         parallel(waitForTime(1), () => {
@@ -285,7 +285,7 @@ describe('sequence', () => {
   it('handles an empty command list', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(sequence(), () => {
+    queue.push(sequence(), () => {
       called = true;
     });
     queue.process();
@@ -303,7 +303,7 @@ describe('sequence', () => {
     let calledA = false;
     let calledB = false;
 
-    queue.enqueue(
+    queue.push(
       waitForTime(1),
       () => {
         calledA = true;
@@ -324,7 +324,7 @@ describe('sequence', () => {
   it('can be restarted', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
-    queue.enqueue(
+    queue.push(
       repeat(
         2,
         sequence(waitForTime(1), () => {
@@ -347,7 +347,7 @@ describe('repeat', () => {
     const queue = new CommandQueue();
     let calledA = false;
     let calledB = false;
-    queue.enqueue(
+    queue.push(
       repeat(0, () => {
         calledA = false;
       }),
@@ -366,7 +366,7 @@ describe('repeat', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
     let calledB = false;
-    queue.enqueue(
+    queue.push(
       repeat(1, () => {
         calledCount++;
       }),
@@ -383,7 +383,7 @@ describe('repeat', () => {
   it('will complete a repeat loop multiple time', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
-    queue.enqueue(
+    queue.push(
       repeat(10, () => {
         calledCount++;
       })
@@ -396,7 +396,7 @@ describe('repeat', () => {
   it('can be repeated', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
-    queue.enqueue(
+    queue.push(
       repeat(
         2,
         repeat(10, () => {
@@ -416,7 +416,7 @@ describe('repeatForever', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
     let lastCalled = false;
-    queue.enqueue(
+    queue.push(
       repeatForever(waitForTime(1), () => {
         calledCount++;
       }),
@@ -434,7 +434,7 @@ describe('repeatForever', () => {
     const queue = new CommandQueue();
     let calledCount = 0;
     let lastCalled = false;
-    queue.enqueue(
+    queue.push(
       repeatForever(waitForTime(1), () => {
         calledCount++;
       }),
@@ -461,7 +461,7 @@ describe('coroutine', () => {
       yield waitForTime(1);
       calledB = true;
     }
-    queue.enqueue(coroutine(gen));
+    queue.push(coroutine(gen));
     queue.update(1);
     expect(calledA).toBeTruthy();
     expect(calledB).toBeFalsy();
@@ -476,7 +476,7 @@ describe('coroutine', () => {
       yield;
       called = true;
     }
-    queue.enqueue(coroutine(gen));
+    queue.push(coroutine(gen));
     queue.process();
     expect(called).toBeFalsy();
     queue.process();
@@ -490,7 +490,7 @@ describe('coroutine', () => {
       calledCount++;
       yield;
     }
-    queue.enqueue(repeat(3, coroutine(gen)));
+    queue.push(repeat(3, coroutine(gen)));
     queue.process();
     expect(calledCount).toBe(1);
     queue.process();
@@ -504,7 +504,7 @@ describe('chooseRandom', () => {
   it('handles an empty command list', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(chooseRandom(), () => {
+    queue.push(chooseRandom(), () => {
       called = true;
     });
     queue.process();
@@ -516,7 +516,7 @@ describe('chooseRandom', () => {
     let calledA = false;
     let calledB = false;
     let calledC = false;
-    queue.enqueue(
+    queue.push(
       chooseRandom(
         () => {
           calledA = true;
@@ -547,7 +547,7 @@ describe('chooseRandom', () => {
     let calledACount = 0;
     let calledBCount = 0;
     let calledCCount = 0;
-    queue.enqueue(
+    queue.push(
       repeatForever(
         waitForTime(1),
         chooseRandom(
@@ -577,7 +577,7 @@ describe('defer', () => {
     const queue = new CommandQueue();
     let calledA = false;
     let calledB = false;
-    queue.enqueue(
+    queue.push(
       defer(() => {
         calledA = true;
         return sequence(waitForTime(1), () => {
@@ -597,7 +597,7 @@ describe('defer', () => {
     let calledDeferCount = 0;
     let calledInnerCount = 0;
 
-    queue.enqueue(
+    queue.push(
       repeat(
         3,
         defer(() => {
@@ -617,7 +617,7 @@ describe('defer', () => {
   it('will take no time if undefined is picked', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(chooseRandom(undefined, undefined, undefined), () => {
+    queue.push(chooseRandom(undefined, undefined, undefined), () => {
       called = true;
     });
     queue.process();
@@ -629,7 +629,7 @@ describe('consumeTime', () => {
   it('changes deltaTime to 0', () => {
     const queue = new CommandQueue();
     let lastT = -1;
-    queue.enqueue(
+    queue.push(
       consumeTime(),
       interval(t => {
         lastT = t;
@@ -647,7 +647,7 @@ describe('dilateTime', () => {
   it('adjusts the time dilation', () => {
     const queue = new CommandQueue();
     let called = false;
-    queue.enqueue(
+    queue.push(
       dilateTime(0.5, waitForTime(1), () => {
         called = true;
       })

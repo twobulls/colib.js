@@ -30,7 +30,7 @@ export class CommandScheduler {
       return;
     }
     const queue = new CommandQueue();
-    queue.enqueue(...commands);
+    queue.push(...commands);
     this.queues.push(queue);
   }
 

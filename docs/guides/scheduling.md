@@ -21,8 +21,8 @@ The [CommandQueue](../api/classes/commandqueue.md) is the most basic way of runn
 
 ```typescript
 const queue = new CommandQueue();
-queue.enqueue(waitForTime(4.0));
-queue.enqueue(() => {
+queue.push(waitForTime(4.0));
+queue.push(() => {
   console.log('Called!');
 });
 queue.update(4.0);
@@ -54,10 +54,10 @@ const group = new CommandQueueGroup();
 const queue1 = new CommandQueue();
 group.addQueue(queue);
 const queue2 = groupd.createQueue();
-queue1.enqueue(waitForSeconds(4.0), () => {
+queue1.push(waitForSeconds(4.0), () => {
   console.log('World');
 });
-queue2.enqueue(waitForSeconds(2.0), () => {
+queue2.push(waitForSeconds(2.0), () => {
   console.log('Hello');
 });
 group.update(1.0); // 'Hello' 'World'
@@ -75,7 +75,7 @@ const queue = group.createQueue();
 // OR, if you just want a quick way to grab a new CommandQueue
 const queue = globalQueueGroup().createQueue();
 
-queue.enqueue(waitForSeconds(2.0), () => {
+queue.push(waitForSeconds(2.0), () => {
   console.log('this was called');
 });
 ```

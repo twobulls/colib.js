@@ -12,7 +12,7 @@ import { Ease } from '../ease';
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
  * const numRef = Ref.create(0);
- * queue.enqueue(
+ * queue.push(
  *  changeToNum(numRef, 100, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -45,7 +45,7 @@ export function changeToNum(ref: Ref<number>, target: number, duration: number, 
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
  * const numRef = Ref.create(0);
- * queue.enqueue(
+ * queue.push(
  *  changeFromNum(numRef, 100, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -78,7 +78,7 @@ export function changeFromNum(ref: Ref<number>, startTarget: number, duration: n
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
  * const numRef = Ref.create(10);
- * queue.enqueue(
+ * queue.push(
  *  changeToOffsetNum(numRef, 100, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -114,7 +114,7 @@ export function changeToOffsetNum(ref: Ref<number>, offset: number, duration: nu
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
  * const numRef = Ref.create(10);
- * queue.enqueue(
+ * queue.push(
  *  changeFromOffsetNum(numRef, 100, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -149,7 +149,7 @@ export function changeFromOffsetNum(ref: Ref<number>, offset: number, duration: 
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
  * const numRef = Ref.create(4);
- * queue.enqueue(
+ * queue.push(
  *  scaleByNum(numRef, 100, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -183,7 +183,7 @@ export function scaleByNum(ref: Ref<number>, scaleFactor: number, commandDuratio
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
  * const numRef = Ref.create(4);
- * queue.enqueue(
+ * queue.push(
  *  scaleFromNum(numRef, 100, DURATION)
  * );
  * queue.update(DURATION / 4);

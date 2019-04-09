@@ -7,7 +7,7 @@ import { Command, parallel, sequence } from './common';
  * ```typescript
  * const items = ["called 1", "called 2", "called 3"]
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *  mapParallel( items, (item) => {
  *    return sequence(
  *      waitForTime(1),
@@ -29,7 +29,7 @@ export function mapParallel<T>(items: Iterable<T>, factory: (item: T, index: num
  * ```typescript
  * const items = ["called 1", "called 2", "called 3"]
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *  mapSequential( items, (item) => {
  *    return sequence(
  *      waitForTime(1),

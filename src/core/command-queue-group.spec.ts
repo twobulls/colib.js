@@ -8,7 +8,7 @@ describe('CommandQueueGroup', () => {
     const newQueue = group.createQueue();
     let called = false;
 
-    newQueue.enqueue(() => {
+    newQueue.push(() => {
       called = true;
     });
     group.update(0.0);
@@ -20,7 +20,7 @@ describe('CommandQueueGroup', () => {
     group.addQueue(queue);
     let called = false;
 
-    queue.enqueue(() => {
+    queue.push(() => {
       called = true;
     });
 
@@ -33,7 +33,7 @@ describe('CommandQueueGroup', () => {
     group.addQueue(queue);
     let calledCount = 0;
 
-    queue.enqueue(
+    queue.push(
       () => {
         calledCount++;
       },
@@ -53,7 +53,7 @@ describe('CommandQueueGroup', () => {
     group.removeQueue(queue);
     let calledCount = 0;
 
-    queue.enqueue(() => {
+    queue.push(() => {
       calledCount++;
     });
 
@@ -66,7 +66,7 @@ describe('CommandQueueGroup', () => {
     const queue = group.createQueue();
     let calledCount = 0;
 
-    queue.enqueue(
+    queue.push(
       () => {
         calledCount++;
         group.removeQueue(queue);
@@ -88,9 +88,9 @@ describe('CommandQueueGroup', () => {
     const queue = group.createQueue();
     let calledCount = 0;
 
-    queue.enqueue(() => {
+    queue.push(() => {
       calledCount++;
-      group.createQueue().enqueue(() => {
+      group.createQueue().push(() => {
         calledCount++;
       });
     });
@@ -107,9 +107,9 @@ describe('CommandQueueGroup', () => {
 
     let calledCount = 0;
 
-    queue.enqueue(() => {
+    queue.push(() => {
       calledCount++;
-      group.createQueue().enqueue(() => {
+      group.createQueue().push(() => {
         calledCount++;
       });
     });

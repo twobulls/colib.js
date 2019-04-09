@@ -7,7 +7,7 @@ describe('changeToNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeToNum(ref, 10, 3));
+    queue.push(changeToNum(ref, 10, 3));
     queue.process();
     expect(ref.value).toBe(3);
   });
@@ -16,7 +16,7 @@ describe('changeToNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(0);
-    queue.enqueue(changeToNum(ref, 10, 3));
+    queue.push(changeToNum(ref, 10, 3));
     queue.update(3);
     expect(ref.value).toBe(10);
   });
@@ -27,7 +27,7 @@ describe('changeFromNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeFromNum(ref, 10, 3));
+    queue.push(changeFromNum(ref, 10, 3));
     queue.process();
     expect(ref.value).toBe(10);
   });
@@ -36,7 +36,7 @@ describe('changeFromNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeFromNum(ref, 10, 3));
+    queue.push(changeFromNum(ref, 10, 3));
     queue.update(3);
     expect(ref.value).toBe(3);
   });
@@ -47,7 +47,7 @@ describe('changeToOffsetNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeToOffsetNum(ref, 10, 3));
+    queue.push(changeToOffsetNum(ref, 10, 3));
     queue.process();
     expect(ref.value).toBe(3);
   });
@@ -56,7 +56,7 @@ describe('changeToOffsetNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeToOffsetNum(ref, 10, 3));
+    queue.push(changeToOffsetNum(ref, 10, 3));
     queue.update(3);
     expect(ref.value).toBe(13);
   });
@@ -67,7 +67,7 @@ describe('changeFromOffsetNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeFromOffsetNum(ref, 10, 3));
+    queue.push(changeFromOffsetNum(ref, 10, 3));
     queue.process();
     expect(ref.value).toBe(13);
   });
@@ -76,7 +76,7 @@ describe('changeFromOffsetNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(changeFromOffsetNum(ref, 10, 3));
+    queue.push(changeFromOffsetNum(ref, 10, 3));
     queue.update(3);
     expect(ref.value).toBe(3);
   });
@@ -87,7 +87,7 @@ describe('scaleByNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleByNum(ref, 2, 3));
+    queue.push(scaleByNum(ref, 2, 3));
     queue.process();
     expect(ref.value).toBe(3);
   });
@@ -95,7 +95,7 @@ describe('scaleByNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleByNum(ref, 2, 3));
+    queue.push(scaleByNum(ref, 2, 3));
     queue.update(3);
     expect(ref.value).toBe(6);
   });
@@ -106,7 +106,7 @@ describe('scaleFromNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleFromNum(ref, 2, 3));
+    queue.push(scaleFromNum(ref, 2, 3));
     queue.process();
     expect(ref.value).toBe(6);
   });
@@ -114,7 +114,7 @@ describe('scaleFromNum', () => {
     const queue = new CommandQueue();
 
     const ref = Ref.create(3);
-    queue.enqueue(scaleFromNum(ref, 2, 3));
+    queue.push(scaleFromNum(ref, 2, 3));
     queue.update(3);
     expect(ref.value).toBe(3);
   });

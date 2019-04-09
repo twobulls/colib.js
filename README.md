@@ -15,7 +15,7 @@ Colib is a highly modular system for building complex animations/timed event seq
 
 ```typescript
 const queue = new CommandQueue();
-queue.enqueue(
+queue.push(
   waitForTime(3),
   changeByOffset(balloon, {y: 100 }, 0.5, smooth()),
   parallel(

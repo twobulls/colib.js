@@ -6,12 +6,12 @@ describe('CommandQueue', () => {
     const queue = new CommandQueue();
 
     let lastCalled = '';
-    queue.enqueue(
+    queue.push(
       () => {
         expect(lastCalled).toEqual('');
         lastCalled = 'a';
         // Add to the back of the queue, a,b already in queue.
-        queue.enqueue(() => {
+        queue.push(() => {
           expect(lastCalled).toEqual('b');
           lastCalled = 'c';
         });
@@ -27,7 +27,7 @@ describe('CommandQueue', () => {
 
   it('can acculumate time correctly', () => {
     const queue = new CommandQueue();
-    queue.enqueue(repeat(1000, waitForTime(3)));
+    queue.push(repeat(1000, waitForTime(3)));
 
     let totalTime = 0.0;
     do {
@@ -41,7 +41,7 @@ describe('CommandQueue', () => {
   it("shouldn't run the next command when paused", () => {
     const queue = new CommandQueue();
     let secondCommandCalled = false;
-    queue.enqueue(
+    queue.push(
       () => {
         queue.paused = true;
       },
@@ -60,7 +60,7 @@ describe('CommandQueue', () => {
   it('should skip when using fast forward mode', () => {
     const queue = new CommandQueue();
     let wasCalled = false;
-    queue.enqueue(waitForTime(100), () => {
+    queue.push(waitForTime(100), () => {
       wasCalled = true;
     });
     queue.update(1, CommandOperation.FastForward);
@@ -70,7 +70,7 @@ describe('CommandQueue', () => {
   it('should skip when calling runToEnd', () => {
     const queue = new CommandQueue();
     let wasCalled = false;
-    queue.enqueue(waitForTime(100), () => {
+    queue.push(waitForTime(100), () => {
       wasCalled = true;
     });
     queue.runToEnd();
@@ -84,7 +84,7 @@ describe('CommandQueue', () => {
 
   it('should throw an error when update is called while queue is already updating', () => {
     const queue = new CommandQueue();
-    queue.enqueue(() => {
+    queue.push(() => {
       queue.update(1);
     });
     expect(() => queue.update(1)).toThrowError();
@@ -93,7 +93,7 @@ describe('CommandQueue', () => {
   it('should process the next command without changing time', () => {
     const queue = new CommandQueue();
     let lastT = -1;
-    queue.enqueue(
+    queue.push(
       interval(t => {
         lastT = t;
       }, 3)
@@ -105,7 +105,7 @@ describe('CommandQueue', () => {
 
   it('should be safe to call process while the queue is updating', () => {
     const queue = new CommandQueue();
-    queue.enqueue(
+    queue.push(
       interval(t => {
         queue.process();
       }, 3)
@@ -116,7 +116,7 @@ describe('CommandQueue', () => {
   it('time is stable over long durations', () => {
     const queue = new CommandQueue();
     let count = 0;
-    queue.enqueue(
+    queue.push(
       repeatForever(waitForTime(20), () => {
         count++;
       })

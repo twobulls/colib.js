@@ -67,7 +67,7 @@ export type CommandCoroutine = () => CommandIterator;
  * ```typescript
  * const queue = new CommandQueue();
  * const audioPlayer = new AudioPlayer(audioClip);
- * queue.enqueue(
+ * queue.push(
  *  interruptable(
  *    defer(() => {
  *      console.log('Playing');
@@ -105,7 +105,7 @@ export function interruptable(command: Command, onInterrupt: () => void): Comman
  * A command which does nothing. Can be useful as a return value.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *   none(),
  *   () => { console.log('called'); }
  * );
@@ -124,7 +124,7 @@ export function none(): Command {
  * ```typescript
  * const DURATION = 5;
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *  interval(t => { console.log(t); }, DURATION)
  * );
  * queue.update(1); // 0.2
@@ -178,7 +178,7 @@ export function interval(command: CommandInterval, duration: number, ease?: Ease
  * @param duration The duration of time to wait. Must be greater than or equal to 0.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *    waitForTime(10),
  *    () => { console.log('called'); }
  * );
@@ -213,7 +213,7 @@ export function waitForTime(duration: number): Command {
  * @param frameCount The number of frames to wait. Must be > 0.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *    waitForFrames(2),
  *    () => { console.log('called'); }
  * );
@@ -248,7 +248,7 @@ export function waitForFrames(frameCount: number): Command {
  * @param commands The commands to execute.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *    parallel(
  *     () => { console.log('called 1'); }
  *     waitForTime(1),
@@ -295,7 +295,7 @@ export function parallel(...commands: Command[]): Command {
  * @param commands A parameter list of commands to execute sequentially.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *   sequence(
  *     waitForTime(1),
  *     () => { console.log('called'); }
@@ -338,7 +338,7 @@ export function sequence(...commands: Command[]): Command {
  * @param commands The commands to repeat. All of the basic commands are repeatable without side-effects.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *   repeat(3,
  *     () => {console.log('called'); }
  *   )
@@ -381,7 +381,7 @@ export function repeat(repeatCount: number, ...commands: Command[]): Command {
  * @param commands The commands to execute.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *   repeatForever(
  *     waitForTime(1),
  *     () => { console.log('called'); }
@@ -428,7 +428,7 @@ export function repeatForever(...commands: Command[]): Command {
  *   console.log(thirdVal);
  * }
  *
- * queue.enqueue(
+ * queue.push(
  *   coroutine(coroutineWithNoArguments),
  *   coroutine(() => coroutineWithArguments(1, 2, 3))
  * );
@@ -478,7 +478,7 @@ export function coroutine(command: CommandCoroutine): Command {
  * Undefined commands can be passed. At least one command must be specified.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *  chooseRandom(
  *    () => { console.log('a'); },
  *    () => { console.log('b'); },
@@ -505,7 +505,7 @@ export function chooseRandom(...commands: (Command | undefined)[]): Command {
  * ```typescript
  * const queue = new CommandQueue();
  * let loopCount = 0;
- * queue.enqueue(
+ * queue.push(
  *  repeat(3,
  *    defer( () => {
  *      console.log(`Loop ${loopCount}`);
@@ -536,7 +536,7 @@ export function defer(commandDeferred: CommandFactory): Command {
  * Useful for compensating for loading bumps.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *  consumeTime(),
  *  waitForTime(0.1),
  *  () => { console.log('called'); }
@@ -559,7 +559,7 @@ export function consumeTime(): Command {
  * @param commands A list of commands to choose to dilate time for.
  * ```typescript
  * const queue = new CommandQueue();
- * queue.enqueue(
+ * queue.push(
  *  dilateTime(2,
  *    waitForTime(1),
  *    () => { console.log('called'); }

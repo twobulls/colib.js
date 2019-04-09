@@ -6,7 +6,7 @@ describe('changeTo', () => {
     const point = { x: 10, y: 20, z: 30 };
     const target = { x: 20, y: 30, z: 40 };
     const queue = new CommandQueue();
-    queue.enqueue(changeTo(point, target, 4.0));
+    queue.push(changeTo(point, target, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 12.5, y: 22.5, z: 32.5 });
   });
@@ -15,7 +15,7 @@ describe('changeTo', () => {
     const point = { x: 10, y: 20, z: 30, myString: 'Hello' };
     const target = { x: 20, y: 30, z: 40, myString: 'World' };
     const queue = new CommandQueue();
-    queue.enqueue(changeTo(point, target, 3.0));
+    queue.push(changeTo(point, target, 3.0));
     queue.update(1.5);
     expect(point.myString).toEqual('Hello');
   });
@@ -24,7 +24,7 @@ describe('changeTo', () => {
     const point = { x: 10, y: 20 };
     const target = { x: 20, y: 30, z: 40 };
     const queue = new CommandQueue();
-    queue.enqueue(changeTo(point, target, 3.0));
+    queue.push(changeTo(point, target, 3.0));
     queue.update(1.5);
     expect(point).toEqual({ x: 15, y: 25 });
   });
@@ -33,7 +33,7 @@ describe('changeTo', () => {
     const point = { x: 10, y: 20, z: 30 };
     const target = { x: 20, y: 30 };
     const queue = new CommandQueue();
-    queue.enqueue(changeTo(point, target, 3.0));
+    queue.push(changeTo(point, target, 3.0));
     queue.update(1.5);
     expect(point).toEqual({ x: 15, y: 25, z: 30 });
   });
@@ -43,7 +43,7 @@ describe('changeTo', () => {
     const target = { x: 20, subObj: { y: 30, z: 40 } };
 
     const queue = new CommandQueue();
-    queue.enqueue(changeTo(point, target, 3.0));
+    queue.push(changeTo(point, target, 3.0));
     queue.update(1.5);
     expect(point).toEqual({ x: 15, subObj: { y: 25, z: 35 } });
   });
@@ -65,7 +65,7 @@ describe('changeFrom', () => {
     const point = { x: 10, y: 20, z: 30 };
     const target = { x: 20, y: 30, z: 40 };
     const queue = new CommandQueue();
-    queue.enqueue(changeFrom(point, target, 4.0));
+    queue.push(changeFrom(point, target, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 17.5, y: 27.5, z: 37.5 });
   });
@@ -76,7 +76,7 @@ describe('changeFrom', () => {
     const point = { x: 10, y: 20, z: 30 };
     const target = { x: 20, y: 30, z: 40 };
     const queue = new CommandQueue();
-    queue.enqueue(changeFrom(point, target, 4.0));
+    queue.push(changeFrom(point, target, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 17.5, y: 27.5, z: 37.5 });
   });
@@ -87,7 +87,7 @@ describe('changeToOffset', () => {
     const point = { x: 10, y: 20, z: 30 };
     const target = { x: 20, y: 30, z: 40 };
     const queue = new CommandQueue();
-    queue.enqueue(changeToOffset(point, target, 4.0));
+    queue.push(changeToOffset(point, target, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 15, y: 27.5, z: 40 });
   });
@@ -98,7 +98,7 @@ describe('changeFromOffset', () => {
     const point = { x: 10, y: 20, z: 30 };
     const target = { x: 20, y: 30, z: 40 };
     const queue = new CommandQueue();
-    queue.enqueue(changeFromOffset(point, target, 4.0));
+    queue.push(changeFromOffset(point, target, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 25, y: 42.5, z: 60 });
   });
@@ -109,7 +109,7 @@ describe('scaleBy', () => {
     const point = { x: 10, y: 20, z: 30 };
     const amount = { x: 2, y: 3, z: 4 };
     const queue = new CommandQueue();
-    queue.enqueue(scaleBy(point, amount, 4.0));
+    queue.push(scaleBy(point, amount, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 12.5, y: 30, z: 52.5 });
   });
@@ -120,7 +120,7 @@ describe('scaleFrom', () => {
     const point = { x: 10, y: 20, z: 30 };
     const amount = { x: 2, y: 3, z: 4 };
     const queue = new CommandQueue();
-    queue.enqueue(scaleFrom(point, amount, 4.0));
+    queue.push(scaleFrom(point, amount, 4.0));
     queue.update(1);
     expect(point).toEqual({ x: 17.5, y: 50, z: 97.5 });
   });

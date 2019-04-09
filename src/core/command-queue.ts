@@ -2,7 +2,7 @@ import { Command, CommandOperation } from './commands';
 
 /**
  * The CommandQueue class is one of core primitives for running commands.
- * It operates, as its name suggests, as a FIFO queue. All Commands Enqueued
+ * It operates, as its name suggests, as a FIFO queue. All Commands pushed
  * to the queue run in sequential order. When it is fed time via Update, it
  * will remove Commands from the queue as they complete.
  */
@@ -10,7 +10,7 @@ export class CommandQueue {
   /**
    * Gets or sets a value indicating whether this `CommandQueue` is paused.
    * ```typescript
-   * queue.enqueue(
+   * queue.push(
    *   () => { console.log('called');}
    * );
    * queue.paused = true;
@@ -22,7 +22,7 @@ export class CommandQueue {
   paused = false;
 
   /**
-   * Gets the elapsed time since the current executing CommandDelegate started.
+   * Gets the elapsed time since the current executing Command started.
    */
   get deltaTimeAccumulation() {
     return this._deltaTimeAccumulation;
@@ -43,18 +43,18 @@ export class CommandQueue {
 
   /**
    * Enqueue the specified command. Commands are queued up in the order specified.
-   * Multiple calls to `enqueue` result is the same sequential ordering ie.
+   * Multiple calls to `push` result is the same sequential ordering ie.
    * @param commands The `Command`s to be enqueued. The `CommandQueue` will dequeue the commands over succesive calls to
    * update.
    * ```typescript
    * const queue = new CommandQueue();
-   * queue.enqueue(commandOne);
-   * queue.enqueue(commandTwo);
+   * queue.push(commandOne);
+   * queue.push(commandTwo);
    * // Is equivalent to
-   * queue.enqueue(commandOne, commandTwo);
+   * queue.push(commandOne, commandTwo);
    * ```
    */
-  enqueue(...commands: Command[]): CommandQueue {
+  push(...commands: Command[]): CommandQueue {
     this.commands.push(...commands);
     return this;
   }
@@ -63,7 +63,7 @@ export class CommandQueue {
    * Updates the queue with a zero time update. This will make sure the first available command is started, but no time is consumed.
    * ```typescript
    * const queue = new CommandQueue();
-   * queue.enqueue( () => { console.log('called') });
+   * queue.push( () => { console.log('called') });
    * queue.process(); // 'called'
    * ```
    */
@@ -79,7 +79,7 @@ export class CommandQueue {
    * commands in the queue rely on external state changes.
    * ```typescript
    * const queue = new CommandQueue();
-   * queue.enqueue(
+   * queue.push(
    *  waitForTime(3),
    *  () => { console.log('called')}
    * );
@@ -99,7 +99,7 @@ export class CommandQueue {
    * @returns If the queue is finished as no `Command`s remain, returns `true`, `false` otherwise.
    * ```typescript
    * const queue = new CommandQueue();
-   * queue.enqueue(
+   * queue.push(
    *  waitForTime(0.5),
    *  () => { console.log('a'); },
    *  waitForTime(0.5),

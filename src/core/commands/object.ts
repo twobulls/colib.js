@@ -21,7 +21,7 @@ type CommonRefPairs = RefPair<number>;
  * const DURATION = 1;
  * const obj = { a: 10, b: 20, c: 30};
  * const target = {b: 40, c: 60};
- * queue.enqueue(
+ * queue.push(
  *  changeTo(obj, target, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -48,7 +48,7 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
  * const DURATION = 1;
  * const obj = { a: 10, b: 20, c: 30};
  * const target = {b: 40, c: 60};
- * queue.enqueue(
+ * queue.push(
  *  changeFrom(obj, target, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -75,7 +75,7 @@ export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?
  * const DURATION = 1;
  * const obj = { a: 10, b: 20, c: 30};
  * const offset = { b: 40, c: 60};
- * queue.enqueue(
+ * queue.push(
  *  changeToOffset(obj, offset, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -102,7 +102,7 @@ export function changeToOffset<T>(object: T, offset: T, commandDuration: number,
  * const DURATION = 1;
  * const obj = { a: 10, b: 20, c: 30};
  * const offset = { b: 40, c: 60};
- * queue.enqueue(
+ * queue.push(
  *  changeFromOffset(obj, offset, DURATION)
  * );
  * queue.update(DURATION / 4);
@@ -129,7 +129,7 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
  * const DURATION = 1;
  * const obj = { x: 10, y: 20, z: 30};
  * const scaleFactor = { x: 2, y: 3, z: 4};
- * queue.enqueue(
+ * queue.push(
  *  scaleBy(obj, scaleFactor, DURATION)
  * );
  * queue.update(DURATION);
@@ -156,7 +156,7 @@ export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, e
  * const DURATION = 1;
  * const obj = { x: 10, y: 20, z: 30};
  * const scaleFactor = { x: 2, y: 3, z: 4};
- * queue.enqueue(
+ * queue.push(
  *  scaleFrom(obj, scaleFactor, DURATION)
  * );
  * queue.update(DURATION / 4);

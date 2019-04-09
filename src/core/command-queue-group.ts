@@ -21,7 +21,7 @@ export class CommandQueueGroup {
    * const group = new CommandQueueGroup();
    * const queue = new CommandQueue();
    * group.addQueue(queue);
-   * queue.enqueue(
+   * queue.push(
    *   () => { console.log('called'); }
    * );
    * group.update(1.0); // 'called'
@@ -47,7 +47,7 @@ export class CommandQueueGroup {
    * const group = new CommandQueueGroup();
    * const queue = new CommandQueue();
    * group.addQueue(queue);
-   * queue.enqueue(
+   * queue.push(
    *   () => { console.log('called'); }
    * );
    * group.removeQueue(queue);
@@ -74,7 +74,7 @@ export class CommandQueueGroup {
    * const group = new CommandQueueGroup();
    * const queue = new CommandQueue();
    * group.addQueue(queue);
-   * queue.enqueue(
+   * queue.push(
    *   () => { console.log('called'); }
    * );
    * group.update(1.0); // 'called'
