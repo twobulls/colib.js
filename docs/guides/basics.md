@@ -24,31 +24,33 @@ scheduler.add(
 
 Here we see a couple of commands used, [sequence](../api/README.md#sequence), [parallel](../api/README.md#parallel), [waitForTime](../api/README.md#waitForTime), [changeTo](../api/README.md#changeTo). Let's break down the whole thing step by step.
 
-### `scheduler.add(...)`
+### Breakdown
+
+#### scheduler.add(...)
 
 The global scheduler used here will run the commands. Commands don't do anything until something runs them.
 
-### `waitForTime(4)`
+#### waitForTime(4)
 
 Waits 4 seconds, before execution continues onto the next command.
 
-### `parallel(...)`
+#### parallel(...)
 
 Executes all it's child commands at the same time.
 
-### `changeTo(obj, {y: 200}, 3.0, inOutQuad())`
+#### changeTo(obj, {y: 200}, 3.0, inOutQuad())
 
 Tweens the value of `obj.y` to 200, over a duration of 3 seconds, using the `inOutQuad()` ease.
 
-### `sequence(...)`
+#### sequence(...)
 
 Executes all it's child commands one after the other. Because this sequence is nested inside a parallel command, the entire sequence is executing at the same time as the changeTo command.
 
-### `waitForTime(1.5)`
+#### waitForTime(1.5)
 
 Waits 1.5 seconds, before execution continues onto the next command.
 
-### `() => { console.log('Reached') }`
+#### () => { console.log('Reached') }
 
 A callback command that logs "Reached" to the console.
 

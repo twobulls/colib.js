@@ -1,6 +1,7 @@
 import { colors } from './color-list';
 import { ColorRGB, ColorHSL, ColorFormat } from './color-types';
 
+/** ignore */
 export interface ColorParseResult {
   color: ColorRGB | ColorHSL;
   format: ColorFormat;

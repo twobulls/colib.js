@@ -8,6 +8,7 @@ import { Ease } from '../ease';
  * @param target The value the number should be at the end of the tween.
  * @param duration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
  * ```typescript
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
@@ -41,6 +42,7 @@ export function changeToNum(ref: Ref<number>, target: number, duration: number, 
  * @param startTarget  The value to tween from.
  * @param duration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
  * ```typescript
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
@@ -74,6 +76,7 @@ export function changeFromNum(ref: Ref<number>, startTarget: number, duration: n
  * @param offset The offset to tween from the start.
  * @param duration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
  * ```typescript
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
@@ -110,6 +113,7 @@ export function changeToOffsetNum(ref: Ref<number>, offset: number, duration: nu
  * @param offset  The offset to tween from.
  * @param duration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
  * ```typescript
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
@@ -145,6 +149,7 @@ export function changeFromOffsetNum(ref: Ref<number>, offset: number, duration: 
  * @param scaleFactor How much to scale up the value by.
  * @param commandDuration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
  * ```typescript
  * const DURATION = 1.0;
  * const queue = new CommandQueue();
@@ -179,6 +184,7 @@ export function scaleByNum(ref: Ref<number>, scaleFactor: number, commandDuratio
  * @param scaleFactor How much to scale up the value by.
  * @param duration The duration of the tween.
  * @param ease The ease to use for the tween.
+ *
  * ```typescript
  * const DURATION = 1.0;
  * const queue = new CommandQueue();

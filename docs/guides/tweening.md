@@ -13,9 +13,9 @@ globalScheduler().add(
 );
 ```
 
-## The [interval](../api/README.md#interval) command
+## interval
 
-The interval take a duration and a callback. The callback is run every update, and gives the progress, (t), from the start to the end of the duration. This is the command that all over tweening functions are built upon in Colib.
+The [interval](../api/README.md#interval) take a duration and a callback. The callback is run every update, and gives the progress, (t), from the start to the end of the duration. This is the command that all over tweening functions are built upon in Colib.
 
 ```typescript
 const DURATION = 3.0;

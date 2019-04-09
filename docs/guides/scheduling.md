@@ -65,7 +65,7 @@ group.update(1.0); // 'Hello' 'World'
 
 Queue's can be added or removed from the group at will.
 
-### globalQueueGroup()
+## globalQueueGroup()
 
 Similar to [globalScheduler()](../api/README.md#globalscheduler), it is also possible to get a [globalQueueGroup()](../api/README.md#globalqueuegroup) that is automatically updated.
 

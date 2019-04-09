@@ -16,6 +16,7 @@ type CommonRefPairs = RefPair<number>;
  * @param target The target to tween to.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1;
@@ -43,6 +44,7 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
  * @param from The target to tween from.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1;
@@ -70,6 +72,7 @@ export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?
  * @param offset The offset to add to the start position.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1;
@@ -97,6 +100,7 @@ export function changeToOffset<T>(object: T, offset: T, commandDuration: number,
  * @param offset The offset to tween from.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1;
@@ -124,6 +128,7 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
  * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1;
@@ -151,6 +156,7 @@ export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, e
  * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
  * @param commandDuration The duration of the command.
  * @param ease The ease to apply
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1;

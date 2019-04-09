@@ -16,13 +16,14 @@ interface Runner {
 /**
  * @param maxDeltaTime The most amount of time the global scheduler can update by between frames.
  * In the browser, this is useful to prevent animations fast forwarding when resuming a backgrounded tab.
- * @returns A global, shared `CommandScheduler` for the current environment.
  * ```typescript
  * const scheduler = globalScheduler();
  * const queue = scheduler.add(() => {
  *  console.log("Hello");
  * });
  * ```
+ *
+ * @returns A global, shared `CommandScheduler` for the current environment.
  */
 export function globalScheduler(maxDeltaTime = MAX_DELTA_TIME_MS): CommandScheduler {
   return getRunner(maxDeltaTime).scheduler;

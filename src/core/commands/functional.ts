@@ -4,6 +4,7 @@ import { Command, parallel, sequence } from './common';
  * Maps a collection of values to a series of commands run in parallel.
  * @param items The collection of items
  * @param factory A factory function which converts each item to a command
+ *
  * ```typescript
  * const items = ["called 1", "called 2", "called 3"]
  * const queue = new CommandQueue();
@@ -26,6 +27,7 @@ export function mapParallel<T>(items: Iterable<T>, factory: (item: T, index: num
  * Maps a collection of values to a series of commands run sequentially.
  * @param items The collection of items
  * @param factory A factory function which converts each item to a command
+ *
  * ```typescript
  * const items = ["called 1", "called 2", "called 3"]
  * const queue = new CommandQueue();

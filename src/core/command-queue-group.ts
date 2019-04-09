@@ -16,7 +16,7 @@ export class CommandQueueGroup {
 
   /**
    * Adds the queue, to be updated by the group.
-   * @param queue The `CommandQueue` for the behaviour to update.
+   *
    * ```typescript
    * const group = new CommandQueueGroup();
    * const queue = new CommandQueue();
@@ -26,6 +26,8 @@ export class CommandQueueGroup {
    * );
    * group.update(1.0); // 'called'
    * ```
+   *
+   * @param queue The `CommandQueue` for the behaviour to update.
    */
   addQueue(queue: CommandQueue) {
     const newQueuesIndex = this.newQueues.indexOf(queue);
@@ -42,7 +44,7 @@ export class CommandQueueGroup {
 
   /**
    * Removes a queue the group.
-   * @param queue The CommandQueue to remove. This queue should have been created, or added to this behaviour already.
+   *
    * ```typescript
    * const group = new CommandQueueGroup();
    * const queue = new CommandQueue();
@@ -53,6 +55,8 @@ export class CommandQueueGroup {
    * group.removeQueue(queue);
    * group.update(1.0); // Nothing
    * ```
+   *
+   * @param queue The CommandQueue to remove. This queue should have been created, or added to this behaviour already.
    */
   removeQueue(queue: CommandQueue) {
     const newQueuesIndex = this.newQueues.indexOf(queue);
@@ -69,7 +73,7 @@ export class CommandQueueGroup {
 
   /**
    * Updates all the queues in the group by the specified deltaTime.
-   * @param deltaTime The amount of time to update all the queues by.
+   *
    * ```typescript
    * const group = new CommandQueueGroup();
    * const queue = new CommandQueue();
@@ -79,6 +83,8 @@ export class CommandQueueGroup {
    * );
    * group.update(1.0); // 'called'
    * ```
+   *
+   * @param deltaTime The amount of time to update all the queues by.
    */
   update(deltaTime: number) {
     const queuesToUpdate = [...this.queues];
