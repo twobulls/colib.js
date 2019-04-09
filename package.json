@@ -20,7 +20,7 @@
     "lint": "$(yarn bin)/tslint --project tslint.json",
     "semantic-release": "$(yarn bin)/semantic-release",
     "commit": "$(yarn bin)/git-cz",
-    "docs": "$(yarn bin)/typedoc --exclude '**/*.spec.ts' --out docs/api src/core --theme  markdown   --excludeExternals --excludePrivate --excludeProtected --excludeNotExported"
+    "docs": "$(yarn bin)/typedoc --exclude '**/*.spec.ts' --out docs/api src/core --mode file --theme markdown --readme none  --excludeExternals --excludePrivate --excludeProtected --excludeNotExported"
   },
   "dependencies": {},
   "devDependencies": {
