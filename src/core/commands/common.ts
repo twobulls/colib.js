@@ -482,7 +482,7 @@ export function coroutine(command: CommandCoroutine): Command {
  *  chooseRandom(
  *    () => { console.log('a'); },
  *    () => { console.log('b'); },
- *    () => { console.log('b'); }
+ *    () => { console.log('c'); }
  *  )
  * );
  * queue.update(0); // 'a' or 'b' or 'c'

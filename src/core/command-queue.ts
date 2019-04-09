@@ -44,6 +44,8 @@ export class CommandQueue {
   /**
    * Enqueue the specified command. Commands are queued up in the order specified.
    * Multiple calls to `enqueue` result is the same sequential ordering ie.
+   * @param commands The `Command`s to be enqueued. The `CommandQueue` will dequeue the commands over succesive calls to
+   * update.
    * ```typescript
    * const queue = new CommandQueue();
    * queue.enqueue(commandOne);
@@ -51,8 +53,6 @@ export class CommandQueue {
    * // Is equivalent to
    * queue.enqueue(commandOne, commandTwo);
    * ```
-   * @param commands The `Command`s to be enqueued. The `CommandQueue` will dequeue the commands over succesive calls to
-   * update.
    */
   enqueue(...commands: Command[]): CommandQueue {
     this.commands.push(...commands);

@@ -1,5 +1,4 @@
 /**
- * This class contains helper methods for creating common easing functions.
  * An easing function takes an input value <c>t</c> where an uneased <c>t</c>
  * ranges from 0 <= t <= 1 . Some easing functions, (such as <c>BackEase</c> returns
  * values outside the range 0 <= t <= 1). For a given valid easing function, f(t),
@@ -115,7 +114,7 @@ export function weightedComposite(...eases: WeightedEaseConfig[]): Ease {
 }
 
 /**
- * Eases a value, by pipelining it throguh several easing functions.
+ * Eases a value, by pipelining it through several easing functions.
  * The output of the first ease is used as input for the next.
  */
 export function chainComposite(...eases: Ease[]): Ease {
