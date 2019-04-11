@@ -1,5 +1,7 @@
 # Getting Started
 
+> [Home](../index.md) > Guides > Getting Started
+
 You can install colib from `npm` or `yarn`
 
 ```bash
