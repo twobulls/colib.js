@@ -24,12 +24,6 @@ steps:
     commands:
       - yarn lint
 
-  - name: audit
-    group: pr
-    image: node:10.14.1-stretch
-    commands:
-      - yarn audit
-
   - name: licenses
     group: pr
     image: node:10.14.1-stretch
