@@ -10,20 +10,24 @@
 
 ### Properties
 
-- [ease](weightedeaseconfig.md#markdown-header-ease)
-- [weight](weightedeaseconfig.md#markdown-header-weight)
+- [ease](weightedeaseconfig.md#ease)
+- [weight](weightedeaseconfig.md#weight)
 
 ---
 
 ## Properties
 
+<a id="ease"></a>
+
 ### ease
 
-**● ease**: _[Ease](../#markdown-header-Ease)_
+**● ease**: _[Ease](../#ease)_
 
 _Defined in ease.ts:98_
 
 ---
+
+<a id="weight"></a>
 
 ### weight
 

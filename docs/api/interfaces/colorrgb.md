@@ -12,14 +12,16 @@ Represents a RGB color with optional alpha. Values range from \[0 -> 1\]
 
 ### Properties
 
-- [a](colorrgb.md#markdown-header-Optional-a)
-- [b](colorrgb.md#markdown-header-b)
-- [g](colorrgb.md#markdown-header-g)
-- [r](colorrgb.md#markdown-header-r)
+- [a](colorrgb.md#a)
+- [b](colorrgb.md#b)
+- [g](colorrgb.md#g)
+- [r](colorrgb.md#r)
 
 ---
 
 ## Properties
+
+<a id="a"></a>
 
 ### `<Optional>` a
 
@@ -29,6 +31,8 @@ _Defined in color/color-types.ts:8_
 
 ---
 
+<a id="b"></a>
+
 ### b
 
 **● b**: _`number`_
@@ -37,6 +41,8 @@ _Defined in color/color-types.ts:6_
 
 ---
 
+<a id="g"></a>
+
 ### g
 
 **● g**: _`number`_
@@ -44,6 +50,8 @@ _Defined in color/color-types.ts:6_
 _Defined in color/color-types.ts:7_
 
 ---
+
+<a id="r"></a>
 
 ### r
 

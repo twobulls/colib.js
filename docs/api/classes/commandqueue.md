@@ -12,23 +12,25 @@ The CommandQueue class is one of core primitives for running commands. It operat
 
 ### Properties
 
-- [paused](commandqueue.md#markdown-header-paused)
+- [paused](commandqueue.md#paused)
 
 ### Accessors
 
-- [deltaTimeAccumulation](commandqueue.md#markdown-header-deltaTimeAccumulation)
-- [updating](commandqueue.md#markdown-header-updating)
+- [deltaTimeAccumulation](commandqueue.md#deltatimeaccumulation)
+- [updating](commandqueue.md#updating)
 
 ### Methods
 
-- [process](commandqueue.md#markdown-header-process)
-- [push](commandqueue.md#markdown-header-push)
-- [runToEnd](commandqueue.md#markdown-header-runToEnd)
-- [update](commandqueue.md#markdown-header-update)
+- [process](commandqueue.md#process)
+- [push](commandqueue.md#push)
+- [runToEnd](commandqueue.md#runtoend)
+- [update](commandqueue.md#update)
 
 ---
 
 ## Properties
+
+<a id="paused"></a>
 
 ### paused
 
@@ -52,6 +54,8 @@ queue.update(1.0); // 'called'
 
 ## Accessors
 
+<a id="deltatimeaccumulation"></a>
+
 ### deltaTimeAccumulation
 
 **get deltaTimeAccumulation**(): `number`
@@ -63,6 +67,8 @@ Gets the elapsed time since the current executing Command started.
 **Returns:** `number`
 
 ---
+
+<a id="updating"></a>
 
 ### updating
 
@@ -77,6 +83,8 @@ Indicates whether the CommandQueue is currently in an update loop. Update should
 ---
 
 ## Methods
+
+<a id="process"></a>
 
 ### process
 
@@ -98,9 +106,11 @@ queue.process(); // 'called'
 
 ---
 
+<a id="push"></a>
+
 ### push
 
-▸ **push**(...commands: _[Command](../#markdown-header-Command)[]_): [CommandQueue](commandqueue.md)
+▸ **push**(...commands: _[Command](../#command)[]_): [CommandQueue](commandqueue.md)
 
 _Defined in command-queue.ts:60_
 
@@ -116,13 +126,15 @@ queue.push(commandOne, commandTwo);
 
 **Parameters:**
 
-| Name            | Type                                     | Description                                                                                                     |
-| --------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `Rest` commands | [Command](../#markdown-header-Command)[] | The \`Command\`s to be enqueued. The \`CommandQueue\` will dequeue the commands over succesive calls to update. |
+| Name            | Type                     | Description                                                                                                     |
+| --------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `Rest` commands | [Command](../#command)[] | The \`Command\`s to be enqueued. The \`CommandQueue\` will dequeue the commands over succesive calls to update. |
 
 **Returns:** [CommandQueue](commandqueue.md)
 
 ---
+
+<a id="runtoend"></a>
 
 ### runToEnd
 
@@ -143,6 +155,8 @@ queue.runToEnd(); // 'called'
 **Returns:** `void`
 
 ---
+
+<a id="update"></a>
 
 ### update
 

@@ -6,12 +6,14 @@
 
 ### Enumeration members
 
-- [FastForward](commandoperation.md#markdown-header-FastForward)
-- [Normal](commandoperation.md#markdown-header-Normal)
+- [FastForward](commandoperation.md#fastforward)
+- [Normal](commandoperation.md#normal)
 
 ---
 
 ## Enumeration members
+
+<a id="fastforward"></a>
 
 ### FastForward
 
@@ -20,6 +22,8 @@
 _Defined in commands/common.ts:5_
 
 ---
+
+<a id="normal"></a>
 
 ### Normal
 

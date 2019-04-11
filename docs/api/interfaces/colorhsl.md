@@ -12,14 +12,16 @@ Represents a HSL color with optional alpha.
 
 ### Properties
 
-- [a](colorhsl.md#markdown-header-Optional-a)
-- [h](colorhsl.md#markdown-header-h)
-- [l](colorhsl.md#markdown-header-l)
-- [s](colorhsl.md#markdown-header-s)
+- [a](colorhsl.md#a)
+- [h](colorhsl.md#h)
+- [l](colorhsl.md#l)
+- [s](colorhsl.md#s)
 
 ---
 
 ## Properties
+
+<a id="a"></a>
 
 ### `<Optional>` a
 
@@ -29,6 +31,8 @@ _Defined in color/color-types.ts:18_
 
 ---
 
+<a id="h"></a>
+
 ### h
 
 **● h**: _`number`_
@@ -37,6 +41,8 @@ _Defined in color/color-types.ts:15_
 
 ---
 
+<a id="l"></a>
+
 ### l
 
 **● l**: _`number`_
@@ -44,6 +50,8 @@ _Defined in color/color-types.ts:15_
 _Defined in color/color-types.ts:17_
 
 ---
+
+<a id="s"></a>
 
 ### s
 

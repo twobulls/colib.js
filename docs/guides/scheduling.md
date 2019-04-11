@@ -1,5 +1,7 @@
 # Scheduling
 
+> [Home](../index.md) > Guides > Scheduling
+
 ## `globalScheduler()`
 
 The easiest way to run commands is to use the [globalScheduler()](../README.md#globalscheduler). All you need to do is grab the globalScheduler, add whatever commands you want to it, and it will do the rest.

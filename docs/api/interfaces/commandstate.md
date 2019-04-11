@@ -10,12 +10,14 @@
 
 ### Properties
 
-- [complete](commandstate.md#markdown-header-complete)
-- [deltaTime](commandstate.md#markdown-header-deltaTime)
+- [complete](commandstate.md#complete)
+- [deltaTime](commandstate.md#deltatime)
 
 ---
 
 ## Properties
+
+<a id="complete"></a>
 
 ### complete
 
@@ -24,6 +26,8 @@
 _Defined in commands/common.ts:10_
 
 ---
+
+<a id="deltatime"></a>
 
 ### deltaTime
 

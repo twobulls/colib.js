@@ -10,14 +10,16 @@
 
 ### Methods
 
-- [addQueue](commandqueuegroup.md#markdown-header-addQueue)
-- [createQueue](commandqueuegroup.md#markdown-header-createQueue)
-- [removeQueue](commandqueuegroup.md#markdown-header-removeQueue)
-- [update](commandqueuegroup.md#markdown-header-update)
+- [addQueue](commandqueuegroup.md#addqueue)
+- [createQueue](commandqueuegroup.md#createqueue)
+- [removeQueue](commandqueuegroup.md#removequeue)
+- [update](commandqueuegroup.md#update)
 
 ---
 
 ## Methods
+
+<a id="addqueue"></a>
 
 ### addQueue
 
@@ -47,6 +49,8 @@ group.update(1.0); // 'called'
 
 ---
 
+<a id="createqueue"></a>
+
 ### createQueue
 
 ▸ **createQueue**(): [CommandQueue](commandqueue.md)
@@ -58,6 +62,8 @@ Creates a queue, which will be updated by the group.
 **Returns:** [CommandQueue](commandqueue.md)
 
 ---
+
+<a id="removequeue"></a>
 
 ### removeQueue
 
@@ -87,6 +93,8 @@ group.update(1.0); // Nothing
 **Returns:** `void`
 
 ---
+
+<a id="update"></a>
 
 ### update
 

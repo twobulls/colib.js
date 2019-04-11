@@ -12,14 +12,16 @@ Represents an HSV color with optional alpha.
 
 ### Properties
 
-- [a](colorhsv.md#markdown-header-Optional-a)
-- [h](colorhsv.md#markdown-header-h)
-- [s](colorhsv.md#markdown-header-s)
-- [v](colorhsv.md#markdown-header-v)
+- [a](colorhsv.md#a)
+- [h](colorhsv.md#h)
+- [s](colorhsv.md#s)
+- [v](colorhsv.md#v)
 
 ---
 
 ## Properties
+
+<a id="a"></a>
 
 ### `<Optional>` a
 
@@ -29,6 +31,8 @@ _Defined in color/color-types.ts:28_
 
 ---
 
+<a id="h"></a>
+
 ### h
 
 **● h**: _`number`_
@@ -37,6 +41,8 @@ _Defined in color/color-types.ts:25_
 
 ---
 
+<a id="s"></a>
+
 ### s
 
 **● s**: _`number`_
@@ -44,6 +50,8 @@ _Defined in color/color-types.ts:25_
 _Defined in color/color-types.ts:26_
 
 ---
+
+<a id="v"></a>
 
 ### v
 

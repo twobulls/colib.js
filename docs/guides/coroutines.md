@@ -1,5 +1,7 @@
 # Coroutines
 
+> [Home](../index.md) > Guides > Scheduling
+
 Since ES6 added the concept of [generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*), functions that return different values over multiple calls, we can utilise the same concept in Colib to write our logic in a more conventional way. In Colib, we call these coroutines. We use the [coroutine](../README.md#coroutine) command to create them.
 
 ```typescript

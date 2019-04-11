@@ -45,6 +45,12 @@ To lint the build:
 yarn lint
 ```
 
+To update the documentation from the source code:
+
+```bash
+yarn docs
+```
+
 ## Debugging
 
 If you are using VSCode, you can debug tests by running the "Jest All" or "Jest Current File" commands in the debug menu. Also, if you are using the 'orta.vscode-jest' plugin, you can debug tests inline using the '>Jest: Start Runner' command.

@@ -12,12 +12,14 @@ ignore
 
 ### Properties
 
-- [color](colorparseresult.md#markdown-header-color)
-- [format](colorparseresult.md#markdown-header-format)
+- [color](colorparseresult.md#color)
+- [format](colorparseresult.md#format)
 
 ---
 
 ## Properties
+
+<a id="color"></a>
 
 ### color
 
@@ -26,6 +28,8 @@ ignore
 _Defined in color/parse.ts:6_
 
 ---
+
+<a id="format"></a>
 
 ### format
 

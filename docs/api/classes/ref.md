@@ -16,20 +16,22 @@
 
 ### Constructors
 
-- [constructor](ref.md#markdown-header-constructor)
+- [constructor](ref.md#constructor)
 
 ### Accessors
 
-- [value](ref.md#markdown-header-value)
+- [value](ref.md#value)
 
 ### Methods
 
-- [create](ref.md#markdown-header-Static-create)
-- [from](ref.md#markdown-header-Static-from)
+- [create](ref.md#create)
+- [from](ref.md#from)
 
 ---
 
 ## Constructors
+
+<a id="constructor"></a>
 
 ### constructor
 
@@ -66,6 +68,8 @@ _**typeparam**_: The type of the value to capture.
 
 ## Accessors
 
+<a id="value"></a>
+
 ### value
 
 **get value**(): `T`
@@ -89,6 +93,8 @@ _Defined in ref.ts:9_
 ---
 
 ## Methods
+
+<a id="create"></a>
 
 ### `<Static>` create
 
@@ -119,6 +125,8 @@ _**typeparam**_: type of the value.
 **Returns:** [Ref](ref.md)<`T`>
 
 ---
+
+<a id="from"></a>
 
 ### `<Static>` from
 

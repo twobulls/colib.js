@@ -6,13 +6,15 @@
 
 ### Enumeration members
 
-- [HSL](colorlerpmode.md#markdown-header-HSL)
-- [HSV](colorlerpmode.md#markdown-header-HSV)
-- [RGB](colorlerpmode.md#markdown-header-RGB)
+- [HSL](colorlerpmode.md#hsl)
+- [HSV](colorlerpmode.md#hsv)
+- [RGB](colorlerpmode.md#rgb)
 
 ---
 
 ## Enumeration members
+
+<a id="hsl"></a>
 
 ### HSL
 
@@ -22,6 +24,8 @@ _Defined in commands/color.ts:21_
 
 ---
 
+<a id="hsv"></a>
+
 ### HSV
 
 **HSV**:
@@ -29,6 +33,8 @@ _Defined in commands/color.ts:21_
 _Defined in commands/color.ts:20_
 
 ---
+
+<a id="rgb"></a>
 
 ### RGB
 

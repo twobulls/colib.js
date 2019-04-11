@@ -1,3 +1,0 @@
-# Colib
-
-Welcome to Colib

@@ -1,5 +1,7 @@
 # Basics
 
+> [Home](../index.md) > Guides > Scheduling
+
 Colib makes it easy to build complex sequences of timed logic and animations, without ending up in callback hell. Here we will cover the most basic building block in Colib, the [Command](../README.md#command).
 
 ## An introductory example

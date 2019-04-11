@@ -1,5 +1,7 @@
 # Tweening
 
+> [Home](../index.md) > Guides > Tweening
+
 Colib has an API for basic tweening/animation.
 
 ```typescript

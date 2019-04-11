@@ -12,16 +12,18 @@
 
 ### Properties
 
-- [paused](commandscheduler.md#markdown-header-paused)
+- [paused](commandscheduler.md#paused)
 
 ### Methods
 
-- [add](commandscheduler.md#markdown-header-add)
-- [update](commandscheduler.md#markdown-header-update)
+- [add](commandscheduler.md#add)
+- [update](commandscheduler.md#update)
 
 ---
 
 ## Properties
+
+<a id="paused"></a>
 
 ### paused
 
@@ -35,9 +37,11 @@ Gets or sets a value indicating whether this `CommandScheduler` is paused.
 
 ## Methods
 
+<a id="add"></a>
+
 ### add
 
-▸ **add**(...commands: _[Command](../#markdown-header-Command)[]_): `void`
+▸ **add**(...commands: _[Command](../#command)[]_): `void`
 
 _Defined in command-scheduler.ts:30_
 
@@ -53,13 +57,15 @@ scheduler.update(0.5); // 'called'
 
 **Parameters:**
 
-| Name            | Type                                     | Description              |
-| --------------- | ---------------------------------------- | ------------------------ |
-| `Rest` commands | [Command](../#markdown-header-Command)[] | The commands to execute. |
+| Name            | Type                     | Description              |
+| --------------- | ------------------------ | ------------------------ |
+| `Rest` commands | [Command](../#command)[] | The commands to execute. |
 
 **Returns:** `void`
 
 ---
+
+<a id="update"></a>
 
 ### update
 
