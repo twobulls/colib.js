@@ -17,7 +17,7 @@ globalScheduler().add(
 
 ## interval
 
-The [interval](../README.md#interval) take a duration and a callback. The callback is run every update, and gives the progress, (t), from the start to the end of the duration. This is the command that all over tweening functions are built upon in Colib.
+The [interval](../api/README.md#interval) take a duration and a callback. The callback is run every update, and gives the progress, (t), from the start to the end of the duration. This is the command that all over tweening functions are built upon in Colib.
 
 ```typescript
 const DURATION = 3.0;
@@ -39,7 +39,7 @@ globalScheduler().add(interval(t => console.log(t), DURATION, inOutQuad()));
 
 ## Eases
 
-In Colib, an easing function takes an input value `t` where an uneased `t` ranges from 0 <= t <= 1 . Some easing functions, (such as [inBack](../README.md#inback)), return values outside the range 0 <= t <= 1). For a given valid easing function, f(t), f(0) = 0 and f(1) = 1. All eases have the following signature.
+In Colib, an easing function takes an input value `t` where an uneased `t` ranges from 0 <= t <= 1 . Some easing functions, (such as [inBack](../api/README.md#inback)), return values outside the range 0 <= t <= 1). For a given valid easing function, f(t), f(0) = 0 and f(1) = 1. All eases have the following signature.
 
 ```typescript
 export type Ease = (t: number) => number;
@@ -48,9 +48,9 @@ const validEase: Ease = t => t * t;
 
 You can implement any easing function you like, although Colib comes with a bunch of built in ones. For instance, all the [Robert Penner easing functions](https://easings.net/en) are available. There are also a few eases provided which are useful.
 
-- [smooth](../README.md#smooth) provides nice interpolations and is a good default choice.
-- [hermite](../README.md#hermite) let's you set the gradient at the start/end of the ease.
-- [chainComposite](../README.md#chainComposite) feeds the output of one ease into the input of another.
+- [smooth](../api/README.md#smooth) provides nice interpolations and is a good default choice.
+- [hermite](../api/README.md#hermite) let's you set the gradient at the start/end of the ease.
+- [chainComposite](../api/README.md#chainComposite) feeds the output of one ease into the input of another.
 
 There are many more options for eases, you can check out in the API docs. All tweening functions accept and ease argument.
 
@@ -72,13 +72,13 @@ The example above will multiple by x scale by 100, and move the y position to 50
 
 There are several other similar object commands.
 
-- [changeFrom](../README.md#changeFrom) jumps a value to a target, then tweens it back to it's starting position
-- [changeToOffset](../README.md#changeToOffset) tweens a value to the current value plus an offset
-- [`changeFromOffset`](../README.md#changeFromOffset) jumps a value to an offset from it's current value, then tweens it back it's starting position
+- [changeFrom](../api/README.md#changeFrom) jumps a value to a target, then tweens it back to it's starting position
+- [changeToOffset](../api/README.md#changeToOffset) tweens a value to the current value plus an offset
+- [`changeFromOffset`](../api/README.md#changeFromOffset) jumps a value to an offset from it's current value, then tweens it back it's starting position
 
 ## Number tweens
 
-Number tweening is similar to object tweens, except we need to capture a reference to the variable to tween. We use the [Ref](../classes/ref) class to achieve this.
+Number tweening is similar to object tweens, except we need to capture a reference to the variable to tween. We use the [Ref](../api/classes/ref) class to achieve this.
 
 ```typescript
 const DURATION = 3;
@@ -95,7 +95,7 @@ const ref = new Ref(
 globalScheduler().add(changeToNum(ref, 1, DURATION));
 ```
 
-It is also possible to capture a [Ref](../classes/ref) from an object.
+It is also possible to capture a [Ref](../api/classes/ref) from an object.
 
 ```typescript
 const DURATION = 3;
@@ -104,7 +104,7 @@ const ref = Ref.from(someObj, 'x');
 globalScheduler().add(changeFromNum(ref, 0, DURATION));
 ```
 
-The available number tweens are [changeToNum](../README.md#changeToNum), [changeFromNum](../README.md#changeFromNum), [changeToOffsetNum](../README.md#changeToOffsetNumb), and [changeFromOffsetNum](../README.md#changeFromOffsetNum).
+The available number tweens are [changeToNum](../api/README.md#changeToNum), [changeFromNum](../api/README.md#changeFromNum), [changeToOffsetNum](../api/README.md#changeToOffsetNumb), and [changeFromOffsetNum](../api/README.md#changeFromOffsetNum).
 
 ## Color tweens
 
@@ -116,4 +116,4 @@ const color = { r: 1, g: 1, b: 1, a: 0 };
 globalScheduler().add(changeToColor(color, '#CC00CC', DURATION, ColorLerpMode.HSV));
 ```
 
-There are only two color tweening functions, [changeToColor](../README.md#changeToColor) and [changeFromColor](../README.md#changeFromColor).
+There are only two color tweening functions, [changeToColor](../api/README.md#changeToColor) and [changeFromColor](../api/README.md#changeFromColor).

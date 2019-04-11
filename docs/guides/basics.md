@@ -2,7 +2,7 @@
 
 > [Home](../index.md) > Guides > Scheduling
 
-Colib makes it easy to build complex sequences of timed logic and animations, without ending up in callback hell. Here we will cover the most basic building block in Colib, the [Command](../README.md#command).
+Colib makes it easy to build complex sequences of timed logic and animations, without ending up in callback hell. Here we will cover the most basic building block in Colib, the [Command](../api/README.md#command).
 
 ## An introductory example
 
@@ -24,7 +24,7 @@ scheduler.add(
 );
 ```
 
-Here we see a couple of commands used, [sequence](../README.md#sequence), [parallel](../README.md#parallel), [waitForTime](../README.md#waitForTime), [changeTo](../README.md#changeTo). Let's break down the whole thing step by step.
+Here we see a couple of commands used, [sequence](../api/README.md#sequence), [parallel](../api/README.md#parallel), [waitForTime](../api/README.md#waitForTime), [changeTo](../api/README.md#changeTo). Let's break down the whole thing step by step.
 
 ### Breakdown
 
@@ -66,4 +66,4 @@ export type Command = (deltaTime: number) => { deltaTime: number; complete: bool
 
 A command takes the maximum amount of time it's allowed to advance by, `deltaTime`, and returns any remaining unused time and whether it completed or not. Typically commands are implemented as closure functions so they track state internally. This means most commands are impure, (they have side effects).
 
-So, the definition of a Command is simple, but it can used to build some incredibly cool and complex behaviours. As we saw in our example, [parallel](../README.md#parallel) and [sequence](../README.md#sequence) allow commands to easily be composed together in different ways. Other common commands worth checking out that can be used for composition include [repeat](../README.md#repeat), [repeatForever](../README.md#repeatForever), and [chooseRandom](../README.md#chooseRandom).
+So, the definition of a Command is simple, but it can used to build some incredibly cool and complex behaviours. As we saw in our example, [parallel](../api/README.md#parallel) and [sequence](../api/README.md#sequence) allow commands to easily be composed together in different ways. Other common commands worth checking out that can be used for composition include [repeat](../api/README.md#repeat), [repeatForever](../api/README.md#repeatForever), and [chooseRandom](../api/README.md#chooseRandom).
