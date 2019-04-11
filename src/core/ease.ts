@@ -256,7 +256,7 @@ export function inElastic(): Ease {
 export function outElastic(): Ease {
   return flip(elastic());
 }
-export function intOutElastic(): Ease {
+export function inOutElastic(): Ease {
   return inOutEase(inElastic(), outElastic());
 }
 

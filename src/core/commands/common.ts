@@ -12,7 +12,6 @@ export interface CommandState {
 
 /**
  * The base building block for all commands.
- * @description
  * This is what the CommandQueue and CommandScheduler update. Commands typically capture state, and are only safe to be
  * invoked by a single queue/scheduler at once.
  * Inside options, deltaTime is the time to update the command by. The command should modify deltaTime, subtracting the
@@ -63,8 +62,6 @@ export type CommandCoroutine = () => CommandIterator;
  * The command starts the Audio, then polls waiting for it to finish. Suddenly a queue  running the command
  * is told to runToEnd. In this case, the onInterrupt action is called, which stops the audio source and performs
  * cleanup. The command then finishes, and the queue continues.
- * @param command The command to make interruptable
- * @param onInterrupt The action to perform if the
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -83,6 +80,9 @@ export type CommandCoroutine = () => CommandIterator;
  * queue.update(1.0); // Playing
  * queue.runToEnd(); // Stopped
  * ```
+ *
+ * @param command The command to make interruptable
+ * @param onInterrupt The action to perform if the
  */
 export function interruptable(command: Command, onInterrupt: () => void): Command {
   let started = false;
@@ -121,9 +121,6 @@ export function none(): Command {
 
 /**
  * Runs a command over an interval of time.
- * @param command The command to execute.
- * @param duration The duration of time to apply the command over. Must be greater than or equal to 0.
- * @param ease An easing function to apply to the t parameter of a CommandDuration. If undefined, linear easing is used.
  *
  * ```typescript
  * const DURATION = 5;
@@ -135,6 +132,10 @@ export function none(): Command {
  * queue.update(2); // 0.6
  * queue.update(2); // 1
  * ```
+ *
+ * @param command The command to execute.
+ * @param duration The duration of time to apply the command over. Must be greater than or equal to 0.
+ * @param ease An easing function to apply to the t parameter of a CommandDuration. If undefined, linear easing is used.
  */
 export function interval(command: CommandInterval, duration: number, ease?: Ease): Command {
   checkDurationGreaterThanOrEqualToZero(duration);
@@ -179,7 +180,6 @@ export function interval(command: CommandInterval, duration: number, ease?: Ease
 
 /**
  * Waits until a given amount of time has elapsed.
- * @param duration The duration of time to wait. Must be greater than or equal to 0.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -190,6 +190,8 @@ export function interval(command: CommandInterval, duration: number, ease?: Ease
  * queue.update(5);
  * queue.update(5); // called
  * ```
+ *
+ * @param duration The duration of time to wait. Must be greater than or equal to 0.
  */
 export function waitForTime(duration: number): Command {
   checkDurationGreaterThanOrEqualToZero(duration);
@@ -215,7 +217,6 @@ export function waitForTime(duration: number): Command {
 
 /**
  * Waits a specified number of calls to update. This ignores time althogether.
- * @param frameCount The number of frames to wait. Must be > 0.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -227,6 +228,8 @@ export function waitForTime(duration: number): Command {
  * queue.update(1000);
  * queue.update(0); // called
  * ```
+ *
+ * @param frameCount The number of frames to wait. Must be > 0.
  */
 export function waitForFrames(frameCount: number): Command {
   frameCount = Math.ceil(frameCount);
@@ -251,7 +254,6 @@ export function waitForFrames(frameCount: number): Command {
 /**
  * A parallel command executes several commands in parallel. It finishes
  * when the last command has finished.
- * @param commands The commands to execute.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -264,6 +266,8 @@ export function waitForFrames(frameCount: number): Command {
  * );
  * queue.update(0); // 'called 1' 'called 2'
  * ```
+ *
+ * @param commands The commands to execute.
  */
 export function parallel(...commands: Command[]): Command {
   // Optimization.
@@ -299,7 +303,6 @@ export function parallel(...commands: Command[]): Command {
 
 /**
  * A sequence command executes several commands sequentially.
- * @param commands A parameter list of commands to execute sequentially.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -311,6 +314,8 @@ export function parallel(...commands: Command[]): Command {
  * );
  * queue.update(1); // 'called'
  * ```
+ *
+ * @param commands A parameter list of commands to execute sequentially.
  */
 export function sequence(...commands: Command[]): Command {
   // Optimization.
@@ -342,8 +347,6 @@ export function sequence(...commands: Command[]): Command {
 
 /**
  * The repeat command repeats a delegate a given number of times.
- * @param repeatCount The number of times to repeat the given command. Must be > 0.
- * @param commands The commands to repeat. All of the basic commands are repeatable without side-effects.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -354,6 +357,9 @@ export function sequence(...commands: Command[]): Command {
  * );
  * queue.update(10); // 'called' x 3
  * ```
+ *
+ * @param repeatCount The number of times to repeat the given command. Must be > 0.
+ * @param commands The commands to repeat. All of the basic commands are repeatable without side-effects.
  */
 export function repeat(repeatCount: number, ...commands: Command[]): Command {
   if (repeatCount < 0) {
@@ -387,7 +393,6 @@ export function repeat(repeatCount: number, ...commands: Command[]): Command {
  * Repeats a command forever. Make sure that the commands you are repeating will consume some time, otherwise this will
  * create an infinite loop. RepeatForever can be escaped by calling `runToEnd` on the `CommandQueue`, or using
  * `CommandOperation.FastForward`.
- * @param commands The commands to execute.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -400,6 +405,8 @@ export function repeat(repeatCount: number, ...commands: Command[]): Command {
  * queue.update(10); // 'called' x 10
  * queue.runToEnd(); // repeatForever will be forced to complete
  * ```
+ *
+ * @param commands The commands to execute.
  */
 export function repeatForever(...commands: Command[]): Command {
   const seq = sequence(...commands);
@@ -419,7 +426,6 @@ export function repeatForever(...commands: Command[]): Command {
 
 /**
  * Creates a command which runs a coroutine.
- * @param command The command to generate the coroutine.
  *
  * Coroutines, (also known as generators in ES6), are methods which can be paused/resumed using the `yield` operator.
  *
@@ -443,6 +449,8 @@ export function repeatForever(...commands: Command[]): Command {
  *   coroutine(() => coroutineWithArguments(1, 2, 3))
  * );
  * ```
+ *
+ * @param command The command to generate the coroutine.
  */
 export function coroutine(command: CommandCoroutine): Command {
   let iterator: CommandIterator | undefined;
@@ -483,9 +491,6 @@ export function coroutine(command: CommandCoroutine): Command {
 
 /**
  * Chooses a random child command to perform. Re-evaluated on repeat.
- * @param commands
- * A list of commands to choose from at random. Only one command will be performed.
- * Undefined commands can be passed. At least one command must be specified.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -498,6 +503,10 @@ export function coroutine(command: CommandCoroutine): Command {
  * );
  * queue.update(0); // 'a' or 'b' or 'c'
  * ```
+ *
+ * @param commands
+ * A list of commands to choose from at random. Only one command will be performed.
+ * Undefined commands can be passed. At least one command must be specified.
  */
 export function chooseRandom(...commands: (Command | undefined)[]): Command {
   if (commands.length === 0) {
@@ -512,7 +521,6 @@ export function chooseRandom(...commands: (Command | undefined)[]): Command {
 
 /**
  * Defers the creation of the Command until just before the point of execution.
- * @param commandDeferred The action which will create the Command.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -530,6 +538,8 @@ export function chooseRandom(...commands: (Command | undefined)[]): Command {
  * queue.update(1); // "Loop 1"
  * queue.update(2); // "Loop 2"
  * ```
+ *
+ * @param commandDeferred The action which will create the Command.
  */
 export function defer(commandDeferred: CommandFactory): Command {
   let command: Command = none();
@@ -566,10 +576,6 @@ export function consumeTime(): Command {
 
 /**
  * Slows down, or increases the rate at which time flows through the given subcommands.
- * @param dilationAmount
- * The scale of the dilation to perform. For instance, a dilationAmount
- * of 2 will make time flow twice as quickly. This number must be greater than 0.
- * @param commands A list of commands to choose to dilate time for.
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -581,6 +587,11 @@ export function consumeTime(): Command {
  * );
  * queue.update(0.5); // "called"
  * ```
+ *
+ * @param dilationAmount
+ * The scale of the dilation to perform. For instance, a dilationAmount
+ * of 2 will make time flow twice as quickly. This number must be greater than 0.
+ * @param commands A list of commands to choose to dilate time for.
  */
 export function dilateTime(dilationAmount: number, ...commands: Command[]): Command {
   if (dilationAmount <= 0.0) {

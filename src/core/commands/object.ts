@@ -12,10 +12,6 @@ type CommonRefPairs = RefPair<number>;
 
 /**
  * Tweens the properties on an object to a set of target values, using regular linear interpolation.
- * @param object The object to tween the properties of.
- * @param target The target to tween to.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -28,6 +24,11 @@ type CommonRefPairs = RefPair<number>;
  * queue.update(DURATION / 4);
  * console.log(obj); // { a: 10, b: 25, c: 37.5 }
  * ```
+ *
+ * @param object The object to tween the properties of.
+ * @param target The target to tween to.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
  */
 export function changeTo<T>(object: T, target: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, target);
@@ -40,10 +41,6 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
 
 /**
  * Tweens the properties on an object from a set of target values, using regular linear interpolation.
- * @param object The object to tween the properties of.
- * @param from The target to tween from.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -56,6 +53,11 @@ export function changeTo<T>(object: T, target: T, commandDuration: number, ease?
  * queue.update(DURATION / 4);
  * console.log(obj); // { a: 10, b: 35, c: 52.5 }
  * ```
+ *
+ * @param object The object to tween the properties of.
+ * @param from The target to tween from.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
  */
 export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, from);
@@ -68,10 +70,6 @@ export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?
 
 /**
  * Tweens the properties on an object to an offset from it's start position, using regular linear interpolation.
- * @param object The object to tween the properties of.
- * @param offset The offset to add to the start position.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -84,6 +82,11 @@ export function changeFrom<T>(object: T, from: T, commandDuration: number, ease?
  * queue.update(DURATION / 4);
  * console.log(obj); // { a: 10, b: 30, c: 45 }
  * ```
+ *
+ * @param object The object to tween the properties of.
+ * @param offset The offset to add to the start position.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
  */
 export function changeToOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, offset);
@@ -96,10 +99,6 @@ export function changeToOffset<T>(object: T, offset: T, commandDuration: number,
 
 /**
  * Tweens the properties on an object from an offset back to it's start position, using regular linear interpolation.
- * @param object The object to tween the properties of.
- * @param offset The offset to tween from.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -112,6 +111,11 @@ export function changeToOffset<T>(object: T, offset: T, commandDuration: number,
  * queue.update(DURATION / 4);
  * console.log(obj); // { a: 10, b: 50, c: 75 }
  * ```
+ *
+ * @param object The object to tween the properties of.
+ * @param offset The offset to tween from.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
  */
 export function changeFromOffset<T>(object: T, offset: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, offset);
@@ -124,10 +128,6 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
 
 /**
  * Scales up the properties on an object by `scaleFactor`
- * @param object The object to tween the properties of.
- * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -140,6 +140,11 @@ export function changeFromOffset<T>(object: T, offset: T, commandDuration: numbe
  * queue.update(DURATION);
  * console.log(obj); // { x: 20, y: 60, z: 120 }
  * ```
+ *
+ * @param object The object to tween the properties of.
+ * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
  */
 export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, scaleFactor);
@@ -152,10 +157,6 @@ export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, e
 
 /**
  * Immediately scales up the properties on an object by `scaleFactor`, then tweens back to the original scale.
- * @param object The object to tween the properties of.
- * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
- * @param commandDuration The duration of the command.
- * @param ease The ease to apply
  *
  * ```typescript
  * const queue = new CommandQueue();
@@ -168,6 +169,11 @@ export function scaleBy<T>(object: T, scaleFactor: T, commandDuration: number, e
  * queue.update(DURATION / 4);
  * console.log(obj); // { x: 17.5, y: 50, z: 97.5 }
  * ```
+ *
+ * @param object The object to tween the properties of.
+ * @param scaleFactor The scale factor to apply to the object. This should have matching properties.
+ * @param commandDuration The duration of the command.
+ * @param ease The ease to apply
  */
 export function scaleFrom<T>(object: T, scaleFactor: T, commandDuration: number, ease?: Ease): Command {
   const refs = generateReferenceTargetPairs(object, scaleFactor);

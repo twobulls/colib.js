@@ -23,10 +23,7 @@ export enum ColorLerpMode {
 
 /**
  * Changes a color to a target color over time.
- * @param ref A reference to the color to change.
- * @param target The target color
- * @param commandDuration The duration of the command
- * @param ease The ease to apply.
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1.0;
@@ -37,6 +34,10 @@ export enum ColorLerpMode {
  * queue.update(DURATION / 4);
  * console.log(color); // { r: 0.625, g: 0.4, b: 0.325, 0.625 }
  * ```
+ * @param ref A reference to the color to change.
+ * @param target The target color
+ * @param commandDuration The duration of the command
+ * @param ease The ease to apply.
  */
 export function changeToColor<U extends ColorType>(
   ref: Ref<U> | ColorRGB | ColorHSL | ColorHSV,
@@ -81,10 +82,7 @@ export function changeToColor<U extends ColorType>(
 
 /**
  * Changes a color, from an offset, to a current value, over time.
- * @param ref A reference to the color to change.
- * @param target The color to start from.
- * @param commandDuration The duration of the command
- * @param ease The ease to apply.
+ *
  * ```typescript
  * const queue = new CommandQueue();
  * const DURATION = 1.0;
@@ -95,6 +93,11 @@ export function changeToColor<U extends ColorType>(
  * queue.update(DURATION / 4);
  * console.log(color); // { r: 0.875, g: 0.8, b: 0.775, 0.875 }
  * ```
+ *
+ * @param ref A reference to the color to change.
+ * @param target The color to start from.
+ * @param commandDuration The duration of the command
+ * @param ease The ease to apply.
  */
 export function changeFromColor<U extends ColorType>(
   ref: Ref<U> | ColorRGB | ColorHSL | ColorHSV,
