@@ -4,8 +4,15 @@
   "description": "Tweening and logic sequencing for typescript",
   "repository": {
     "type": "git",
-    "url": "https://github.com/twobulls/colib-js.git"
+    "url": "https://github.com/twobulls/colib.js"
   },
+  "keywords": [
+    "colib",
+    "timing",
+    "coroutines",
+    "tweening",
+    "animation"
+  ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
