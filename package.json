@@ -1,5 +1,5 @@
 {
-  "name": "colib",
+  "name": "@twobulls/colib",
   "version": "0.0.0-development",
   "description": "Tweening and logic sequencing for typescript",
   "repository": {
