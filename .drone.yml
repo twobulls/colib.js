@@ -1,4 +1,5 @@
 kind: pipeline
+name: default
 
 steps:
   # Install and cache deps
@@ -22,12 +23,6 @@ steps:
     image: node:10.14.1-stretch
     commands:
       - yarn lint
-
-  - name: audit
-    group: pr
-    image: node:10.14.1-stretch
-    commands:
-      - yarn audit
 
   - name: licenses
     group: pr
