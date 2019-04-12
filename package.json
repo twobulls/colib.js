@@ -13,6 +13,14 @@
     "tweening",
     "animation"
   ],
+  "files": [
+    "dist/index.d.ts",
+    "dist/index.es.js",
+    "dist/index.js",
+    "dist/colib.min.js",
+    "README.md",
+    "LICENSE.md"
+  ],
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
