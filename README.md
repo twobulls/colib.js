@@ -1,7 +1,7 @@
 # Colib
 
 [![Build Status](https://cloud.drone.io/api/badges/twobulls/colib.js/status.svg)](https://cloud.drone.io/twobulls/colib.js)
-[![npm version](https://badge.fury.io/js/colib.svg)](https://badge.fury.io/js/@twobulls/colib)
+[![npm version](https://badge.fury.io/js/%40twobulls%2Fcolib.svg)](https://badge.fury.io/js/%40twobulls%2Fcolib)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![MIT license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.md)
 
