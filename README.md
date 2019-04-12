@@ -37,9 +37,9 @@ function* popBalloon() {
 ## Installation
 
 ```bash
-yarn add colib
+yarn add @twobulls/colib
 # OR
-npm install colib
+npm install @twobulls/colib
 ```
 
 ## Documentation
