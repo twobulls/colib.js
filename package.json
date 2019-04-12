@@ -88,7 +88,7 @@
     ]
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "config": {
     "commitizen": {
